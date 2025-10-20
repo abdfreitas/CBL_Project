@@ -1,0 +1,108 @@
+package src.entity;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import src.lib.CharStack;
+import src.main.GamePanel;
+import src.main.KeyHandler;
+import src.entity.Player;
+
+public class Monster extends Entity {
+
+    GamePanel gp;
+    KeyHandler keyH;
+
+    public final int screenX;
+    public final int screenY;
+
+    private CharStack cStack;
+
+    private Player player1;
+
+    int hasKey = 0;
+
+    public double worldX;
+    public double worldY;
+
+    public double speed;
+
+
+    public Monster(GamePanel gp, Player player) {
+
+        player1 = player;
+
+
+
+        this.gp = gp;
+        this.keyH = keyH;
+
+        //this.cStack = keyH.cStack;
+
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 30;
+        solidArea.height = 30;
+
+        worldX = gp.tileSize * 25;
+        worldY = gp.tileSize * 21;
+
+        speed = 2;
+
+        
+        
+    }
+
+    public void update() {
+
+        int playerX = player1.worldX;
+        int playerY = player1.worldY;
+
+        double dX = playerX - worldX;
+        double dY = playerY - worldY;
+
+        double distance = Math.sqrt((dX * dX) + (dY * dY));
+
+        double speedX = (speed * dX / distance) + (speed * dX / 100);
+        double speedY = (speed * dY / distance) + (speed * dY / 100);
+
+        while (true) {
+            break;
+        }
+
+
+
+        worldX += speedX;
+        worldY += speedY;
+
+    }
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+
+        double screenX = worldX - gp.player.worldX + gp.player.screenX;
+        double screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_up_1.png"));
+        } catch (IOException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
+        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+
+    }
+
+    
+}

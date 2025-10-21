@@ -35,9 +35,7 @@ public class Player extends Entity {
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
 
-    private boolean attackWasReleased = true;
-
-    public BufferedImage[] weapon = new BufferedImage[6];
+    
 
 
 
@@ -83,20 +81,7 @@ public class Player extends Entity {
             right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_right_1.png"));
             right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_right_2.png"));
 
-            weapon[0] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-1.png.png"));
-            weapon[1] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-2.png.png"));
-            weapon[2] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-3.png.png"));
-            weapon[3] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-4.png.png"));
-            weapon[4] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-5.png.png"));
-            weapon[5] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-5.png.png"));
 
-            
-            
-            
-            
-            
-            
-            
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -241,44 +226,13 @@ public class Player extends Entity {
             speedDouble = 1;
         }
 
-        if (keyH.attack_Pressed == false && attackWasReleased == false) {
-            attackWasReleased = true;
-        }
+        
 
-        if (keyH.attack_Pressed == true && attacking == false && attackWasReleased == true) {
-            attacking = true;
-            attackWasReleased = false;
-            attackFrame = 1;
-            attackFrameCounter = 0;
-        }
-
-        if (attacking == true) {
             
 
-            attackFrameCounter++;
-
-            if (attackFrame > attackFrameMax) {
-                
-
-                attacking = false;
-
-
-
-            } else if (attackFrameCounter >= attackFrameCounterMax) {
-
-                attackFrame++;
+            
 
         
-                
-                attackFrameCounter = 0;
-
-            }
-
-            
-
-            
-
-        }
 
     }
 
@@ -373,67 +327,7 @@ public class Player extends Entity {
             g2.setColor(Color.RED);
         }
 
-        // Draw Attack frames
-        if (attacking == true){
-
-            int angle = 0;
-            int localOffsetX, localOffsetY;
-
-            BufferedImage imageAttack = null;
-
-            AffineTransform transform = new AffineTransform();
-
-            transform.translate(screenX + gp.tileSize / 2, screenY + gp.tileSize / 2); // Move to player
-
-            int angleLocalOffset = (attackFrame - 1) * attackAngle / attackFrameMax + attackFrameCounter * attackAngle / (attackFrameCounterMax * attackFrameMax);
-            
-            switch (direction) {
-                case "up":
-                    localOffsetX = 0;
-                    localOffsetY = -(gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 - 90;
-                    break;
-                case "left":
-                    localOffsetX = -(gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
-                    break;
-                case "down":
-                    localOffsetX = 0;
-                    localOffsetY = (gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
-                    break;
-                case "right":
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2;
-                    break;
-                default:
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    break;
-            }
-            transform.translate(localOffsetX, localOffsetY);
-            //
-            transform.rotate(Math.toRadians(angle));
-
-            transform.scale(gp.scale, gp.scale);
-            transform.translate(0, -(gp.tileSize / gp.scale));
-            
-     
-            
-            
-
-            
-
-
-            //if (attackFrame == 1) {
-            imageAttack = weapon[attackFrame - 1];
-            //}
-
-            g2.drawImage(imageAttack, transform, null);
-
-        }
+        
 
         
 

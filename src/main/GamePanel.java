@@ -11,6 +11,7 @@ import src.entity.Monster;
 import src.entity.Player;
 import src.object.SuperObject;
 import src.tile.TileManager;
+import src.entity.Attack;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -46,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public Monster monster = new Monster(this, player);
     public SuperObject[] obj = new SuperObject[10];
+    public Attack attack = new Attack(keyH, this, player);
 
 
 
@@ -118,6 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.update();
 
+        attack.update();
+
         monster.update();
         
 
@@ -145,6 +149,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Monster
         monster.draw(g2);
+
+        // Draw weapon swing
+        if (attack.attacking == true) {
+            attack.draw(g2, player);
+        }
+        
 
         // Collision debugger
 

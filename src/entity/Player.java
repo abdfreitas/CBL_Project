@@ -101,7 +101,7 @@ public class Player extends Entity {
 
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
-        speed = 1;
+        speed = 0;
         speedMax = 4;
         direction = "down";
     }
@@ -155,7 +155,14 @@ public class Player extends Entity {
                     break;
             }
 
-           
+        } else if (speedDouble > 0) {
+            speedDouble -= 2 * acceleration;
+            speed = (int) speedDouble;
+                
+        } else {
+            //speed = 0;
+            
+        }
 
             // Check tile collision
             collisionOn = false;
@@ -236,9 +243,9 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
-        } else {
-            speedDouble = 1;
-        }
+        //} else {
+        //    speedDouble = 1;
+        //}
 
 
     }

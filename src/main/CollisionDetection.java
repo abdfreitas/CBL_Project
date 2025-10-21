@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import src.entity.Entity;
+import src.entity.Player;
 
 public class CollisionDetection {
 
@@ -185,6 +186,46 @@ public class CollisionDetection {
         }
 
         return index;
+    }
+
+    public int checkEntity(Player player, GamePanel gp) {
+
+        int index = 999;
+
+        for (int i = 0; i < gp.entities.length; i++) {
+            if (gp.entities[i] != null) {
+
+                // Get Players solid area position
+                player.solidArea.x = player.worldX + player.solidArea.x;
+                player.solidArea.y = player.worldY + player.solidArea.y;
+
+
+                // Get the object's solid area position
+                gp.entities[i].solidArea.x = (int)gp.entities[i].worldXDouble + gp.entities[i].solidArea.x;
+                gp.entities[i].solidArea.y = (int)gp.entities[i].worldYDouble + gp.entities[i].solidArea.y;
+
+                if (player.solidArea.intersects(gp.entities[i].solidArea)) {
+
+                    if (gp.entities[i].doesDamage == true) {
+                        player.getDamage = true;
+                        index = i;
+
+                        
+                    }
+                }
+
+                player.solidArea.x = player.solidAreaDefaultX;
+                player.solidArea.y = player.solidAreaDefaultY;
+                gp.entities[i].solidArea.x = gp.entities[i].solidAreaDefaultX;
+                gp.entities[i].solidArea.y = gp.entities[i].solidAreaDefaultY;
+            }
+
+            
+    
+
+        }
+        return index;
+
     }
 
     public void drawCollision(Graphics2D g2) {

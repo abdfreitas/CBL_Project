@@ -1,5 +1,6 @@
 package src.entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -34,6 +35,8 @@ public class Player extends Entity {
 
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
+
+    public boolean getDamage = false;
 
     
 
@@ -317,21 +320,48 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
 
-        // Draw Debug Collision box around player
-        if (keyH.debugEnabled) {
-            g2.setColor(Color.RED);
-            g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
-            g2.setColor(Color.RED);
+        if (getDamage) {
+            BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);
+            g2.drawImage(whitePlayer, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+
+            // Draw Debug Collision box around player
+            if (keyH.debugEnabled) {
+                g2.setColor(Color.RED);
+                g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+                g2.setColor(Color.RED);
+            }
+
+        } else {
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
+        //
 
         
 
         
 
+        
 
+
+    }
+
+    static BufferedImage makeSilhouette(BufferedImage sprite, Color color) {
+        BufferedImage out = new BufferedImage(sprite.getWidth(), sprite.getHeight(),
+                                            BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = out.createGraphics();
+
+        g.setComposite(AlphaComposite.Src);   // replace dst
+        g.setColor(color);
+        g.fillRect(0, 0, out.getWidth(), out.getHeight());
+
+        g.setComposite(AlphaComposite.DstIn); // keep white only where sprite has alpha
+        g.drawImage(sprite, 0, 0, null);
+
+        g.dispose();
+        return out;
     }
 
 

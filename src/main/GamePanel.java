@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import src.entity.Entity;
 import src.entity.Monster;
 import src.entity.Player;
 import src.object.SuperObject;
@@ -41,13 +42,17 @@ public class GamePanel extends JPanel implements Runnable {
     Sound sound = new Sound();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+    
     Thread gameThread;
 
     // Entity and object
     public Player player = new Player(this, keyH);
-    public Monster monster = new Monster(this, player);
+    //public Monster monster = new Monster(this, player);
     public SuperObject[] obj = new SuperObject[10];
     public Attack attack = new Attack(keyH, this, player);
+
+    public EntitySetter entitySetter = new EntitySetter(this, player);
+    public Entity[] entities = new Entity[10];
 
 
 
@@ -68,6 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
 
         assetSetter.setObject();
+
+        entitySetter.setEntity(this);
 
         playMusic(0);
 
@@ -116,13 +123,27 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-
+        int index = 9995;
 
         player.update();
 
         attack.update();
 
-        monster.update();
+        //monster.update();
+
+        player.getDamage = false;
+
+        for (int i = 0; i < entities.length; i++) {
+            if (entities[i] != null) {
+                entities[i].update();
+                index = collisionDetection.checkEntity(player, this);
+            }
+        }
+        if (player.getDamage) {
+            System.out.println("Gets damage from " + index);
+        }
+
+
         
 
     }
@@ -148,7 +169,16 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2);
 
         // Monster
-        monster.draw(g2);
+        //monster.draw(g2);
+
+        // monster
+        for (int i = 0; i < entities.length; i++) {
+            if (entities[i] != null) {
+                //System.out.println("Drawing entity");
+                entities[i].draw(g2);
+            }
+
+        }
 
         // Draw weapon swing
         if (attack.attacking == true) {

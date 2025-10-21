@@ -26,14 +26,17 @@ public class Monster extends Entity {
 
     int hasKey = 0;
 
-    public double worldX;
-    public double worldY;
+    
 
-    public double speed;
+    
+
+    
 
 
     public Monster(GamePanel gp, Player player) {
 
+        
+        doesDamage = true;
         player1 = player;
 
 
@@ -54,10 +57,10 @@ public class Monster extends Entity {
         solidArea.width = 30;
         solidArea.height = 30;
 
-        worldX = gp.tileSize * 25;
-        worldY = gp.tileSize * 21;
+        //worldX = gp.tileSize * 25;
+        //worldY = gp.tileSize * 21;
 
-        speed = 2;
+        speedDouble = 2;
 
         
         
@@ -68,13 +71,13 @@ public class Monster extends Entity {
         int playerX = player1.worldX;
         int playerY = player1.worldY;
 
-        double dX = playerX - worldX;
-        double dY = playerY - worldY;
+        double dX = playerX - worldXDouble;
+        double dY = playerY - worldYDouble;
 
         double distance = Math.sqrt((dX * dX) + (dY * dY));
 
-        double speedX = (speed * dX / distance) + (speed * dX / 100);
-        double speedY = (speed * dY / distance) + (speed * dY / 100);
+        double speedX = (speedDouble * dX / distance) + (speedDouble * dX / 100);
+        double speedY = (speedDouble * dY / distance) + (speedDouble * dY / 100);
 
         while (true) {
             break;
@@ -82,16 +85,18 @@ public class Monster extends Entity {
 
 
 
-        worldX += speedX;
-        worldY += speedY;
+        worldXDouble += speedX;
+        worldYDouble += speedY;
+
+        
 
     }
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
-        double screenX = worldX - gp.player.worldX + gp.player.screenX;
-        double screenY = worldY - gp.player.worldY + gp.player.screenY;
+        double screenX = worldXDouble - gp.player.worldX + gp.player.screenX;
+        double screenY = worldYDouble - gp.player.worldY + gp.player.screenY;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_up_1.png"));

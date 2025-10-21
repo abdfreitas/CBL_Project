@@ -18,5 +18,12 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     
     public boolean collisionOn = false;
+
+    public boolean attacking = false;
+    public int attackFrameCounter = 0;
+    public int attackFrameCounterMax = 2;
+    public int attackFrame = 1;
+    public int attackFrameMax = 5;
+    public int attackAngle = 120;
     
 }

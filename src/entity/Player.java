@@ -13,6 +13,8 @@ import src.main.KeyHandler;
 
 import src.lib.CharStack;
 
+import java.awt.geom.AffineTransform;
+
 public class Player extends Entity {
 
     GamePanel gp;
@@ -33,6 +35,12 @@ public class Player extends Entity {
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
 
+    private boolean attackWasReleased = true;
+
+    public BufferedImage[] weapon = new BufferedImage[6];
+
+
+
 
     public Player (GamePanel gp, KeyHandler keyH) {
 
@@ -51,6 +59,8 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 30;
         solidArea.height = 30;
+
+        
 
         setDefaultValues();
         getPlayerImage();
@@ -72,6 +82,18 @@ public class Player extends Entity {
             down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_down_2.png"));
             right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_right_1.png"));
             right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_right_2.png"));
+
+            weapon[0] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-1.png.png"));
+            weapon[1] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-2.png.png"));
+            weapon[2] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-3.png.png"));
+            weapon[3] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-4.png.png"));
+            weapon[4] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-5.png.png"));
+            weapon[5] = ImageIO.read(getClass().getResourceAsStream("/res/objects/Shovel_Swing-5.png.png"));
+
+            
+            
+            
+            
             
             
             
@@ -91,6 +113,8 @@ public class Player extends Entity {
     }
 
     public void update() {
+
+        
 
         
 
@@ -206,15 +230,54 @@ public class Player extends Entity {
 
             spriteCounter++;
             if (spriteCounter >= 12) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
+                if (spriteNum >= 4) {
                     spriteNum = 1;
+                } else {
+                    spriteNum++;
                 }
                 spriteCounter = 0;
             }
         } else {
             speedDouble = 1;
+        }
+
+        if (keyH.attack_Pressed == false && attackWasReleased == false) {
+            attackWasReleased = true;
+        }
+
+        if (keyH.attack_Pressed == true && attacking == false && attackWasReleased == true) {
+            attacking = true;
+            attackWasReleased = false;
+            attackFrame = 1;
+            attackFrameCounter = 0;
+        }
+
+        if (attacking == true) {
+            
+
+            attackFrameCounter++;
+
+            if (attackFrame > attackFrameMax) {
+                
+
+                attacking = false;
+
+
+
+            } else if (attackFrameCounter >= attackFrameCounterMax) {
+
+                attackFrame++;
+
+        
+                
+                attackFrameCounter = 0;
+
+            }
+
+            
+
+            
+
         }
 
     }
@@ -265,34 +328,36 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
 
+
+        // Draw walking sprites
         BufferedImage image = null;
 
         switch (direction) {
             case "up":
-                if (spriteNum == 1) {
+                if (spriteNum % 2 != 0) {
                     image = up1;
-                } else if (spriteNum == 2) {
+                } else {
                     image = up2;
                 }
                 break;
             case "left":
-                if (spriteNum == 1) {
+                if (spriteNum % 2 != 0) {
                     image = left1;
-                } else if (spriteNum == 2) {
+                } else {
                     image = left2;
                 }
                 break;
             case "down":
-                if (spriteNum == 1) {
+                if (spriteNum % 2 != 0) {
                     image = down1;
-                } else if (spriteNum == 2) {
+                } else {
                     image = down2;
                 }
                 break;
             case "right":
-                if (spriteNum == 1) {
+                if (spriteNum % 2 != 0) {
                     image = right1;
-                } else if (spriteNum == 2) {
+                } else {
                     image = right2;
                 }
                 break;
@@ -300,11 +365,76 @@ public class Player extends Entity {
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
+
+        // Draw Debug Collision box around player
         if (keyH.debugEnabled) {
             g2.setColor(Color.RED);
             g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
             g2.setColor(Color.RED);
         }
+
+        // Draw Attack frames
+        if (attacking == true){
+
+            int angle = 0;
+            int localOffsetX, localOffsetY;
+
+            BufferedImage imageAttack = null;
+
+            AffineTransform transform = new AffineTransform();
+
+            transform.translate(screenX + gp.tileSize / 2, screenY + gp.tileSize / 2); // Move to player
+
+            int angleLocalOffset = (attackFrame - 1) * attackAngle / attackFrameMax + attackFrameCounter * attackAngle / (attackFrameCounterMax * attackFrameMax);
+            
+            switch (direction) {
+                case "up":
+                    localOffsetX = 0;
+                    localOffsetY = -(gp.tileSize / gp.scale);
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 - 90;
+                    break;
+                case "left":
+                    localOffsetX = -(gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
+                    break;
+                case "down":
+                    localOffsetX = 0;
+                    localOffsetY = (gp.tileSize / gp.scale);
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
+                    break;
+                case "right":
+                    localOffsetX = (gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    angle = -angleLocalOffset + 45 + attackAngle / 2;
+                    break;
+                default:
+                    localOffsetX = (gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    break;
+            }
+            transform.translate(localOffsetX, localOffsetY);
+            //
+            transform.rotate(Math.toRadians(angle));
+
+            transform.scale(gp.scale, gp.scale);
+            transform.translate(0, -(gp.tileSize / gp.scale));
+            
+     
+            
+            
+
+            
+
+
+            //if (attackFrame == 1) {
+            imageAttack = weapon[attackFrame - 1];
+            //}
+
+            g2.drawImage(imageAttack, transform, null);
+
+        }
+
         
 
 

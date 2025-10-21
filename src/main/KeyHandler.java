@@ -14,6 +14,7 @@ public class KeyHandler implements KeyListener{
     private char lastKey;
     public CharStack cStack = new CharStack(4);
     public boolean shiftPressed = false;
+    public boolean attack_Pressed = false;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -63,6 +64,11 @@ public class KeyHandler implements KeyListener{
 
         }
 
+        if (code == KeyEvent.VK_SPACE) {
+
+            attack_Pressed = true;
+        }
+
         //cStack.printStack();
 
         
@@ -95,6 +101,11 @@ public class KeyHandler implements KeyListener{
 
             shiftPressed = false;
 
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+
+            attack_Pressed = false;
         }
 
 

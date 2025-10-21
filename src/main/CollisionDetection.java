@@ -207,7 +207,7 @@ public class CollisionDetection {
                 if (player.solidArea.intersects(gp.entities[i].solidArea)) {
 
                     if (gp.entities[i].doesDamage == true) {
-                        player.getDamage = true;
+                        player.getHit = true;
                         index = i;
 
                         

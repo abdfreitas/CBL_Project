@@ -60,6 +60,11 @@ public class GamePanel extends JPanel implements Runnable {
     int playerX = 100;
     int playerY = 100;
     int playerSpeed = 4;
+
+
+
+
+    
     
     public GamePanel() {
 
@@ -123,7 +128,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        int index = 9995;
+        
+
+        
+
+
 
         player.update();
 
@@ -131,17 +140,14 @@ public class GamePanel extends JPanel implements Runnable {
 
         //monster.update();
 
-        player.getDamage = false;
-
         for (int i = 0; i < entities.length; i++) {
             if (entities[i] != null) {
                 entities[i].update();
-                index = collisionDetection.checkEntity(player, this);
             }
         }
-        if (player.getDamage) {
-            System.out.println("Gets damage from " + index);
-        }
+
+        
+
 
 
         

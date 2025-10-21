@@ -36,7 +36,13 @@ public class Player extends Entity {
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
 
+    public boolean getHit = false;
+
+    public boolean invincible = false;
+
     public boolean getDamage = false;
+
+    int invincibleCounter = 0;
 
     
 
@@ -101,9 +107,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-
-        
-
         
 
         if (keyH.upPressed || keyH.leftPressed || keyH.downPressed || keyH.rightPressed) {
@@ -152,26 +155,7 @@ public class Player extends Entity {
                     break;
             }
 
-            /*
-            if (keyH.upPressed == true) {
-                
-                direction = "up";
-                //System.out.println("Up pressed");
-            }
-            else if (keyH.leftPressed == true) {
-                
-                direction = "left";
-            }
-            else if (keyH.downPressed == true) {
-                
-                direction = "down";
-            }
-            else if (keyH.rightPressed == true) {
-                
-                direction = "right";
-            }
-                */
-
+           
 
             // Check tile collision
             collisionOn = false;
@@ -180,6 +164,33 @@ public class Player extends Entity {
             // Check object collision
             int objIndex = gp.collisionDetection.checkObject(this, true);
             pickUpObject(objIndex);
+
+            int index = 9995;
+
+            getHit = false;
+
+            for (int i = 0; i < gp.entities.length; i++) {
+                if (gp.entities[i] != null) {
+                    
+                    index = gp.collisionDetection.checkEntity(this, gp);
+                }
+            }
+            if (getHit && !invincible) {
+                gp.playSE(5);
+                getDamage = true;
+                invincible = true;
+                HP -= 10;
+                System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
+
+                invincibleCounter = invincibleCounterMax;
+            }
+
+            if (invincibleCounter <= 0) {
+                invincible = false;
+            } else {
+                invincibleCounter--;
+            }
+
 
             // If collision is false, player can move
             if (!collisionOn) {
@@ -229,13 +240,6 @@ public class Player extends Entity {
             speedDouble = 1;
         }
 
-        
-
-            
-
-            
-
-        
 
     }
 
@@ -322,7 +326,7 @@ public class Player extends Entity {
 
 
 
-        if (getDamage) {
+        if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
             BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);
             g2.drawImage(whitePlayer, screenX, screenY, gp.tileSize, gp.tileSize, null);
 

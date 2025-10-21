@@ -1,5 +1,6 @@
 package src.main;
 
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import src.lib.CharStack;
@@ -15,6 +16,7 @@ public class KeyHandler implements KeyListener{
     public CharStack cStack = new CharStack(4);
     public boolean shiftPressed = false;
     public boolean attack_Pressed = false;
+    public boolean boost = false;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -69,6 +71,10 @@ public class KeyHandler implements KeyListener{
             attack_Pressed = true;
         }
 
+        if (code == KeyEvent.VK_B) {
+            boost = true;
+        }
+
         //cStack.printStack();
 
         
@@ -106,6 +112,10 @@ public class KeyHandler implements KeyListener{
         if (code == KeyEvent.VK_SPACE) {
 
             attack_Pressed = false;
+        }
+
+        if (code == KeyEvent.VK_B) {
+            boost = false;
         }
 
 

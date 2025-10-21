@@ -188,9 +188,10 @@ public class CollisionDetection {
         return index;
     }
 
-    public int checkEntity(Player player, GamePanel gp) {
+    public int[] checkEntity(Player player, GamePanel gp) {
 
         int index = 999;
+        int directionDamage = 0;
 
         for (int i = 0; i < gp.entities.length; i++) {
             if (gp.entities[i] != null) {
@@ -201,14 +202,33 @@ public class CollisionDetection {
 
 
                 // Get the object's solid area position
-                gp.entities[i].solidArea.x = (int)gp.entities[i].worldXDouble + gp.entities[i].solidArea.x;
-                gp.entities[i].solidArea.y = (int)gp.entities[i].worldYDouble + gp.entities[i].solidArea.y;
+                gp.entities[i].solidArea.x = (int) gp.entities[i].worldXDouble 
+                    + gp.entities[i].solidArea.x;
+                gp.entities[i].solidArea.y = (int) gp.entities[i].worldYDouble 
+                    + gp.entities[i].solidArea.y;
 
                 if (player.solidArea.intersects(gp.entities[i].solidArea)) {
 
                     if (gp.entities[i].doesDamage == true) {
                         player.getHit = true;
                         index = i;
+
+                        int dX = player.worldX - (int) gp.entities[i].worldXDouble;
+                        int dY = player.worldY - (int) gp.entities[i].worldYDouble;
+
+                        if (Math.abs(dX) > Math.abs(dY)) {
+                            if (dX > 0) {
+                                directionDamage = 4;
+                            } else {
+                                directionDamage = 6;
+                            }
+                        } else {
+                            if (dY > 0) {
+                                directionDamage = 8;
+                            } else {
+                                directionDamage = 2;
+                            }
+                        }
 
                         
                     }
@@ -224,7 +244,7 @@ public class CollisionDetection {
     
 
         }
-        return index;
+        return new int[] {index, directionDamage};
 
     }
 

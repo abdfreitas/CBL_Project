@@ -32,6 +32,8 @@ public class Entity {
 
     public int invincibleCounterMax = 30;
 
+    public int directionDamage = 0;
+
     
     public void draw(Graphics2D g2) {
         // drawing logic for this entity

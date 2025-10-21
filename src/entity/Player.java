@@ -126,12 +126,15 @@ public class Player extends Entity {
 
             if (speedDouble < speedMax) {
                 speedDouble += acceleration;
-                speed = (int) speedDouble;
                 
-            } else {
-                speed = speedMax;
+                
+            } else if (speedDouble > speedMax) {
+                speed -= acceleration;
             
             }
+            
+
+            
 
             //System.out.println(speed);
 
@@ -155,94 +158,133 @@ public class Player extends Entity {
                     break;
             }
 
+            if (speedDouble > speedMax) {
+                speedDouble -= acceleration;
+            }
+
         } else if (speedDouble > 0) {
             speedDouble -= 2 * acceleration;
             speed = (int) speedDouble;
                 
-        } else {
+        } else if (speedDouble < 0) {
+            speedDouble += 2 * acceleration;
             //speed = 0;
             
         }
 
-            // Check tile collision
-            collisionOn = false;
-            gp.collisionDetection.CheckTile(this);
-
-            // Check object collision
-            int objIndex = gp.collisionDetection.checkObject(this, true);
-            pickUpObject(objIndex);
-
-            int index = 9995;
-
-            getHit = false;
-
-            for (int i = 0; i < gp.entities.length; i++) {
-                if (gp.entities[i] != null) {
-                    
-                    index = gp.collisionDetection.checkEntity(this, gp);
-                }
-            }
-            if (getHit && !invincible) {
-                gp.playSE(5);
-                getDamage = true;
-                invincible = true;
-                HP -= 10;
-                System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
-
-                invincibleCounter = invincibleCounterMax;
+        if (keyH.boost) {
+                speedDouble = 20;
             }
 
-            if (invincibleCounter <= 0) {
-                invincible = false;
-            } else {
-                invincibleCounter--;
-            }
+        // Check tile collision
+        collisionOn = false;
+        gp.collisionDetection.CheckTile(this);
 
+        // Check object collision
+        int objIndex = gp.collisionDetection.checkObject(this, true);
+        pickUpObject(objIndex);
 
-            // If collision is false, player can move
-            if (!collisionOn) {
+        int index = 9995;
 
-                switch (direction) {
-                    case "up":
-                        worldY -= speed;
-                        break;
+        getHit = false;
 
-                    case "down":
-                        worldY += speed;
-                        break;
-
-                    case "left":
-                        worldX -= speed;
-                        break;
-
-                    case "right":
-                        worldX += speed;
-                        break;
+        for (int i = 0; i < gp.entities.length; i++) {
+            if (gp.entities[i] != null) {
                 
-                    default:
-                        break;
-                }
-            } else {
-                if (speedDouble > 1) {
-                    speedDouble -= 2 * acceleration;
-                    
-                } 
-                if (speedDouble < 1) {
-                    speedDouble = 1;
-                }
-                speed = (int) speedDouble;
-                //System.out.println(speed);
+                int[] result = gp.collisionDetection.checkEntity(this, gp);
+                index = result[0];
+                directionDamage = result[1];
+
+                
+            }
+        }
+        if (getHit && !invincible) {
+            gp.playSE(5);
+            getDamage = true;
+            invincible = true;
+            HP -= 10;
+            System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
+
+            invincibleCounter = invincibleCounterMax;
+
+            switch (directionDamage) {
+                case 6:
+                    direction = "left";
+                    System.out.println("Damaged from right");
+                    break;
+                case 8:
+                    direction = "down";
+                    System.out.println("Damaged from up");
+                    break;
+                case 4:
+                    direction = "right";
+                    System.out.println("Damaged from left");
+                    break;
+                case 2:
+                    direction = "up";
+                    System.out.println("Damaged from down");
+                    break;
+            
+                default:
+                    break;
             }
 
-            spriteCounter++;
-            if (spriteCounter >= 12) {
-                if (spriteNum >= 4) {
-                    spriteNum = 1;
-                } else {
-                    spriteNum++;
-                }
-                spriteCounter = 0;
+            speedDouble += 10;
+        }
+
+        if (invincibleCounter <= 0) {
+            invincible = false;
+        } else {
+            invincibleCounter--;
+        }
+
+        speed = (int) speedDouble;
+
+        // If collision is false, player can move
+        if (!collisionOn) {
+
+            switch (direction) {
+                case "up":
+                    worldY -= speed;
+                    break;
+
+                case "down":
+                    worldY += speed;
+                    break;
+
+                case "left":
+                    worldX -= speed;
+                    break;
+
+                case "right":
+                    worldX += speed;
+                    break;
+            
+                default:
+                    break;
             }
+        } 
+        /*else {
+            if (speedDouble > 1) {
+                speedDouble -= 2 * acceleration;
+                
+            } 
+            if (speedDouble < 1) {
+                speedDouble = 0;
+            }
+            speed = (int) speedDouble;
+            //System.out.println(speed);
+        } */
+
+        spriteCounter++;
+        if (spriteCounter >= 12) {
+            if (spriteNum >= 4) {
+                spriteNum = 1;
+            } else {
+                spriteNum++;
+            }
+            spriteCounter = 0;
+        }
         //} else {
         //    speedDouble = 1;
         //}

@@ -1,5 +1,6 @@
 package src.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -106,6 +107,12 @@ public class Monster extends Entity {
         }
 
         g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+
+        if (keyH.debugEnabled) {
+            g2.setColor(Color.RED);
+            g2.drawRect((int) screenX + solidArea.x, (int) screenY + solidArea.y, solidArea.width, solidArea.height);
+            g2.setColor(Color.RED);
+        }
 
     }
 

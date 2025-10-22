@@ -196,6 +196,11 @@ public class CollisionDetection {
         for (int i = 0; i < gp.entities.length; i++) {
             if (gp.entities[i] != null) {
 
+                if (i == 2) {
+                    //System.out.println("test");
+
+                }
+
                 // Get Players solid area position
                 player.solidArea.x = player.worldX + player.solidArea.x;
                 player.solidArea.y = player.worldY + player.solidArea.y;
@@ -208,7 +213,7 @@ public class CollisionDetection {
                     + gp.entities[i].solidArea.y;
 
                 if (player.solidArea.intersects(gp.entities[i].solidArea)) {
-
+                    //System.out.println("Entity collision");
                     if (gp.entities[i].doesDamage == true) {
                         player.getHit = true;
                         index = i;

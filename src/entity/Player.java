@@ -162,6 +162,16 @@ public class Player extends Entity {
                 speedDouble -= acceleration;
             }
 
+            spriteCounter++;
+            if (spriteCounter >= 12) {
+                if (spriteNum >= 4) {
+                    spriteNum = 1;
+                } else {
+                    spriteNum++;
+                }
+                spriteCounter = 0;
+            }
+
         } else if (speedDouble > 0) {
             speedDouble -= 2 * acceleration;
             speed = (int) speedDouble;
@@ -276,15 +286,7 @@ public class Player extends Entity {
             //System.out.println(speed);
         } */
 
-        spriteCounter++;
-        if (spriteCounter >= 12) {
-            if (spriteNum >= 4) {
-                spriteNum = 1;
-            } else {
-                spriteNum++;
-            }
-            spriteCounter = 0;
-        }
+        
         //} else {
         //    speedDouble = 1;
         //}
@@ -373,6 +375,12 @@ public class Player extends Entity {
                 break;
         }
 
+        // Draw Debug Collision box around player
+        if (keyH.debugEnabled) {
+            g2.setColor(Color.RED);
+            g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+            g2.setColor(Color.RED);
+        }
 
 
         if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
@@ -380,12 +388,7 @@ public class Player extends Entity {
             g2.drawImage(whitePlayer, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
 
-            // Draw Debug Collision box around player
-            if (keyH.debugEnabled) {
-                g2.setColor(Color.RED);
-                g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
-                g2.setColor(Color.RED);
-            }
+            
 
         } else {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);

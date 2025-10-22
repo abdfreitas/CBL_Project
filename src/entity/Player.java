@@ -104,9 +104,10 @@ public class Player extends Entity {
         speed = 0;
         speedMax = 4;
         direction = "down";
+        priority = 20;
     }
 
-    public void update() {
+    public void update(GamePanel gp) {
         
 
         if (keyH.upPressed || keyH.leftPressed || keyH.downPressed || keyH.rightPressed) {
@@ -290,6 +291,9 @@ public class Player extends Entity {
         //} else {
         //    speedDouble = 1;
         //}
+
+        worldXDouble = worldX;
+        worldYDouble = worldY;
 
 
     }

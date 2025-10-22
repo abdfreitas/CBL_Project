@@ -67,18 +67,63 @@ public class Monster extends Entity {
         
     }
 
-    public void update() {
+    public void update(GamePanel gp) {
 
-        int playerX = player1.worldX;
-        int playerY = player1.worldY;
+        int index = 999;
+        double distance = 0;
+        double distanceTemp = 0;
+        double dX = 0;
+        double dY = 0;
+        double dXTemp;
+        double dYTemp;
+        double distancePrioritized = 999999999;
+        double distancePrioritizedTemp = 0;
 
-        double dX = playerX - worldXDouble;
-        double dY = playerY - worldYDouble;
+        for (int i = 0; i < gp.friendlies.length; i++) {
+            if (gp.friendlies[i] != null) {
 
-        double distance = Math.sqrt((dX * dX) + (dY * dY));
+                
 
-        double speedX = (speedDouble * dX / distance) + (speedDouble * dX / 100);
-        double speedY = (speedDouble * dY / distance) + (speedDouble * dY / 100);
+                dXTemp = gp.friendlies[i].worldXDouble - worldXDouble;
+                dYTemp = gp.friendlies[i].worldYDouble - worldYDouble;
+
+                distanceTemp = Math.sqrt((dXTemp * dXTemp) + (dYTemp * dYTemp));
+                distancePrioritizedTemp = distanceTemp / gp.friendlies[i].priority;
+                if (distancePrioritizedTemp < distancePrioritized) {
+                    distancePrioritized = distancePrioritizedTemp;
+                    distance = distanceTemp;
+                    dX = dXTemp;
+                    dY = dYTemp;
+                    index = i;
+                }
+
+            }
+        }
+
+        // int playerX = player1.worldX;
+        // int playerY = player1.worldY;
+
+        // double dX = playerX - worldXDouble;
+        // double dY = playerY - worldYDouble;
+
+        // double distance = Math.sqrt((dX * dX) + (dY * dY));
+
+        double speedX;
+        double speedY;
+
+        if (distance > 25) {
+            speedX = (speedDouble * dX / distance) + (speedDouble * dX / 100);
+            speedY = (speedDouble * dY / distance) + (speedDouble * dY / 100);
+
+        } else {
+            speedX = 0;
+            speedY = 0;
+
+        }
+
+        
+
+        
 
         while (true) {
             break;

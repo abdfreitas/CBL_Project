@@ -52,7 +52,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Attack attack = new Attack(keyH, this, player);
 
     public EntitySetter entitySetter = new EntitySetter(this, player);
-    public Entity[] entities = new Entity[10];
+    public Entity[] entities = new Entity[10]; // Entities is list of monsters
+    public Entity[] friendlies = new Entity[10]; // Friendlies is list of player + plants
+
 
 
 
@@ -82,6 +84,8 @@ public class GamePanel extends JPanel implements Runnable {
         entitySetter.setEntity(this);
 
         playMusic(0);
+
+        friendlies[0] = player;
 
     }
 
@@ -134,7 +138,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-        player.update();
+        player.update(this);
 
         attack.update();
 
@@ -142,9 +146,18 @@ public class GamePanel extends JPanel implements Runnable {
 
         for (int i = 0; i < entities.length; i++) {
             if (entities[i] != null) {
-                entities[i].update();
+                entities[i].update(this);
             }
         }
+        
+        
+        for (int i = 1; i < friendlies.length; i++) {
+            if (friendlies[i] != null) {
+                friendlies[i].update(this);
+            }
+        }
+            
+            
 
         
 
@@ -185,6 +198,15 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
         }
+        
+        for (int i = 1; i < friendlies.length; i++) {
+            if (friendlies[i] != null) {
+                //System.out.println("Drawing entity");
+                friendlies[i].draw(g2);
+            }
+
+        }
+            
 
         // Draw weapon swing
         if (attack.attacking == true) {

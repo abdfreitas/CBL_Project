@@ -34,12 +34,14 @@ public class Entity {
 
     public int directionDamage = 0;
 
+    public int priority = 10;
+
     
     public void draw(Graphics2D g2) {
         // drawing logic for this entity
     }
 
-    public void update() {
+    public void update(GamePanel gp) {
         // drawing logic for this entity
     }
 

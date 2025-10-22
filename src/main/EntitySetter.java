@@ -1,6 +1,7 @@
 package src.main;
 
 import src.entity.Entity;
+import src.entity.Flower1;
 import src.entity.Monster;
 import src.entity.Player;
 
@@ -27,6 +28,10 @@ public class EntitySetter {
         gp.entities[1].worldXDouble = gp.tileSize * 25;
         gp.entities[1].worldYDouble = (gp.tileSize * 22);
         gp.entities[1].speedDouble = 1;
+
+        gp.entities[2] = new Flower1(gp, player);
+        gp.entities[2].worldX = gp.tileSize * 20;
+        gp.entities[2].worldY = gp.tileSize * 20;
 
     }
 

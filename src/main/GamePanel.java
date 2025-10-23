@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import src.entity.Entity;
 import src.entity.Monster;
 import src.entity.Player;
+import src.fx.HealthBar;
 import src.object.SuperObject;
 import src.tile.TileManager;
 import src.entity.Attack;
@@ -63,6 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
     public EntitySetter entitySetter = new EntitySetter(this, player);
     public List<Entity> entities = new ArrayList<>(); // Entities is list of monsters
     public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
+
+    public HealthBar healthbar = new HealthBar();
 
 
     // Set players initial position
@@ -226,6 +229,29 @@ public class GamePanel extends JPanel implements Runnable {
         if (attack.attacking == true) {
             attack.draw(g2, player);
         }
+
+        for (Entity entity : entities) {
+            if (entity != null) {
+                if (entity != player) {
+                    //System.out.println("Drawing entity");
+                    healthbar.draw(g2, this, entity);
+                }
+            }
+
+        }
+
+        for (Entity entity : friendlies) {
+            if (entity != null) {
+                //System.out.println("Drawing entity");
+                healthbar.draw(g2, this, entity);
+            }
+
+        }
+
+        // healthbar.draw(g2, this, player);
+
+        // healthbar.draw(g2, this, entities.get(1)); 
+        // healthbar.draw(g2, this, entities.get(0));
         
 
         // Collision debugger

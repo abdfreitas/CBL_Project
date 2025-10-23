@@ -27,8 +27,8 @@ public class Entity {
     public boolean collisionOn = false;
 
     public boolean doesDamage = false;
-
-    public int HP = 100;
+    public int HPMax = 100;
+    public int HP = HPMax;
 
     public int invincibleCounterMax = 30;
 

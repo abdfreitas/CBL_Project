@@ -12,7 +12,8 @@ import javax.imageio.ImageIO;
 public class GUI {
 
     BufferedImage[] wasd = new BufferedImage[2];
-    BufferedImage move, attack, space; 
+    BufferedImage[] space = new BufferedImage[2];
+    BufferedImage move, attack; 
     //GamePanel gp;
 
     int spriteCounter = 0;
@@ -23,14 +24,12 @@ public class GUI {
     public GUI() {
 
 
-
-        
-
         try {
             wasd[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/WASD-1.png.png"));
             wasd[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/WASD-2.png.png"));
             move = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOVE-1.png.png"));
-            space = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE.png"));
+            space[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-1.png"));
+            space[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-2.png"));
             attack = ImageIO.read(getClass().getResourceAsStream("/res/GUI/ATTACK.png"));
             
         } catch (IOException e) {
@@ -60,7 +59,7 @@ public class GUI {
 
         g2.drawImage(move, (int) 120, (int) 490, gp.tileSize * 2, gp.tileSize * 2, null);
 
-        g2.drawImage(space, (int) 250, (int) 445, gp.tileSize * 2, gp.tileSize * 2, null);
+        g2.drawImage(space[frameNum - 1], (int) 250, (int) 445, gp.tileSize * 2, gp.tileSize * 2, null);
 
         g2.drawImage(attack, (int) 350, (int) 490, gp.tileSize * 4, gp.tileSize * 2, null);
 

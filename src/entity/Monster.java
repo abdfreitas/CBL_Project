@@ -79,22 +79,22 @@ public class Monster extends Entity {
         double distancePrioritized = 999999999;
         double distancePrioritizedTemp = 0;
 
-        for (int i = 0; i < gp.friendlies.length; i++) {
-            if (gp.friendlies[i] != null) {
+        for (Entity entity : gp.friendlies) {
+            if (entity != null) {
 
                 
 
-                dXTemp = gp.friendlies[i].worldXDouble - worldXDouble;
-                dYTemp = gp.friendlies[i].worldYDouble - worldYDouble;
+                dXTemp = entity.worldXDouble - worldXDouble;
+                dYTemp = entity.worldYDouble - worldYDouble;
 
                 distanceTemp = Math.sqrt((dXTemp * dXTemp) + (dYTemp * dYTemp));
-                distancePrioritizedTemp = distanceTemp / gp.friendlies[i].priority;
+                distancePrioritizedTemp = distanceTemp / entity.priority;
                 if (distancePrioritizedTemp < distancePrioritized) {
                     distancePrioritized = distancePrioritizedTemp;
                     distance = distanceTemp;
                     dX = dXTemp;
                     dY = dYTemp;
-                    index = i;
+                    index = gp.entities.indexOf(entity);;
                 }
 
             }

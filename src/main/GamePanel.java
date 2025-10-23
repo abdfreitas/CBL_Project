@@ -62,9 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public EntitySetter entitySetter = new EntitySetter(this, player);
     public List<Entity> entities = new ArrayList<>(); // Entities is list of monsters
-    public Entity[] friendlies = new Entity[10]; // Friendlies is list of player + plants
-
-
+    public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
 
 
     // Set players initial position
@@ -72,11 +70,6 @@ public class GamePanel extends JPanel implements Runnable {
     int playerY = 100;
     int playerSpeed = 4;
 
-
-
-
-    
-    
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -92,11 +85,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         assetSetter.setObject();
 
+        friendlies.add(player);
+
         entitySetter.setEntity(this);
 
         playMusic(0);
 
-        friendlies[0] = player;
+        
 
     }
 
@@ -162,9 +157,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         
-        for (int i = 1; i < friendlies.length; i++) {
-            if (friendlies[i] != null) {
-                friendlies[i].update(this);
+        for (Entity entity : friendlies) {
+            if (entity != null) {
+                if (entity != player) {
+                    entity.update(this);
+                }
             }
         }
             
@@ -195,28 +192,34 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
 
-        // Player
-        player.draw(g2);
+        
 
         // Monster
         //monster.draw(g2);
 
-        // monster
-        for (Entity entity : entities) {
+        for (Entity entity : friendlies) {
             if (entity != null) {
                 //System.out.println("Drawing entity");
                 entity.draw(g2);
             }
 
         }
-        
-        for (int i = 1; i < friendlies.length; i++) {
-            if (friendlies[i] != null) {
-                //System.out.println("Drawing entity");
-                friendlies[i].draw(g2);
+
+        // Player
+        player.draw(g2);
+
+        // monster
+        for (Entity entity : entities) {
+            if (entity != null) {
+                if (entity != player) {
+                    //System.out.println("Drawing entity");
+                    entity.draw(g2);
+                }
             }
 
         }
+        
+        
             
 
         // Draw weapon swing

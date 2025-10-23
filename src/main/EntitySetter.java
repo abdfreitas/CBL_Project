@@ -34,11 +34,11 @@ public class EntitySetter {
         gp.entities.get(1).worldYDouble = (gp.tileSize * 22);
         gp.entities.get(1).speedDouble = ConfigManager.getDouble("monster.speed", 0) * 0.6;
 
-        gp.friendlies[1] = new Flower1(gp, player);
-        gp.friendlies[1].worldX = gp.tileSize * 20;
-        gp.friendlies[1].worldY = gp.tileSize * 20;
-        gp.friendlies[1].worldXDouble = gp.tileSize * 20;
-        gp.friendlies[1].worldYDouble = gp.tileSize * 20;
+        gp.friendlies.add(new Flower1(gp, player));
+        gp.friendlies.get(1).worldX = gp.tileSize * 20;
+        gp.friendlies.get(1).worldY = gp.tileSize * 20;
+        gp.friendlies.get(1).worldXDouble = gp.tileSize * 20;
+        gp.friendlies.get(1).worldYDouble = gp.tileSize * 20;
         
         
 

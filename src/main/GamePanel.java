@@ -13,6 +13,7 @@ import src.entity.Player;
 import src.object.SuperObject;
 import src.tile.TileManager;
 import src.entity.Attack;
+import src.user.ConfigManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -34,6 +35,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     // FPS
     int fps = 60;
+
+    // Load Config and Save files
+    ConfigManager configManager;// = new ConfigManager(this);
+    
+
+
 
     // System
 
@@ -78,6 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+
+        ConfigManager.loadConfig();
 
         assetSetter.setObject();
 

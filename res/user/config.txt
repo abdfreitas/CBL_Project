@@ -1,0 +1,2 @@
+configTest = "Hello"
+monster.speed = 1

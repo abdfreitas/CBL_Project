@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -59,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Attack attack = new Attack(keyH, this, player);
 
     public EntitySetter entitySetter = new EntitySetter(this, player);
-    public Entity[] entities = new Entity[10]; // Entities is list of monsters
+    public List<Entity> entities = new ArrayList<>(); // Entities is list of monsters
     public Entity[] friendlies = new Entity[10]; // Friendlies is list of player + plants
 
 
@@ -153,9 +155,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         //monster.update();
 
-        for (int i = 0; i < entities.length; i++) {
-            if (entities[i] != null) {
-                entities[i].update(this);
+        for (Entity entity : entities) {
+            if (entity != null) {
+                entity.update(this);
             }
         }
         
@@ -200,10 +202,10 @@ public class GamePanel extends JPanel implements Runnable {
         //monster.draw(g2);
 
         // monster
-        for (int i = 0; i < entities.length; i++) {
-            if (entities[i] != null) {
+        for (Entity entity : entities) {
+            if (entity != null) {
                 //System.out.println("Drawing entity");
-                entities[i].draw(g2);
+                entity.draw(g2);
             }
 
         }

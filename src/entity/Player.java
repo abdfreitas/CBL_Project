@@ -199,8 +199,8 @@ public class Player extends Entity {
 
         getHit = false;
 
-        for (int i = 0; i < gp.entities.length; i++) {
-            if (gp.entities[i] != null) {
+        for (Entity entity : gp.entities) {
+            if (entity != null) {
                 
                 int[] result = gp.collisionDetection.checkEntity(this, gp);
                 index = result[0];

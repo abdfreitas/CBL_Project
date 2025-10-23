@@ -193,13 +193,9 @@ public class CollisionDetection {
         int index = 999;
         int directionDamage = 0;
 
-        for (int i = 0; i < gp.entities.length; i++) {
-            if (gp.entities[i] != null) {
+        for (Entity entity : gp.entities) {
+            if (entity != null) {
 
-                if (i == 2) {
-                    //System.out.println("test");
-
-                }
 
                 // Get Players solid area position
                 player.solidArea.x = player.worldX + player.solidArea.x;
@@ -207,19 +203,19 @@ public class CollisionDetection {
 
 
                 // Get the object's solid area position
-                gp.entities[i].solidArea.x = (int) gp.entities[i].worldXDouble 
-                    + gp.entities[i].solidArea.x;
-                gp.entities[i].solidArea.y = (int) gp.entities[i].worldYDouble 
-                    + gp.entities[i].solidArea.y;
+                entity.solidArea.x = (int) entity.worldXDouble 
+                    + entity.solidArea.x;
+                entity.solidArea.y = (int) entity.worldYDouble 
+                    + entity.solidArea.y;
 
-                if (player.solidArea.intersects(gp.entities[i].solidArea)) {
+                if (player.solidArea.intersects(entity.solidArea)) {
                     //System.out.println("Entity collision");
-                    if (gp.entities[i].doesDamage == true) {
+                    if (entity.doesDamage == true) {
                         player.getHit = true;
-                        index = i;
+                        index = gp.entities.indexOf(entity);
 
-                        int dX = player.worldX - (int) gp.entities[i].worldXDouble;
-                        int dY = player.worldY - (int) gp.entities[i].worldYDouble;
+                        int dX = player.worldX - (int) entity.worldXDouble;
+                        int dY = player.worldY - (int) entity.worldYDouble;
 
                         if (Math.abs(dX) > Math.abs(dY)) {
                             if (dX > 0) {
@@ -241,8 +237,8 @@ public class CollisionDetection {
 
                 player.solidArea.x = player.solidAreaDefaultX;
                 player.solidArea.y = player.solidAreaDefaultY;
-                gp.entities[i].solidArea.x = gp.entities[i].solidAreaDefaultX;
-                gp.entities[i].solidArea.y = gp.entities[i].solidAreaDefaultY;
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
             }
 
             

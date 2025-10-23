@@ -32,6 +32,12 @@ public class Entity {
 
     public int invincibleCounterMax = 30;
 
+    public int invincibleCounter = 0;
+
+    public boolean stunned = false;
+    public int stunCounter = 0;
+    public int stunCounterMax = 12;
+
     public int directionDamage = 0;
 
     public int priority = 10;

@@ -42,7 +42,7 @@ public class Player extends Entity {
 
     public boolean getDamage = false;
 
-    int invincibleCounter = 0;
+    
 
     
 
@@ -141,7 +141,9 @@ public class Player extends Entity {
 
             char key = cStack.stack[0];
 
-            switch (key) {
+            if (!stunned) {
+
+                switch (key) {
                 case 'w': 
                     direction = "up";
                     break;
@@ -159,6 +161,10 @@ public class Player extends Entity {
                     break;
             }
 
+
+            }
+
+            
             if (speedDouble > speedMax) {
                 speedDouble -= acceleration;
             }
@@ -217,6 +223,8 @@ public class Player extends Entity {
             System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
 
             invincibleCounter = invincibleCounterMax;
+            stunCounter = stunCounterMax;
+            stunned = true;
 
             switch (directionDamage) {
                 case 6:
@@ -240,6 +248,8 @@ public class Player extends Entity {
                     break;
             }
 
+            speedDouble = speedDouble * 0.4;
+
             speedDouble += 10;
         }
 
@@ -247,6 +257,12 @@ public class Player extends Entity {
             invincible = false;
         } else {
             invincibleCounter--;
+        }
+
+        if (stunCounter <= 0) {
+            stunned = false;
+        } else {
+            stunCounter--;
         }
 
         speed = (int) speedDouble;

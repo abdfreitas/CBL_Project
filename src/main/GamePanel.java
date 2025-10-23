@@ -129,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
                 remainingTime = remainingTime / 1000000;
 
         
-                //System.out.println("Remaining time: " + remainingTime);
+                System.out.println("Remaining time: " + remainingTime);
 
                 if (remainingTime < 0) {
                     remainingTime = 0;

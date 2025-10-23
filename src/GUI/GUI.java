@@ -16,7 +16,7 @@ public class GUI {
     //GamePanel gp;
 
     int spriteCounter = 0;
-    int spriteCounterMax = 20;
+    int spriteCounterMax = 23;
     int frameNum = 1;
     int frameNumMax = 2;
 

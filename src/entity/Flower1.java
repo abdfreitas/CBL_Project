@@ -21,7 +21,7 @@ public class Flower1 extends Entity{
     public final int screenY;
 
     int spriteCounter = 0;
-    int spriteCounterMax = 12;
+    int spriteCounterMax = 23;
     int frameNum = 1;
     int frameNumMax = 2;
 

@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 public class GUI {
 
     BufferedImage[] wasd = new BufferedImage[2];
-    BufferedImage move; 
+    BufferedImage move, attack, space; 
     //GamePanel gp;
 
     int spriteCounter = 0;
@@ -30,6 +30,8 @@ public class GUI {
             wasd[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/WASD-1.png.png"));
             wasd[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/WASD-2.png.png"));
             move = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOVE-1.png.png"));
+            space = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE.png"));
+            attack = ImageIO.read(getClass().getResourceAsStream("/res/GUI/ATTACK.png"));
             
         } catch (IOException e) {
             // TODO: handle exception
@@ -57,6 +59,10 @@ public class GUI {
         g2.drawImage(wasd[frameNum - 1], (int) 20, (int) 450, gp.tileSize * 2, gp.tileSize * 2, null);
 
         g2.drawImage(move, (int) 120, (int) 490, gp.tileSize * 2, gp.tileSize * 2, null);
+
+        g2.drawImage(space, (int) 250, (int) 445, gp.tileSize * 2, gp.tileSize * 2, null);
+
+        g2.drawImage(attack, (int) 350, (int) 490, gp.tileSize * 4, gp.tileSize * 2, null);
 
         //g2.drawString("DEBUG MODE ON", debugOffsetX, debugOffsetY);
 

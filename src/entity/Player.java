@@ -104,7 +104,7 @@ public class Player extends Entity {
         speed = 0;
         speedMax = 4;
         direction = "down";
-        priority = 20;
+        priority = 30;
     }
 
     public void update(GamePanel gp) {
@@ -170,7 +170,7 @@ public class Player extends Entity {
             }
 
             spriteCounter++;
-            if (spriteCounter >= 12) {
+            if (spriteCounter >= 12 * 4 / speedDouble) {
                 if (spriteNum >= 4) {
                     spriteNum = 1;
                 } else {

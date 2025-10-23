@@ -1,2 +1,2 @@
 configTest = "Hello"
-monster.speed = 0
+monster.speed = 1

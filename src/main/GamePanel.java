@@ -17,6 +17,7 @@ import src.object.SuperObject;
 import src.tile.TileManager;
 import src.entity.Attack;
 import src.user.ConfigManager;
+import src.GUI.GUI;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -66,6 +67,10 @@ public class GamePanel extends JPanel implements Runnable {
     public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
 
     public HealthBar healthbar = new HealthBar();
+
+    //GUI
+
+    public GUI gui = new GUI();
 
 
     // Set players initial position
@@ -252,6 +257,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         // healthbar.draw(g2, this, entities.get(1)); 
         // healthbar.draw(g2, this, entities.get(0));
+
+        //GUI
+        gui.draw(g2, this);
         
 
         // Collision debugger
@@ -266,6 +274,8 @@ public class GamePanel extends JPanel implements Runnable {
                 // TODO: handle exception
             }
         }
+
+        
         
         
         g2.dispose();

@@ -173,7 +173,7 @@ public class Monster extends Entity {
         double screenY = worldYDouble - gp.player.worldY + gp.player.screenY;
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/player/player_walking/boy_up_1.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();

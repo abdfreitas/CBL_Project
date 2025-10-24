@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -66,7 +67,11 @@ public class GamePanel extends JPanel implements Runnable {
     public List<Entity> entities = new ArrayList<>(); // Entities is list of monsters
     public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
 
+    public List<int[]> attackInfo = new ArrayList<>(); // What enemies are hit during an attack
+
     public HealthBar healthbar = new HealthBar();
+
+    
 
     //GUI
 
@@ -129,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable {
                 remainingTime = remainingTime / 1000000;
 
         
-                System.out.println("Remaining time: " + remainingTime);
+                //System.out.println("Remaining time: " + remainingTime);
 
                 if (remainingTime < 0) {
                     remainingTime = 0;
@@ -154,15 +159,37 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.update(this);
 
-        attack.update();
+        attack.update(player);
+
+        attackInfo = collisionDetection.checkAttack(this, player, attack, entities);
+
+        
 
         //monster.update();
 
-        for (Entity entity : entities) {
-            if (entity != null) {
-                entity.update(this);
+        if (!entities.isEmpty()) {
+            
+            Iterator<Entity> it = entities.iterator();
+            while (it.hasNext()) {
+                Entity entity = it.next();
+                if (entity != null) {
+                    for (int[] i : attackInfo) {
+                        if (i[0] == entities.indexOf(entity)) {
+                            entity.getHit = true;
+                            entity.directionDamage = i[1];
+                        }
+                    }
+                    entity.update(this);
+                    if (entity.HP <= 0) {
+                        it.remove();
+                    }
+                }
             }
+
+
         }
+
+        
         
         
         for (Entity entity : friendlies) {
@@ -217,15 +244,17 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2);
 
         // monster
-        for (Entity entity : entities) {
-            if (entity != null) {
-                if (entity != player) {
-                    //System.out.println("Drawing entity");
-                    entity.draw(g2);
+        if (!entities.isEmpty()) {
+            for (Entity entity : entities) {
+                if (entity != null) {
+                    if (entity != player) {
+                        //System.out.println("Drawing entity");
+                        entity.draw(g2);
+                    }
                 }
-            }
 
-        }
+            }
+        }   
         
         
             

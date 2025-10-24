@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import src.lib.CharStack;
 import src.main.GamePanel;
 import src.main.KeyHandler;
+import src.user.ConfigManager;
 import src.entity.Player;
 
 public class Monster extends Entity {
@@ -39,6 +40,10 @@ public class Monster extends Entity {
         
         doesDamage = true;
         player1 = player;
+
+        HPMax = ConfigManager.getInt("monster.HPMax", 50);
+        HP = HPMax;
+        //System.out.println("Monster MAX HP set to: " + ConfigManager.getInt("monster.HPMax", 50));
 
 
 
@@ -98,6 +103,29 @@ public class Monster extends Entity {
                 }
 
             }
+        }
+
+
+        // Getting hit:
+        if (getHit && !invincible) {
+            invincible = true;
+            invincibleCounter = invincibleCounterMax;
+
+            getDamage = true;
+            HP -= 10;
+
+            //System.out.println("Monster HP: " + HP);
+
+            gp.playSE(6);
+
+
+        }
+
+        if (invincibleCounter <= 0) {
+            invincible = false;
+            getHit = false;
+        } else {
+            invincibleCounter--;
         }
 
         // int playerX = player1.worldX;

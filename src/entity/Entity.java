@@ -42,6 +42,12 @@ public class Entity {
 
     public int priority = 10;
 
+    public boolean getHit = false;
+
+    public boolean invincible = false;
+
+    public boolean getDamage = false;
+
     
     public void draw(Graphics2D g2) {
         // drawing logic for this entity

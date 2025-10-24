@@ -1,2 +1,3 @@
 configTest = "Hello"
 monster.speed = 1
+monster.HPMax = 40

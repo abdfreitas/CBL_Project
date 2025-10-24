@@ -36,11 +36,7 @@ public class Player extends Entity {
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
 
-    public boolean getHit = false;
-
-    public boolean invincible = false;
-
-    public boolean getDamage = false;
+    
 
     
 

@@ -2,8 +2,11 @@ package src.main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.image.BufferedImage;
 
+import src.entity.Attack;
 import src.entity.Entity;
 import src.entity.Player;
 
@@ -208,6 +211,8 @@ public class CollisionDetection {
                 entity.solidArea.y = (int) entity.worldYDouble 
                     + entity.solidArea.y;
 
+                
+
                 if (player.solidArea.intersects(entity.solidArea)) {
                     //System.out.println("Entity collision");
                     if (entity.doesDamage == true) {
@@ -246,6 +251,83 @@ public class CollisionDetection {
 
         }
         return new int[] {index, directionDamage};
+
+    }
+
+    public List<int[]> checkAttack(GamePanel gp, Entity entity, Attack attack, List<Entity> entities) {
+
+        List<int[]> attackInfo = new ArrayList<int[]>();
+
+        int index = 999;
+        int directionDamage = 0;
+
+        if (attack.attacking) {
+
+            for (Entity attackeeEntity : entities) {
+                if (attackeeEntity != null) {
+
+                    if (attackeeEntity.invincible) {
+                        continue;
+                    }
+
+                    index = entities.indexOf(attackeeEntity);
+
+                    // Get the object's solid area position
+                    attackeeEntity.solidArea.x = (int) attackeeEntity.worldXDouble 
+                        + attackeeEntity.solidArea.x;
+                    attackeeEntity.solidArea.y = (int) attackeeEntity.worldYDouble 
+                        + attackeeEntity.solidArea.y;
+
+                    // int testEntityX = attackeeEntity.solidArea.x;
+                    // int testEntityY = attackeeEntity.solidArea.y;
+
+                    // int testAttackX = attack.solidArea.x;
+                    // int testAttackY = attack.solidArea.y;
+                        
+                    if (attack.solidArea.intersects(attackeeEntity.solidArea) 
+                        || attack.solidArea2.intersects(attackeeEntity.solidArea)) {
+                        System.out.println("Hit!");
+
+                        attackeeEntity.getHit = true;
+                        index = gp.entities.indexOf(entity);
+
+                        int dX = entity.worldX - (int) attackeeEntity.worldXDouble;
+                        int dY = entity.worldY - (int) attackeeEntity.worldYDouble;
+
+                        if (Math.abs(dX) > Math.abs(dY)) {
+                            if (dX > 0) {
+                                directionDamage = 4;
+                            } else {
+                                directionDamage = 6;
+                            }
+                        } else {
+                            if (dY > 0) {
+                                directionDamage = 8;
+                            } else {
+                                directionDamage = 2;
+                            }
+                        }
+
+                        attackInfo.add(new int[] {index, directionDamage});
+                    }
+
+                    // Find direction of damage
+                    
+
+
+
+                    entity.solidArea.x = entity.solidAreaDefaultX;
+                    entity.solidArea.y = entity.solidAreaDefaultY;
+
+                }
+            }
+
+
+        }
+
+        return attackInfo;
+
+        
 
     }
 

@@ -39,7 +39,11 @@ public class HealthBar {
 
         BufferedImage image = null;
 
-        int i = entity.HP * 100 / entity.HPMax / 16;
+        int i = (entity.HP) * 110 / entity.HPMax / 16;
+        // if (entity != gp.player) {
+        System.out.println(i);
+        // }
+        
 
         //System.out.println(i);
 

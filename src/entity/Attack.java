@@ -1,6 +1,7 @@
 package src.entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,6 +28,33 @@ public class Attack {
     public int attackFrame = 1;
     public int attackFrameMax = 5;
     public int attackAngle = 120;
+
+    public int angleLocalOffset = 0;
+
+    AffineTransform transform = new AffineTransform();
+    AffineTransform transformColB = new AffineTransform(); // collision box transform
+
+    int angle = 0;
+    int localOffsetX;
+
+    int localOffsetY;
+    BufferedImage imageAttack = null;
+
+    int hitboxX;
+    int hitboxY;
+    int hitboxX2;
+    int hitboxY2;
+    int hitboxPivotX;
+    int hitboxPivotY;
+    int hitboxAngle;
+    int hitboxPivotAngle;
+    int hitboxPivotDistance = 20;
+    int hitboxDistance = 50;
+    int hitboxDistance2 = 25;
+    int hitboxWidth = 20;
+
+    public Rectangle solidArea, solidArea2;
+    public int solidAreaDefaultX, solidAreaDefaultY;
     
     /**
     * Creates a new Attack instance.
@@ -41,6 +69,17 @@ public class Attack {
         this.keyH = keyH;
         getAttackImage();
 
+        solidArea = new Rectangle();
+        solidArea2 = new Rectangle();
+        solidArea.x = 9;
+        solidArea.y = 18;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = hitboxWidth;
+        solidArea.height = hitboxWidth;
+        solidArea2.width = hitboxWidth;
+        solidArea2.height = hitboxWidth;
+
     }
 
     /**
@@ -48,7 +87,7 @@ public class Attack {
      * Checks if a new attack should be started 
      * or how far allong the animation of the attack should be
      */
-    public void update() {
+    public void update(Player player) {
 
         if (!keyH.attack_Pressed && !attackWasReleased) {
             attackWasReleased = true;
@@ -62,6 +101,8 @@ public class Attack {
         }
 
         if (attacking) {
+
+
             
             attackFrameCounter++;
 
@@ -75,6 +116,87 @@ public class Attack {
                 attackFrameCounter = 0;
 
             }
+
+            angle = 0;
+            //localOffsetX;
+
+            //localOffsetY;
+            imageAttack = null;
+
+            transform = new AffineTransform();
+            //transformColB = new AffineTransform();
+
+            
+            
+            // Move to player
+            transform.translate(player.screenX + gp.tileSize / 2, 
+                player.screenY + gp.tileSize / 2); 
+
+            angleLocalOffset = (attackFrame - 1) * attackAngle / attackFrameMax 
+                + attackFrameCounter * attackAngle / (attackFrameCounterMax * attackFrameMax);
+            
+            switch (player.direction) {
+                case "up":
+                    localOffsetX = 0;
+                    localOffsetY = -(gp.tileSize / gp.scale);
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 - 90;
+                    hitboxPivotX = player.worldX + (gp.tileSize / 2);
+                    hitboxPivotY = player.worldY + (gp.tileSize / gp.scale) / 2;
+                    
+                    break;
+                case "left":
+                    localOffsetX = -(gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
+                    hitboxPivotX = player.worldX + (gp.tileSize / gp.scale) / 2;
+                    hitboxPivotY = player.worldY + (gp.tileSize / 2);
+                    
+                    break;
+                case "down":
+                    localOffsetX = 0;
+                    localOffsetY = (gp.tileSize / gp.scale);
+                    angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
+                    hitboxPivotX = player.worldX + (gp.tileSize / 2);
+                    hitboxPivotY = player.worldY + gp.tileSize - (gp.tileSize / gp.scale) / 2;
+                    break;
+                case "right":
+                    localOffsetX = (gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    angle = -angleLocalOffset + 45 + attackAngle / 2;
+                    hitboxPivotX = player.worldX + gp.tileSize - (gp.tileSize / gp.scale) / 2;
+                    hitboxPivotY = player.worldY + (gp.tileSize / 2);
+                    break;
+                default:
+                    localOffsetX = (gp.tileSize / gp.scale);
+                    localOffsetY = 0;
+                    break;
+            }
+
+            hitboxAngle = angle + 135;
+
+            hitboxX = hitboxPivotX - (int) (Math.cos(Math.toRadians(hitboxAngle)) 
+                * (double) hitboxDistance) - hitboxWidth  / 2;
+            hitboxY = hitboxPivotY - (int) (Math.sin(Math.toRadians(hitboxAngle)) 
+                * (double) hitboxDistance) - hitboxWidth  / 2;
+            hitboxX2 = hitboxPivotX - (int) (Math.cos(Math.toRadians(hitboxAngle)) 
+                * (double) hitboxDistance / 2) - hitboxWidth  / 2;
+            hitboxY2 = hitboxPivotY - (int) (Math.sin(Math.toRadians(hitboxAngle)) 
+                * (double) hitboxDistance / 2) - hitboxWidth  / 2;
+
+            solidArea.x = hitboxX;
+            solidArea.y = hitboxY;
+            solidArea2.x = hitboxX2;
+            solidArea2.y = hitboxY2;
+
+            // Uses affinetransform to rotate, scale and translate. Order is important.
+            transform.translate(localOffsetX, localOffsetY); 
+            transform.rotate(Math.toRadians(angle));
+            transform.scale(gp.scale, gp.scale);
+            transform.translate(0, -(gp.tileSize / gp.scale));
+            
+            imageAttack = weapon[attackFrame - 1];
+
+            
         }
 
     }
@@ -112,57 +234,22 @@ public class Attack {
         // Draw Attack frames
         if (attacking == true){
 
-            int angle = 0;
-            int localOffsetX;
-
-            int localOffsetY;
-            BufferedImage imageAttack = null;
-
-            AffineTransform transform = new AffineTransform();
             
-            // Move to player
-            transform.translate(player.screenX + gp.tileSize / 2, 
-                player.screenY + gp.tileSize / 2); 
-
-            int angleLocalOffset = (attackFrame - 1) * attackAngle / attackFrameMax 
-                + attackFrameCounter * attackAngle / (attackFrameCounterMax * attackFrameMax);
-            
-            switch (player.direction) {
-                case "up":
-                    localOffsetX = 0;
-                    localOffsetY = -(gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 - 90;
-                    break;
-                case "left":
-                    localOffsetX = -(gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
-                    break;
-                case "down":
-                    localOffsetX = 0;
-                    localOffsetY = (gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
-                    break;
-                case "right":
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2;
-                    break;
-                default:
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    break;
-            }
-
-            // Uses affinetransform to rotate, scale and translate. Order is important.
-            transform.translate(localOffsetX, localOffsetY); 
-            transform.rotate(Math.toRadians(angle));
-            transform.scale(gp.scale, gp.scale);
-            transform.translate(0, -(gp.tileSize / gp.scale));
-            
-            imageAttack = weapon[attackFrame - 1];
 
             g2.drawImage(imageAttack, transform, null);
+            g2.drawRect(hitboxPivotX, hitboxPivotY, 3, 3);
+
+            if (KeyHandler.debugEnabled) {
+                int hitboxXScreen = hitboxX - player.worldX + player.screenX;
+                int hitboxYScreen = hitboxY - player.worldY + player.screenY;
+                int hitboxX2Screen = hitboxX2 - player.worldX + player.screenX;
+                int hitboxY2Screen = hitboxY2 - player.worldY + player.screenY;
+                g2.drawRect(hitboxX2Screen, hitboxY2Screen, hitboxWidth, hitboxWidth);
+                g2.drawRect(hitboxXScreen, hitboxYScreen, hitboxWidth, hitboxWidth);
+
+            }
+
+            
 
         }
     }

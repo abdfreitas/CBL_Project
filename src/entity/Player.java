@@ -53,6 +53,9 @@ public class Player extends Entity {
 
     String lookDirection = "down";
 
+
+    public int waterAmount = 0;
+
     
 
 

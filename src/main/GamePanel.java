@@ -242,6 +242,7 @@ public class GamePanel extends JPanel implements Runnable {
                     if (drops.indexOf(drop) == index && drop.pickupable == true) {
                         //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         it.remove();
+                        player.waterAmount++;
                         playSE(1);
                     }
                 }

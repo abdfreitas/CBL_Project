@@ -14,6 +14,7 @@ public class GUI {
     BufferedImage[] wasd = new BufferedImage[2];
     BufferedImage[] space = new BufferedImage[2];
     BufferedImage[] mouse = new BufferedImage[2];
+    BufferedImage[] wateringCan = new BufferedImage[14];
     BufferedImage move, attack, aim; 
     //GamePanel gp;
 
@@ -39,6 +40,21 @@ public class GUI {
             mouse[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-1.png"));
             mouse[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-2.png"));
             aim = ImageIO.read(getClass().getResourceAsStream("/res/GUI/AIM.png"));
+
+            wateringCan[0]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-1.png.png"));
+            wateringCan[1]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-2.png.png"));
+            wateringCan[2]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-3.png.png"));
+            wateringCan[3]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-4.png.png"));
+            wateringCan[4]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-5.png.png"));
+            wateringCan[5]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-6.png.png"));
+            wateringCan[6]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-7.png.png"));
+            wateringCan[7]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-8.png.png"));
+            wateringCan[8]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-9.png.png"));
+            wateringCan[9]  = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-10.png.png"));
+            wateringCan[10] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-11.png.png"));
+            wateringCan[11] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-12.png.png"));
+            wateringCan[12] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-13.png.png"));
+            wateringCan[13] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-14.png.png"));
 
         } catch (IOException e) {
             // TODO: handle exception
@@ -88,6 +104,14 @@ public class GUI {
 
         //debugOffsetY += debugLineSpace;
         //g2.drawString("Player speed: " + player.speed, debugOffsetX, debugOffsetY);
+
+        int waterFrameNum = 13 - gp.player.waterAmount;
+
+        if (waterFrameNum < 0) {
+            waterFrameNum = 0;
+        }
+
+        g2.drawImage(wateringCan[waterFrameNum], 600, 50, gp.tileSize * 2, gp.tileSize * 2, null);
 
     }
 

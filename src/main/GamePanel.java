@@ -163,6 +163,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         attackInfo = collisionDetection.checkAttack(this, player, attack, entities);
 
+        entitySetter.update(this);
+
         
 
         //monster.update();
@@ -345,6 +347,20 @@ public class GamePanel extends JPanel implements Runnable {
 
         debugOffsetY += debugLineSpace;
         g2.drawString("Player speed: " + player.speed, debugOffsetX, debugOffsetY);
+
+        debugOffsetY += debugLineSpace;
+        g2.drawString("Spawn counter MAX: " + entitySetter.spawnCounterMax, debugOffsetX, debugOffsetY);
+
+        debugOffsetY += debugLineSpace;
+        g2.drawString("random x: " + entitySetter.x, debugOffsetX, debugOffsetY);
+
+        debugOffsetY += debugLineSpace;
+        g2.drawString("Spawn counter: " + entitySetter.spawnCounter, debugOffsetX, debugOffsetY);
+
+        debugOffsetY += debugLineSpace;
+        g2.drawString("Monster count: " + this.entities.size(), debugOffsetX, debugOffsetY);
+
+
 
     }
 }

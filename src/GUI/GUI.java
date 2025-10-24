@@ -21,6 +21,10 @@ public class GUI {
     int frameNum = 1;
     int frameNumMax = 2;
 
+
+    int displacementAngle = 0;
+    int displacementAngleOffset = 60;
+
     public GUI() {
 
 
@@ -53,15 +57,24 @@ public class GUI {
         int debugOffsetX = 20;
         int debugOffsetY = 20;
 
+        displacementAngle = displacementAngle + 2;
+        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle)) * 10);
+
+        int displacementY2 = (int) (Math.sin(Math.toRadians(displacementAngle 
+            + displacementAngleOffset)) * 10);
+
+        displacementY = 0;
+        displacementY2 = 0;
+
         
 
-        g2.drawImage(wasd[frameNum - 1], (int) 20, (int) 450, gp.tileSize * 2, gp.tileSize * 2, null);
+        g2.drawImage(wasd[frameNum - 1], (int) 20 , (int) 450 + displacementY, gp.tileSize * 2, gp.tileSize * 2, null);
 
-        g2.drawImage(move, (int) 120, (int) 490, gp.tileSize * 2, gp.tileSize * 2, null);
+        g2.drawImage(move, (int) 120, (int) 490 + displacementY, gp.tileSize * 2, gp.tileSize * 2, null);
 
-        g2.drawImage(space[frameNum - 1], (int) 250, (int) 445, gp.tileSize * 2, gp.tileSize * 2, null);
+        g2.drawImage(space[frameNum - 1], (int) 250, (int) 445 + displacementY2, gp.tileSize * 2, gp.tileSize * 2, null);
 
-        g2.drawImage(attack, (int) 350, (int) 490, gp.tileSize * 4, gp.tileSize * 2, null);
+        g2.drawImage(attack, (int) 350, (int) 490 + displacementY2, gp.tileSize * 4, gp.tileSize * 2, null);
 
         //g2.drawString("DEBUG MODE ON", debugOffsetX, debugOffsetY);
 

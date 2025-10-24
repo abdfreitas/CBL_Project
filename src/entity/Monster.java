@@ -60,6 +60,7 @@ public class Monster extends Entity {
         stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
 
         displacementAngleOffset = (int) (Math.random() * 360);
+        
 
 
 

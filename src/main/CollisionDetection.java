@@ -286,7 +286,7 @@ public class CollisionDetection {
                         
                     if (attack.solidArea.intersects(attackeeEntity.solidArea) 
                         || attack.solidArea2.intersects(attackeeEntity.solidArea)) {
-                        System.out.println("Hit!");
+                        //System.out.println("Hit!");
 
                         attackeeEntity.getHit = true;
                         index = gp.entities.indexOf(entity);

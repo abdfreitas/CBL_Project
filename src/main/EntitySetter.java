@@ -12,6 +12,25 @@ public class EntitySetter {
 
     Player player;
 
+    int spawnCounter;
+    int spawnCounterMin = 100;
+    int spawnCounterMax = 1200;
+    
+    int spawnWidth = 200;
+    int spawnHeight = 200;
+    int spawnN;
+    int spawnNMax = 12;
+    int spawnNMin = 1;
+
+    int spawnX;
+    int spawnXMax = 2400 - spawnWidth;
+    int spawnXMin = 0;
+    int spawnY;
+    int spawnYMax = 2400 - spawnWidth;
+    int spawnYMin = 0;
+
+    double x;
+
     
 
     public EntitySetter(GamePanel gp, Player player) {
@@ -43,6 +62,81 @@ public class EntitySetter {
         
 
 
+    }
+
+    public void update(GamePanel gp) {
+        if (spawnCounter <= 0) {
+
+            spawnN = (int) randomDoubleWeighedDown(spawnNMin, spawnNMax, 3, 0.3);;
+            spawnCounter = (int) randomDoubleWeighedDown(spawnCounterMin, spawnCounterMax, 3, 0.3);
+
+            
+
+            spawnX = randomInt(spawnXMin, spawnXMax);
+
+            spawnY = randomInt(spawnYMin, spawnYMax);
+
+            while (spawnN > 0) {
+
+                Monster m = new Monster(gp, player);
+                m.worldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
+                m.worldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
+                m.speedDouble = ConfigManager.getDouble("monster.speed", 0) * randomDouble(0.4, 1.2);
+
+                gp.entities.add(m);
+
+                spawnN--;
+                
+            }
+
+            
+
+
+
+        } else {
+            spawnCounter--;
+        }
+        // System.out.println(spawnCounter);
+
+
+        //System.out.println(randomDoubleWeighedDown(0, 100, 3, 0.3));
+
+        
+
+
+
+        
+
+
+
+    }
+
+    public int randomInt(int min, int max) {
+        int n = (int) (Math.random() * (double) ((max 
+                - min) + min));
+
+        return n;
+    }
+
+    public double randomDouble(double min, double  max) {
+        double n = Math.random() * ((max 
+                - min) + min);
+
+        return n;
+    }
+
+    public double randomDoubleWeighedDown(double min, double max, double exp, double pol2) {
+
+        // I made the following desmos graph to visualize the randomizer based on parameters
+        // b = max, a = exp, c = pol2, d = min
+
+        // https://www.desmos.com/calculator/5vm5tltysh
+
+        x = Math.random();
+
+        double n =  (Math.pow(x, exp) * (max - min)) + ((max - min) * pol2 * x * (1 - x)) + min;
+
+        return n;
     }
 
     

@@ -41,7 +41,7 @@ public class HealthBar {
 
         int i = (entity.HP) * 110 / entity.HPMax / 16;
         // if (entity != gp.player) {
-        System.out.println(i);
+        //System.out.println(i);
         // }
         
 

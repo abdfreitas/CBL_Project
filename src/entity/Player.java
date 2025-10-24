@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 import src.main.GamePanel;
 import src.main.KeyHandler;
-
+import src.main.MouseInput;
 import src.lib.CharStack;
 
 import java.awt.geom.AffineTransform;
@@ -37,8 +37,21 @@ public class Player extends Entity {
     private boolean shiftWasReleased;
 
     
+    // Mouse input 
+    int playerCenterX;
+    int playerCenterY;
 
-    
+    int dX;
+    int dY;
+
+    int distanceMouse;
+
+    double dXNorm;
+    double dYNorm;
+
+    double mAngle;
+
+    String lookDirection = "down";
 
     
 
@@ -103,8 +116,35 @@ public class Player extends Entity {
         priority = 30;
     }
 
-    public void update(GamePanel gp) {
-        
+    public void update(GamePanel gp, MouseInput mIn) {
+
+        playerCenterX = screenX + gp.tileSize / 2;
+        playerCenterY = screenX + gp.tileSize / 2;
+
+        dX = mIn.mouseX - playerCenterX;
+        dY = mIn.mouseY - playerCenterY;
+
+        distanceMouse = (int) Math.sqrt(dX * dX + dY * dY);
+
+        dXNorm = (double) dX / (double) distanceMouse;
+        dYNorm = (double) dY / (double) distanceMouse;
+
+        mAngle = Math.atan2(dYNorm, dXNorm);
+
+        if (Math.abs(dX) > Math.abs(dY)) {
+            if (dX > 0) {
+                lookDirection = "right";
+            } else {
+                lookDirection = "left";
+            }
+        } else {
+            if (dY > 0) {
+                lookDirection = "down";
+            } else {
+                lookDirection = "up";
+            }
+        }
+        //System.out.println(lookDirection);
 
         if (keyH.upPressed || keyH.leftPressed || keyH.downPressed || keyH.rightPressed) {
 
@@ -155,7 +195,11 @@ public class Player extends Entity {
             
                 default:
                     break;
-            }
+                }
+
+                if (!gp.attack.attacking) {
+                    lookDirection = direction;
+                }
 
 
             }
@@ -360,7 +404,7 @@ public class Player extends Entity {
         // Draw walking sprites
         BufferedImage image = null;
 
-        switch (direction) {
+        switch (lookDirection) {
             case "up":
                 if (spriteNum % 2 != 0) {
                     image = up1;

@@ -91,11 +91,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        addMouseMotionListener(mIn);
     }
 
     public void setupGame() {
 
         ConfigManager.loadConfig();
+
+        
 
         assetSetter.setObject();
 
@@ -104,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable {
         entitySetter.setEntity(this);
 
         playMusic(0);
+
 
         
 
@@ -158,9 +162,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-        player.update(this);
+        player.update(this, mIn);
 
-        attack.update(player);
+        attack.update(player, mIn);
 
         attackInfo = collisionDetection.checkAttack(this, player, attack, entities);
 

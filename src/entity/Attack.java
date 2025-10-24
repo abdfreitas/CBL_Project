@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import src.main.GamePanel;
 import src.main.KeyHandler;
+import src.main.MouseInput;
 
 
 /**
@@ -87,7 +88,7 @@ public class Attack {
      * Checks if a new attack should be started 
      * or how far allong the animation of the attack should be
      */
-    public void update(Player player) {
+    public void update(Player player, MouseInput mIn) {
 
         if (!keyH.attack_Pressed && !attackWasReleased) {
             attackWasReleased = true;
@@ -117,6 +118,23 @@ public class Attack {
 
             }
 
+            
+
+            // int playerCenterX = player.screenX + gp.tileSize / 2;
+            // int playerCenterY = player.screenX + gp.tileSize / 2;
+
+            // int dX = mIn.mouseX - playerCenterX;
+            // int dY = mIn.mouseY - playerCenterY;
+
+            // int distance = (int) Math.sqrt(dX * dX + dY * dY);
+
+            // double dXNorm = (double) dX / (double) distance;
+            // double dYNorm = (double) dY / (double) distance;
+
+            // double mAngle = Math.acos(dXNorm);
+
+            // System.out.println("dX: " + dX + "; distance: " + distance + "; dXNorm: " + dXNorm + "; mAngle: " + mAngle);
+
             angle = 0;
             //localOffsetX;
 
@@ -134,43 +152,58 @@ public class Attack {
 
             angleLocalOffset = (attackFrame - 1) * attackAngle / attackFrameMax 
                 + attackFrameCounter * attackAngle / (attackFrameCounterMax * attackFrameMax);
+
+            localOffsetX = (int) (player.dXNorm * 20);
+            localOffsetY = (int) (player.dYNorm * 20);
+
             
-            switch (player.direction) {
-                case "up":
-                    localOffsetX = 0;
-                    localOffsetY = -(gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 - 90;
-                    hitboxPivotX = player.worldX + (gp.tileSize / 2);
-                    hitboxPivotY = player.worldY + (gp.tileSize / gp.scale) / 2;
+            //angleInt = (angle + 360) % 360;
+
+            //angleLocalOffset = 0;
+
+            double angleDouble = (double) (-angleLocalOffset + 45 + attackAngle / 2) + Math.toDegrees(player.mAngle);
+
+            angle = (int) angleDouble;
+            System.out.println(Math.toDegrees(player.mAngle) + ";" + player.mAngle);
+            hitboxPivotX = player.worldX + localOffsetX + (gp.tileSize / 2);
+            hitboxPivotY = player.worldY + localOffsetY + (gp.tileSize / 2);
+            
+            // switch (player.direction) {
+            //     case "up":
+            //         // localOffsetX = (int) (dXNorm * 20);
+            //         // localOffsetY = -(gp.tileSize / gp.scale);
+            //         angle = -angleLocalOffset + 45 + attackAngle / 2 - (int) Math.toDegrees(player.mAngle);
+            //         hitboxPivotX = player.worldX + localOffsetX + (gp.tileSize / 2);
+            //         hitboxPivotY = player.worldY + localOffsetY + (gp.tileSize / 2);
                     
-                    break;
-                case "left":
-                    localOffsetX = -(gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
-                    hitboxPivotX = player.worldX + (gp.tileSize / gp.scale) / 2;
-                    hitboxPivotY = player.worldY + (gp.tileSize / 2);
+            //         break;
+            //     case "left":
+            //         // localOffsetX = -(gp.tileSize / gp.scale);
+            //         // localOffsetY = 0;
+            //         angle = -angleLocalOffset + 45 + attackAngle / 2 + + 180;
+            //         hitboxPivotX = player.worldX + (gp.tileSize / gp.scale) / 2;
+            //         hitboxPivotY = player.worldY + (gp.tileSize / 2);
                     
-                    break;
-                case "down":
-                    localOffsetX = 0;
-                    localOffsetY = (gp.tileSize / gp.scale);
-                    angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
-                    hitboxPivotX = player.worldX + (gp.tileSize / 2);
-                    hitboxPivotY = player.worldY + gp.tileSize - (gp.tileSize / gp.scale) / 2;
-                    break;
-                case "right":
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    angle = -angleLocalOffset + 45 + attackAngle / 2;
-                    hitboxPivotX = player.worldX + gp.tileSize - (gp.tileSize / gp.scale) / 2;
-                    hitboxPivotY = player.worldY + (gp.tileSize / 2);
-                    break;
-                default:
-                    localOffsetX = (gp.tileSize / gp.scale);
-                    localOffsetY = 0;
-                    break;
-            }
+            //         break;
+            //     case "down":
+            //         // localOffsetX = 0;
+            //         // localOffsetY = (gp.tileSize / gp.scale);
+            //         angle = -angleLocalOffset + 45 + attackAngle / 2 + 90;
+            //         hitboxPivotX = player.worldX + (gp.tileSize / 2);
+            //         hitboxPivotY = player.worldY + gp.tileSize - (gp.tileSize / gp.scale) / 2;
+            //         break;
+            //     case "right":
+            //         // localOffsetX = (gp.tileSize / gp.scale);
+            //         // localOffsetY = 0;
+            //         angle = -angleLocalOffset + 45 + attackAngle / 2;
+            //         hitboxPivotX = player.worldX + gp.tileSize - (gp.tileSize / gp.scale) / 2;
+            //         hitboxPivotY = player.worldY + (gp.tileSize / 2);
+            //         break;
+            //     default:
+            //         // localOffsetX = (gp.tileSize / gp.scale);
+            //         // localOffsetY = 0;
+            //         break;
+            // }
 
             hitboxAngle = angle + 135;
 

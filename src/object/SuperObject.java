@@ -16,6 +16,9 @@ public class SuperObject {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
 
+    public int scaleX = 1;
+    public int scaleY = 1;
+
     public void draw(Graphics2D g2, GamePanel gp) {
 
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -26,7 +29,7 @@ public class SuperObject {
             worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
             worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(image, screenX, screenY,
-                gp.tileSize, gp.tileSize, null);
+                gp.tileSize * scaleX, gp.tileSize * scaleY, null);
         }
         
     }

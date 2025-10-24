@@ -2,7 +2,9 @@ package src.main;
 
 import src.object.OBJ_Chest;
 import src.object.OBJ_Door;
+import src.object.OBJ_House;
 import src.object.OBJ_Key;
+import src.object.OBJ_BlockTile;
 import src.object.OBJ_Boots;
 
 public class AssetSetter {
@@ -47,6 +49,30 @@ public class AssetSetter {
         gp.obj[7] = new OBJ_Boots();
         gp.obj[7].worldX = 12 * gp.tileSize;
         gp.obj[7].worldY = 37 * gp.tileSize;
+
+        
+      
+
+
+        int k = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 2; j++) {
+                
+                gp.obj[9+k] = new OBJ_BlockTile();
+                gp.obj[9+k].worldX = (35 + i) * gp.tileSize;
+                gp.obj[9+k].worldY = (20 + j) * gp.tileSize;
+                k++;
+
+            }
+        }
+
+        gp.obj[8] = new OBJ_House();
+        gp.obj[8].worldX = (35) * gp.tileSize;
+        gp.obj[8].worldY = (20) * gp.tileSize;
+
+        
+        
+
 
 
     }

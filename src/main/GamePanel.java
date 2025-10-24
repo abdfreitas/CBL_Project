@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
+    MouseInput mIn = new MouseInput();
     Sound sound = new Sound();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
@@ -60,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Entity and object
     public Player player = new Player(this, keyH);
     //public Monster monster = new Monster(this, player);
-    public SuperObject[] obj = new SuperObject[10];
+    public SuperObject[] obj = new SuperObject[20];
     public Attack attack = new Attack(keyH, this, player);
 
     public EntitySetter entitySetter = new EntitySetter(this, player);

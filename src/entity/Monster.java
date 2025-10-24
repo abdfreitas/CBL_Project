@@ -28,7 +28,7 @@ public class Monster extends Entity {
 
     int hasKey = 0;
 
-    BufferedImage[] frame = new BufferedImage[2];
+    BufferedImage[] frame = new BufferedImage[4];
 
     
     int spriteCounter = 0;
@@ -88,6 +88,8 @@ public class Monster extends Entity {
         try {
             frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
             frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-2.png"));
+            frame[2] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-3.png"));
+            frame[3] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-4.png"));
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -203,6 +205,23 @@ public class Monster extends Entity {
 
         displacementAngle = displacementAngle + 2;
 
+        if (Math.abs(dX) > Math.abs(dY)) {
+            if (dX > 0) {
+                lookDirection = "right";
+            } else {
+                lookDirection = "left";
+            }
+        } else {
+            // if (dY > 0) {
+            //     lookDirection = "down";
+            // } else {
+            //     lookDirection = "up";
+            // }
+        }
+
+        worldX = (int) worldXDouble;
+        worldY = (int) worldYDouble;
+
         
 
     }
@@ -222,7 +241,15 @@ public class Monster extends Entity {
             }
         }
 
-        image = frame[frameNum - 1];
+        int frameNumDirection;
+
+        if (lookDirection == "right") {
+            frameNumDirection = frameNum + 2;
+        } else {
+            frameNumDirection = frameNum;
+        }
+
+        image = frame[frameNumDirection - 1];
 
         int displacementX = (int) Math.cos(Math.toRadians(displacementAngle));
         int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle 

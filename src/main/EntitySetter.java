@@ -5,6 +5,7 @@ import src.entity.Flower1;
 import src.entity.Monster;
 import src.entity.Player;
 import src.user.ConfigManager;
+import src.entity.Chicken;
 
 public class EntitySetter {
 
@@ -58,6 +59,13 @@ public class EntitySetter {
         gp.friendlies.get(1).worldY = gp.tileSize * 20;
         gp.friendlies.get(1).worldXDouble = gp.tileSize * 20;
         gp.friendlies.get(1).worldYDouble = gp.tileSize * 20;
+
+        Chicken c = new Chicken(gp, player);
+        c.worldX = 25 * gp.tileSize;
+        c.worldY = 20 * gp.tileSize;
+        c.worldXDouble = c.worldX;
+        c.worldYDouble = c.worldY;
+        gp.friendlies.add(c);
         
         
 

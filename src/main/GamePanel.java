@@ -19,6 +19,7 @@ import src.tile.TileManager;
 import src.entity.Attack;
 import src.user.ConfigManager;
 import src.GUI.GUI;
+import src.drops.DropSupercClass;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -68,6 +69,8 @@ public class GamePanel extends JPanel implements Runnable {
     public EntitySetter entitySetter = new EntitySetter(this, player);
     public List<Entity> entities = new ArrayList<>(); // Entities is list of monsters
     public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
+    public DropSetter dropSetter = new DropSetter(this);
+    public List<DropSupercClass> drops = new ArrayList<>(); // List of drops
 
     public List<int[]> attackInfo = new ArrayList<>(); // What enemies are hit during an attack
 
@@ -107,6 +110,12 @@ public class GamePanel extends JPanel implements Runnable {
         friendlies.add(player);
 
         entitySetter.setEntity(this);
+
+        dropSetter.setDrop(this, 20 * tileSize, 30 * tileSize, "coin");
+
+        for (DropSupercClass drop : drops) {
+            System.out.println(drop.name);
+        }
 
         playMusic(0);
 
@@ -190,7 +199,9 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                     entity.update(this);
                     if (entity.HP <= 0) {
+                        dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         it.remove();
+                        playSE(7);
                     }
                 }
             }
@@ -208,6 +219,18 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
+
+      
+
+        if (!entities.isEmpty()) {
+            for (DropSupercClass drop : drops) {
+                if (drop != null) {
+                    //System.out.println("Drawing entity");
+                    drop.update(this);
+                }
+
+            }
+        }      
             
             
 
@@ -246,8 +269,17 @@ public class GamePanel extends JPanel implements Runnable {
                 //System.out.println("Drawing entity");
                 entity.draw(g2);
             }
-
         }
+
+        if (!entities.isEmpty()) {
+            for (DropSupercClass drop : drops) {
+                if (drop != null) {
+                    //System.out.println("Drawing entity");
+                    drop.draw(g2, this);
+                }
+
+            }
+        }      
 
         // Player
         player.draw(g2);

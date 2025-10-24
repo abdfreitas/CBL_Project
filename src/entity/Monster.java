@@ -40,6 +40,8 @@ public class Monster extends Entity {
 
     
 
+    
+
 
     public Monster(GamePanel gp, Player player) {
 
@@ -50,6 +52,9 @@ public class Monster extends Entity {
         HPMax = ConfigManager.getInt("monster.HPMax", 50);
         HP = HPMax;
         //System.out.println("Monster MAX HP set to: " + ConfigManager.getInt("monster.HPMax", 50));
+        invincibleCounterMax = ConfigManager.getInt("monster.invincibleCounterMax", 20);
+
+        stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
 
 
 
@@ -124,6 +129,8 @@ public class Monster extends Entity {
         if (getHit && !invincible) {
             invincible = true;
             invincibleCounter = invincibleCounterMax;
+            stunCounter = stunCounterMax;
+            stunned = true;
 
             getDamage = true;
             HP -= 10;
@@ -140,6 +147,13 @@ public class Monster extends Entity {
             getHit = false;
         } else {
             invincibleCounter--;
+        }
+
+        if (stunCounter <= 0) {
+            stunned = false;
+           
+        } else {
+            stunCounter--;
         }
 
         // int playerX = player1.worldX;
@@ -169,6 +183,11 @@ public class Monster extends Entity {
 
         while (true) {
             break;
+        }
+
+        if (stunned) {
+            speedX = speedX / 4;
+            speedY = speedY / 4;
         }
 
 

@@ -36,6 +36,9 @@ public class Monster extends Entity {
     int frameNum = 1;
     int frameNumMax = 2;
 
+    int displacementAngle = 0;
+    int displacementAngleOffset;
+
     
 
     
@@ -55,6 +58,8 @@ public class Monster extends Entity {
         invincibleCounterMax = ConfigManager.getInt("monster.invincibleCounterMax", 20);
 
         stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
+
+        displacementAngleOffset = (int) (Math.random() * 360);
 
 
 
@@ -195,6 +200,8 @@ public class Monster extends Entity {
         worldXDouble += speedX;
         worldYDouble += speedY;
 
+        displacementAngle = displacementAngle + 2;
+
         
 
     }
@@ -216,15 +223,15 @@ public class Monster extends Entity {
 
         image = frame[frameNum - 1];
 
+        int displacementX = (int) Math.cos(Math.toRadians(displacementAngle));
+        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle 
+            + displacementAngleOffset)) * 10);
+
         if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
             BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);
-            g2.drawImage(whitePlayer, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
-
-
-            
-
+            g2.drawImage(whitePlayer, (int) screenX, (int) screenY + displacementY, gp.tileSize, gp.tileSize, null);
         } else {
-            g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, (int) screenX, (int) screenY + displacementY, gp.tileSize, gp.tileSize, null);
         }
 
         //g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);

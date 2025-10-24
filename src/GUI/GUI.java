@@ -13,7 +13,8 @@ public class GUI {
 
     BufferedImage[] wasd = new BufferedImage[2];
     BufferedImage[] space = new BufferedImage[2];
-    BufferedImage move, attack; 
+    BufferedImage[] mouse = new BufferedImage[2];
+    BufferedImage move, attack, aim; 
     //GamePanel gp;
 
     int spriteCounter = 0;
@@ -35,7 +36,10 @@ public class GUI {
             space[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-1.png"));
             space[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-2.png"));
             attack = ImageIO.read(getClass().getResourceAsStream("/res/GUI/ATTACK.png"));
-            
+            mouse[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-1.png"));
+            mouse[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-2.png"));
+            aim = ImageIO.read(getClass().getResourceAsStream("/res/GUI/AIM.png"));
+
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -68,13 +72,17 @@ public class GUI {
 
         
 
+        // MOVE
         g2.drawImage(wasd[frameNum - 1], (int) 20 , (int) 450 + displacementY, gp.tileSize * 2, gp.tileSize * 2, null);
-
         g2.drawImage(move, (int) 120, (int) 490 + displacementY, gp.tileSize * 2, gp.tileSize * 2, null);
 
+        // ATTACK
         g2.drawImage(space[frameNum - 1], (int) 250, (int) 445 + displacementY2, gp.tileSize * 2, gp.tileSize * 2, null);
-
         g2.drawImage(attack, (int) 350, (int) 490 + displacementY2, gp.tileSize * 4, gp.tileSize * 2, null);
+
+        // AIM
+        g2.drawImage(mouse[frameNum - 1], (int) 520, (int) 445 + displacementY2, gp.tileSize * 2, gp.tileSize * 2, null);
+        g2.drawImage(aim, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, gp.tileSize * 2, null);
 
         //g2.drawString("DEBUG MODE ON", debugOffsetX, debugOffsetY);
 

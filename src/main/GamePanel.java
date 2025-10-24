@@ -223,12 +223,28 @@ public class GamePanel extends JPanel implements Runnable {
       
 
         if (!entities.isEmpty()) {
-            for (DropSupercClass drop : drops) {
-                if (drop != null) {
-                    //System.out.println("Drawing entity");
-                    drop.update(this);
-                }
+            
 
+            int index = collisionDetection.checkDrop(player, this);
+
+            if (index != 999) {
+                System.out.println(index);
+            }
+
+
+
+            Iterator<DropSupercClass> it = drops.iterator();
+            while (it.hasNext()) {
+                DropSupercClass drop = it.next();
+                if (drop != null) {
+                    drop.update(this, player);
+
+                    if (drops.indexOf(drop) == index && drop.pickupable == true) {
+                        //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
+                        it.remove();
+                        playSE(1);
+                    }
+                }
             }
         }      
             

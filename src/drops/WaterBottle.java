@@ -16,6 +16,8 @@ public class WaterBottle extends DropSupercClass{
     }
 
     public void setup() {
+
+        pickupable = true;
         
 
         try {

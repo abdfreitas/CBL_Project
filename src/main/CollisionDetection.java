@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.image.BufferedImage;
 
+import src.drops.DropSupercClass;
 import src.entity.Attack;
 import src.entity.Entity;
 import src.entity.Player;
@@ -251,6 +252,48 @@ public class CollisionDetection {
 
         }
         return new int[] {index, directionDamage};
+
+    }
+
+    public int checkDrop(Player player, GamePanel gp) {
+
+        int index = 999;
+        int directionDamage = 0;
+
+        for (DropSupercClass drop : gp.drops) {
+            if (drop != null) {
+
+
+                // Get Players solid area position
+                player.solidArea.x = player.worldX + player.solidArea.x;
+                player.solidArea.y = player.worldY + player.solidArea.y;
+
+
+                // Get the object's solid area position
+                drop.solidArea.x = (int) drop.worldXDouble 
+                    + drop.solidArea.x;
+                drop.solidArea.y = (int) drop.worldYDouble 
+                    + drop.solidArea.y;
+
+                
+
+                if (player.solidArea.intersects(drop.solidArea)) {
+                    //System.out.println("drop collision");
+                    index = gp.drops.indexOf(drop);
+                    
+                }
+
+                player.solidArea.x = player.solidAreaDefaultX;
+                player.solidArea.y = player.solidAreaDefaultY;
+                drop.solidArea.x = drop.solidAreaDefaultX;
+                drop.solidArea.y = drop.solidAreaDefaultY;
+            }
+
+            
+    
+
+        }
+        return index;
 
     }
 

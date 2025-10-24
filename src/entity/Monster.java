@@ -28,7 +28,13 @@ public class Monster extends Entity {
 
     int hasKey = 0;
 
+    BufferedImage[] frame = new BufferedImage[2];
+
     
+    int spriteCounter = 0;
+    int spriteCounterMax = 23;
+    int frameNum = 1;
+    int frameNumMax = 2;
 
     
 
@@ -67,6 +73,14 @@ public class Monster extends Entity {
         //worldY = gp.tileSize * 21;
 
         speedDouble = 2;
+
+        try {
+            frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
+            frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-2.png"));
+        } catch (IOException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
 
         
         
@@ -172,14 +186,29 @@ public class Monster extends Entity {
         double screenX = worldXDouble - gp.player.worldX + gp.player.screenX;
         double screenY = worldYDouble - gp.player.worldY + gp.player.screenY;
 
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
-        } catch (IOException e) {
-            // TODO: handle exception
-            e.printStackTrace();
+        spriteCounter++;
+        if (spriteCounter > spriteCounterMax) {
+            spriteCounter = 0;
+            frameNum++;
+            if (frameNum > frameNumMax) {
+                frameNum = 1;
+            }
         }
 
-        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+        image = frame[frameNum - 1];
+
+        if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
+            BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);
+            g2.drawImage(whitePlayer, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+
+
+            
+
+        } else {
+            g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+        }
+
+        //g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
 
         if (keyH.debugEnabled) {
             g2.setColor(Color.RED);

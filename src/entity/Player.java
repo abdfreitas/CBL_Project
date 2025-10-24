@@ -420,21 +420,21 @@ public class Player extends Entity {
 
     }
 
-    static BufferedImage makeSilhouette(BufferedImage sprite, Color color) {
-        BufferedImage out = new BufferedImage(sprite.getWidth(), sprite.getHeight(),
-                                            BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = out.createGraphics();
+    // static BufferedImage makeSilhouette(BufferedImage sprite, Color color) {
+    //     BufferedImage out = new BufferedImage(sprite.getWidth(), sprite.getHeight(),
+    //                                         BufferedImage.TYPE_INT_ARGB);
+    //     Graphics2D g = out.createGraphics();
 
-        g.setComposite(AlphaComposite.Src);   // replace dst
-        g.setColor(color);
-        g.fillRect(0, 0, out.getWidth(), out.getHeight());
+    //     g.setComposite(AlphaComposite.Src);   // replace dst
+    //     g.setColor(color);
+    //     g.fillRect(0, 0, out.getWidth(), out.getHeight());
 
-        g.setComposite(AlphaComposite.DstIn); // keep white only where sprite has alpha
-        g.drawImage(sprite, 0, 0, null);
+    //     g.setComposite(AlphaComposite.DstIn); // keep white only where sprite has alpha
+    //     g.drawImage(sprite, 0, 0, null);
 
-        g.dispose();
-        return out;
-    }
+    //     g.dispose();
+    //     return out;
+    // }
 
 
     

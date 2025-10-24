@@ -1,5 +1,7 @@
 package src.entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -55,6 +57,22 @@ public class Entity {
 
     public void update(GamePanel gp) {
         // drawing logic for this entity
+    }
+
+    static BufferedImage makeSilhouette(BufferedImage sprite, Color color) {
+        BufferedImage out = new BufferedImage(sprite.getWidth(), sprite.getHeight(),
+                                            BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = out.createGraphics();
+
+        g.setComposite(AlphaComposite.Src);   // replace dst
+        g.setColor(color);
+        g.fillRect(0, 0, out.getWidth(), out.getHeight());
+
+        g.setComposite(AlphaComposite.DstIn); // keep white only where sprite has alpha
+        g.drawImage(sprite, 0, 0, null);
+
+        g.dispose();
+        return out;
     }
 
     

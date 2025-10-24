@@ -19,7 +19,7 @@ public class TileManager {
 
         this.gp = gp;
 
-        tile = new Tile[10];
+        tile = new Tile[20];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
@@ -58,21 +58,21 @@ public class TileManager {
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path.png"));
             
-            // Path Top Right
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tr.png"));
-
-            // Path Top Left
-            tile[7] = new Tile();
-            tile[7].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tl.png"));
+            // Path Bottom Left
+            tile[9] = new Tile();
+            tile[9].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_bl.png"));
 
             // Path Bottom Right
             tile[8] = new Tile();
             tile[8].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_br.png"));
 
-            // Path Bottom Left
-            tile[9] = new Tile();
-            tile[9].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_bl.png"));
+            // Path Top Left
+            tile[7] = new Tile();
+            tile[7].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tl.png"));
+
+            // Path Top Right
+            tile[6] = new Tile();
+            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tr.png"));
 
             // Path Top
             tile[10] = new Tile();
@@ -92,19 +92,19 @@ public class TileManager {
 
             // Grass Top Right
             tile[14] = new Tile();
-            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass.png"));
+            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tr.png"));
 
             // Grass Top Left
             tile[15] = new Tile();
-            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass.png"));
+            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tl.png"));
 
             // Grass Bottom Right
             tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass.png"));
+            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_br.png"));
 
             // Grass Bottom Left
             tile[17] = new Tile();
-            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass.png"));
+            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_bl.png"));
 
         } catch (Exception e) {
             // TODO: handle exception

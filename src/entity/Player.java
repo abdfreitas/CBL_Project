@@ -119,7 +119,7 @@ public class Player extends Entity {
     public void update(GamePanel gp, MouseInput mIn) {
 
         playerCenterX = screenX + gp.tileSize / 2;
-        playerCenterY = screenX + gp.tileSize / 2;
+        playerCenterY = screenY + gp.tileSize / 2;
 
         dX = mIn.mouseX - playerCenterX;
         dY = mIn.mouseY - playerCenterY;
@@ -440,6 +440,8 @@ public class Player extends Entity {
             g2.setColor(Color.RED);
             g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
             g2.setColor(Color.RED);
+            g2.drawRect(playerCenterX, playerCenterY, 2, 2);
+
         }
 
 

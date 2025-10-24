@@ -164,7 +164,7 @@ public class Attack {
             double angleDouble = (double) (-angleLocalOffset + 45 + attackAngle / 2) + Math.toDegrees(player.mAngle);
 
             angle = (int) angleDouble;
-            System.out.println(Math.toDegrees(player.mAngle) + ";" + player.mAngle);
+            // System.out.println(Math.toDegrees(player.mAngle) + ";" + player.mAngle);
             hitboxPivotX = player.worldX + localOffsetX + (gp.tileSize / 2);
             hitboxPivotY = player.worldY + localOffsetY + (gp.tileSize / 2);
             

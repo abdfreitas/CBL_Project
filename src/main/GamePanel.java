@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     MouseInput mIn = new MouseInput();
+    MouseClickInput mClick = new MouseClickInput(keyH);
     Sound sound = new Sound();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
@@ -92,6 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
         addMouseMotionListener(mIn);
+        addMouseListener(mClick);
     }
 
     public void setupGame() {

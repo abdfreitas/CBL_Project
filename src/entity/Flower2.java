@@ -61,13 +61,13 @@ public class Flower2 extends Entity{
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         
-        solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
-        solidArea.width = 30;
-        solidArea.height = 30;
+        // solidArea = new Rectangle();
+        // solidArea.x = 8;
+        // solidArea.y = 16;
+        // solidAreaDefaultX = solidArea.x;
+        // solidAreaDefaultY = solidArea.y;
+        // solidArea.width = 30;
+        // solidArea.height = 30;
 
         worldXDouble = (double) worldX;
         worldYDouble = (double) worldY;

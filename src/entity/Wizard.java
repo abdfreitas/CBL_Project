@@ -12,19 +12,23 @@ import src.lib.CharStack;
 import src.main.GamePanel;
 import src.main.KeyHandler;
 
-public class Chicken extends Entity{
+public class Wizard extends Entity{
 
-    public Chicken(GamePanel gp, int originX, int originY, String name) {
+    public Wizard(GamePanel gp, int originX, int originY, String name) {
 
         super(gp, originX, originY, name);
+
+        frame = new BufferedImage[8];
 
         interactable = true;
 
         collisionOn = true;
 
-        frameNumMax = 2;
-
-      
+        frameNumMax = 8;
+        spriteCounterMax = 12;
+        imageScaleX = 1;
+        imageScaleY = 2;
+        solidArea.height = 64;
 
         doesDamage = true;
 
@@ -33,8 +37,13 @@ public class Chicken extends Entity{
         
 
         try {
-            frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/chicken/Chicken-1.png.png"));
-            frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/chicken/Chicken-2.png.png"));
+
+            for (int i = 0; i < 8; i++) {
+                String path = "/res/entities/wizard/WizardNew-" + (i + 1) + ".png.png";
+                frame[i] = ImageIO.read(getClass().getResourceAsStream(path));
+            }
+            
+            
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();

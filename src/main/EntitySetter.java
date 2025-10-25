@@ -5,6 +5,7 @@ import src.entity.Flower1;
 import src.entity.Flower2;
 import src.entity.Monster;
 import src.entity.Player;
+import src.entity.Wizard;
 import src.user.ConfigManager;
 import src.entity.Chicken;
 
@@ -47,9 +48,11 @@ public class EntitySetter {
         
 
         Monster m = new Monster(gp, 25 * gp.tileSize, 20 * gp.tileSize, "monster");
+        m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
         gp.entities.add(m);
 
         m = new Monster(gp, 25 * gp.tileSize, 22 * gp.tileSize, "monster");
+        m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
         gp.entities.add(m);
 
 
@@ -64,8 +67,15 @@ public class EntitySetter {
         Flower2 f = (new Flower2(gp, 25 * gp.tileSize, 25 * gp.tileSize, "flower2"));
         gp.friendlies.add(f);
 
-        Chicken c = (new Chicken(gp, 25 * gp.tileSize, 20 * gp.tileSize, "chicken"));
+        Chicken c = (new Chicken(gp, 25 * gp.tileSize, 19 * gp.tileSize, "chicken"));
         gp.friendlies.add(c);
+        c = (new Chicken(gp, 20 * gp.tileSize, 20 * gp.tileSize, "chicken"));
+        gp.friendlies.add(c);
+        c = (new Chicken(gp, 25 * gp.tileSize, 23 * gp.tileSize, "chicken"));
+        gp.friendlies.add(c);
+
+        Wizard w = (new Wizard(gp, 27 * gp.tileSize, 22 * gp.tileSize, "wizard"));
+        gp.friendlies.add(w);
         
         
 

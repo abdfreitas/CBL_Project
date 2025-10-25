@@ -84,6 +84,9 @@ public class Entity {
     int displacementAngle;
     int displacementAngleOffset;
 
+    int imageScaleX = 1;
+    int imageScaleY = 1;
+
     public Entity(GamePanel gp, int originX, int originY, String name) {
 
         this.gp = gp;
@@ -91,6 +94,18 @@ public class Entity {
         //keyH = gp.keyH;
         displacementAngleOffset = Random.randomInt(0, 360);
 
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 30;
+        solidArea.height = 30;
+
+        
         
 
         worldX = originX;
@@ -127,7 +142,7 @@ public class Entity {
 
         image = frame[frameNum - 1];
 
-        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize * imageScaleX, gp.tileSize * imageScaleY, null);
 
         drawSub(g2);
 

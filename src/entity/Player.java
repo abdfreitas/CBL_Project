@@ -54,7 +54,7 @@ public class Player extends Entity {
     String lookDirection = "down";
 
 
-    public int waterAmount = 0;
+    public int waterAmount = 12;
 
     
 
@@ -263,7 +263,7 @@ public class Player extends Entity {
             getDamage = true;
             invincible = true;
             HP -= 10;
-            System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
+            // System.out.println("Gets damage from " + index + ", Player has " + HP + "HP");
 
             invincibleCounter = invincibleCounterMax;
             stunCounter = stunCounterMax;
@@ -272,19 +272,19 @@ public class Player extends Entity {
             switch (directionDamage) {
                 case 6:
                     direction = "left";
-                    System.out.println("Damaged from right");
+                    // System.out.println("Damaged from right");
                     break;
                 case 8:
                     direction = "down";
-                    System.out.println("Damaged from up");
+                    // System.out.println("Damaged from up");
                     break;
                 case 4:
                     direction = "right";
-                    System.out.println("Damaged from left");
+                    // System.out.println("Damaged from left");
                     break;
                 case 2:
                     direction = "up";
-                    System.out.println("Damaged from down");
+                    // System.out.println("Damaged from down");
                     break;
             
                 default:
@@ -354,6 +354,8 @@ public class Player extends Entity {
         worldXDouble = worldX;
         worldYDouble = worldY;
 
+        //System.out.println("WorldX: " + worldX);
+
 
     }
 
@@ -367,7 +369,7 @@ public class Player extends Entity {
                 case "Key":
                     hasKey++;
                     gp.obj[i] = null; 
-                    System.out.println("Key: " + hasKey);
+                    //System.out.println("Key: " + hasKey);
                     gp.playSE(1);
                     break;
                 case "Door":

@@ -54,7 +54,7 @@ public class ConfigManager {
                 if (line.isBlank() || line.startsWith("#")) {
                     continue; // Skip lines that are empty or start with #
                 }
-                System.out.println(line);
+                // System.out.println(line);
                 String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
                     config.put(parts[0].trim(), parts[1].trim());
@@ -63,11 +63,11 @@ public class ConfigManager {
             }
             
         } catch (Exception e) {
-            System.out.println("Config error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            // System.out.println("Config error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
             e.printStackTrace(); // show the line number and reason
         }
 
-        System.out.println("Config loaded");
+        // System.out.println("Config loaded");
 
         return config;
 

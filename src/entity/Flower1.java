@@ -94,6 +94,9 @@ public class Flower1 extends Entity{
                     gp.player.waterAmount = 0;
 
                     waterTimer = waterTimerMax;
+                    for (int i = 0; i < 8; i++) {
+                        gp.dropSetter.dropHeart(gp, worldX, worldY, "heart");
+                    }
 
                 }
 

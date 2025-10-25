@@ -14,6 +14,7 @@ import src.entity.Entity;
 import src.entity.Monster;
 import src.entity.Player;
 import src.fx.HealthBar;
+import src.lib.Random;
 import src.object.SuperObject;
 import src.tile.TileManager;
 import src.entity.Attack;
@@ -196,13 +197,18 @@ public class GamePanel extends JPanel implements Runnable {
                             entity.directionDamage = i[1];
                             entity.getHit = true;
                             
-                            System.out.println("direction damage: " + i[1]);
+                            // System.out.println("direction damage: " + i[1]);
                         }
                     }
                     //System.out.println("direction damage: ");
                     entity.update(this);
                     if (entity.HP <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
+                        int rInt = Random.randomInt(1, 8);
+                        for (int j = 0; j < rInt; j++) {
+                            dropSetter.dropCoin(this, entity.worldX, entity.worldY, "coin");
+                        }
+                        
                         it.remove();
                         playSE(7);
                     }
@@ -225,7 +231,7 @@ public class GamePanel extends JPanel implements Runnable {
 
       
 
-        if (!entities.isEmpty()) {
+        if (!drops.isEmpty()) {
             
 
             int index = collisionDetection.checkDrop(player, this);
@@ -252,7 +258,7 @@ public class GamePanel extends JPanel implements Runnable {
                     if (drop.pickedUp) {
                         //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         itDrop.remove();
-                        player.waterAmount++;
+                        
                         playSE(1);
                     }
                 }

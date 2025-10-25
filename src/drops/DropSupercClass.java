@@ -86,6 +86,13 @@ public class DropSupercClass {
     public void update(GamePanel gp, Player player) {
         // drawing logic for this entity
 
+        if (pickedUp) {
+            pickedUp(gp);
+
+            return;
+        }
+
+
         speed = Math.sqrt(speedX * speedX + speedY * speedY);
         speedAngle = Math.atan2(speedY, speedX);
 
@@ -133,6 +140,10 @@ public class DropSupercClass {
 
     public void setup() {
         
+    }
+
+    public void pickedUp(GamePanel gp) {
+
     }
     
 }

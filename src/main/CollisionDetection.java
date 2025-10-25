@@ -340,7 +340,7 @@ public class CollisionDetection {
 
                         directionDamage = (int) Math.toDegrees(Math.atan2(dY, dX));
 
-                        System.out.println("dX: " + dX + " dY: " + dY + " directionDamage: " + directionDamage);
+                        // System.out.println("dX: " + dX + " dY: " + dY + " directionDamage: " + directionDamage);
 
                         attackeeEntity.directionDamage = directionDamage;
 

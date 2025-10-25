@@ -45,5 +45,9 @@ public class WaterBottle extends DropSupercClass{
     //     g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
         
     // }
+
+    public void pickedUp(GamePanel gp) {
+        gp.player.waterAmount++;
+    }
     
 }

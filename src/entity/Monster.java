@@ -176,7 +176,7 @@ public class Monster extends Entity {
             speedX = speedX - 30 * Math.cos(Math.toRadians(directionDamage));
             speedY = speedY - 30 * Math.sin(Math.toRadians(directionDamage));
 
-            System.out.println("dspeedX: " + 20 * Math.cos(Math.toRadians(directionDamage)) + " dspeedY: " + 20 * Math.sin(Math.toRadians(directionDamage)) + " directionDamage: " + directionDamage);
+            // System.out.println("dspeedX: " + 20 * Math.cos(Math.toRadians(directionDamage)) + " dspeedY: " + 20 * Math.sin(Math.toRadians(directionDamage)) + " directionDamage: " + directionDamage);
 
 
         }

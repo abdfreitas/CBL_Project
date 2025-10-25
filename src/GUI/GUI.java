@@ -27,6 +27,8 @@ public class GUI {
     int displacementAngle = 0;
     int displacementAngleOffset = 60;
 
+    public int coins;
+
     public GUI() {
 
 
@@ -99,6 +101,8 @@ public class GUI {
         // AIM
         g2.drawImage(mouse[frameNum - 1], (int) 520, (int) 445 + displacementY2, gp.tileSize * 2, gp.tileSize * 2, null);
         g2.drawImage(aim, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, gp.tileSize * 2, null);
+
+        g2.drawString("Coins: " + coins, 500, 100);
 
         //g2.drawString("DEBUG MODE ON", debugOffsetX, debugOffsetY);
 

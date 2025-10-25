@@ -45,6 +45,11 @@ public class DropSupercClass {
 
     public boolean pickedUp = false;
 
+    public boolean interactable = false;
+
+    double screenX;
+    double screenY;
+
     
 
     public DropSupercClass(GamePanel gp, int originX, int originY, String name) {
@@ -144,6 +149,30 @@ public class DropSupercClass {
 
     public void pickedUp(GamePanel gp) {
 
+    }
+
+    public boolean interactedWith(GamePanel gp) {
+        if (gp.keyH.interactPressed && underCursor(gp)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean underCursor(GamePanel gp) {
+
+        screenX = worldX - gp.player.worldX + gp.player.screenX;
+        screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        if (gp.mIn.mouseX > screenX + solidArea.x 
+                && gp.mIn.mouseX < screenX + solidArea.x + solidArea.width
+                && gp.mIn.mouseY > screenY + solidArea.y 
+                && gp.mIn.mouseY < screenY + solidArea.y + solidArea.height) {
+
+            return true;
+        } else { 
+            return false;
+        }
     }
     
 }

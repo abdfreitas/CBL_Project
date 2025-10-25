@@ -62,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     // Entity and object
-    public Player player = new Player(this, keyH);
+    public Player player = new Player(this, 30, 30, "player");
     //public Monster monster = new Monster(this, player);
     public SuperObject[] obj = new SuperObject[20];
     public Attack attack = new Attack(keyH, this, player);
@@ -201,7 +201,7 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                     }
                     //System.out.println("direction damage: ");
-                    entity.update(this);
+                    entity.update();
                     if (entity.HP <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         int rInt = Random.randomInt(1, 8);
@@ -224,7 +224,7 @@ public class GamePanel extends JPanel implements Runnable {
         for (Entity entity : friendlies) {
             if (entity != null) {
                 if (entity != player) {
-                    entity.update(this);
+                    entity.update();
                 }
             }
         }

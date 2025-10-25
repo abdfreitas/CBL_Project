@@ -61,10 +61,12 @@ public class Player extends Entity {
 
 
 
-    public Player (GamePanel gp, KeyHandler keyH) {
+    public Player (GamePanel gp, int originX, int originY, String name) {
+
+        super(gp, originX, originY, name);
 
         this.gp = gp;
-        this.keyH = keyH;
+        keyH = gp.keyH;
 
         this.cStack = keyH.cStack;
 
@@ -214,10 +216,10 @@ public class Player extends Entity {
 
             spriteCounter++;
             if (spriteCounter >= 12 * 4 / speedDouble) {
-                if (spriteNum >= 4) {
-                    spriteNum = 1;
+                if (frameNum >= 4) {
+                    frameNum = 1;
                 } else {
-                    spriteNum++;
+                    frameNum++;
                 }
                 spriteCounter = 0;
             }
@@ -411,28 +413,28 @@ public class Player extends Entity {
 
         switch (lookDirection) {
             case "up":
-                if (spriteNum % 2 != 0) {
+                if (frameNum % 2 != 0) {
                     image = up1;
                 } else {
                     image = up2;
                 }
                 break;
             case "left":
-                if (spriteNum % 2 != 0) {
+                if (frameNum % 2 != 0) {
                     image = left1;
                 } else {
                     image = left2;
                 }
                 break;
             case "down":
-                if (spriteNum % 2 != 0) {
+                if (frameNum % 2 != 0) {
                     image = down1;
                 } else {
                     image = down2;
                 }
                 break;
             case "right":
-                if (spriteNum % 2 != 0) {
+                if (frameNum % 2 != 0) {
                     image = right1;
                 } else {
                     image = right2;

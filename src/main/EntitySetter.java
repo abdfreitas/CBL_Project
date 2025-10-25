@@ -44,35 +44,27 @@ public class EntitySetter {
 
     public void setEntity(GamePanel gp) {
 
-        gp.entities.add(new Monster(gp, player));
-        gp.entities.get(0).worldXDouble = gp.tileSize * 25;
-        gp.entities.get(0).worldYDouble = gp.tileSize * 20;
-        gp.entities.get(0).accelerationFactor = ConfigManager.getDouble("monster.speed", 0);
+        
+
+        Monster m = new Monster(gp, 25 * gp.tileSize, 20 * gp.tileSize, "monster");
+        gp.entities.add(m);
+
+        m = new Monster(gp, 25 * gp.tileSize, 22 * gp.tileSize, "monster");
+        gp.entities.add(m);
 
 
-        gp.entities.add(new Monster(gp, player));
-        gp.entities.get(1).worldXDouble = gp.tileSize * 25;
-        gp.entities.get(1).worldYDouble = (gp.tileSize * 22);
-        gp.entities.get(1).accelerationFactor = ConfigManager.getDouble("monster.speed", 0);
+        
 
-        gp.friendlies.add(new Flower1(gp, player));
-        gp.friendlies.get(1).worldX = gp.tileSize * 20;
-        gp.friendlies.get(1).worldY = gp.tileSize * 20;
-        gp.friendlies.get(1).worldXDouble = gp.tileSize * 20;
-        gp.friendlies.get(1).worldYDouble = gp.tileSize * 20;
+        // gp.friendlies.add(new Flower1(gp, player));
+        // gp.friendlies.get(1).worldX = gp.tileSize * 20;
+        // gp.friendlies.get(1).worldY = gp.tileSize * 20;
+        // gp.friendlies.get(1).worldXDouble = gp.tileSize * 20;
+        // gp.friendlies.get(1).worldYDouble = gp.tileSize * 20;
 
-        Flower2 f = (new Flower2(gp, player));
-        f.worldX = gp.tileSize * 25;
-        f.worldY = gp.tileSize * 25;
-        f.worldXDouble = gp.tileSize * 25;
-        f.worldYDouble = gp.tileSize * 25;
+        Flower2 f = (new Flower2(gp, 25 * gp.tileSize, 25 * gp.tileSize, "flower2"));
         gp.friendlies.add(f);
 
-        Chicken c = new Chicken(gp, player);
-        c.worldX = 25 * gp.tileSize;
-        c.worldY = 20 * gp.tileSize;
-        c.worldXDouble = c.worldX;
-        c.worldYDouble = c.worldY;
+        Chicken c = (new Chicken(gp, 25 * gp.tileSize, 20 * gp.tileSize, "chicken"));
         gp.friendlies.add(c);
         
         
@@ -94,12 +86,17 @@ public class EntitySetter {
 
             while (spawnN > 0) {
 
-                Monster m = new Monster(gp, player);
-                m.worldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
-                m.worldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
-                m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
+                double spawnWorldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
+                double spawnWorldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
 
+                Monster m = new Monster(gp, (int) spawnWorldXDouble, (int) spawnWorldYDouble, "monster");
+                m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
                 gp.entities.add(m);
+
+                
+                
+
+                
 
                 spawnN--;
                 
@@ -154,6 +151,8 @@ public class EntitySetter {
 
         return n;
     }
+
+    
 
     
 }

@@ -37,7 +37,9 @@ public class Flower1 extends Entity{
     
 
 
-    public Flower1(GamePanel gp, Player player) {
+    public Flower1(GamePanel gp, int originX, int originY, String name) {
+
+        super(gp, originX, originY, name);
 
         collisionOn = true;
 

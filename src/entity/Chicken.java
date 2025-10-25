@@ -14,25 +14,31 @@ import src.main.KeyHandler;
 
 public class Chicken extends Entity{
 
-    GamePanel gp;
-    KeyHandler keyH;
+    // GamePanel gp;
+    // KeyHandler keyH;
 
-    public final int screenX;
-    public final int screenY;
+    // public final int screenX;
+    // public final int screenY;
 
-    int spriteCounter = 0;
-    int spriteCounterMax = 23;
-    int frameNum = 1;
-    int frameNumMax = 2;
+    // // int spriteCounter = 0;
+    // // int spriteCounterMax = 23;
+    // // int frameNum = 1;
+    // // int frameNumMax = 2;
 
-    BufferedImage[] frame = new BufferedImage[2];
+    // BufferedImage[] frame = new BufferedImage[2];
 
     
 
 
-    public Chicken(GamePanel gp, Player player) {
+    public Chicken(GamePanel gp, int originX, int originY, String name) {
+
+        super(gp, originX, originY, name);
+
+        interactable = true;
 
         collisionOn = true;
+
+        frameNumMax = 2;
 
         this.gp = gp;
         this.keyH = keyH;
@@ -65,33 +71,33 @@ public class Chicken extends Entity{
 
     }
 
-    public void draw(Graphics2D g2) {
+    // public void draw(Graphics2D g2) {
 
 
-        BufferedImage image = null;
+    //     BufferedImage image = null;
 
-        double screenX = worldX - gp.player.worldX + gp.player.screenX;
-        double screenY = worldY - gp.player.worldY + gp.player.screenY;
+    //     double screenX = worldX - gp.player.worldX + gp.player.screenX;
+    //     double screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        spriteCounter++;
-        if (spriteCounter > spriteCounterMax) {
-            spriteCounter = 0;
-            frameNum++;
-            if (frameNum > frameNumMax) {
-                frameNum = 1;
-            }
-        }
+    //     spriteCounter++;
+    //     if (spriteCounter > spriteCounterMax) {
+    //         spriteCounter = 0;
+    //         frameNum++;
+    //         if (frameNum > frameNumMax) {
+    //             frameNum = 1;
+    //         }
+    //     }
 
-        image = frame[frameNum - 1];
+    //     image = frame[frameNum - 1];
 
-        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+    //     g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
 
-        if (keyH.debugEnabled) {
-            g2.setColor(Color.RED);
-            g2.drawRect((int) screenX + solidArea.x, (int) screenY + solidArea.y, solidArea.width, solidArea.height);
-            g2.setColor(Color.RED);
-        }
+    //     if (keyH.debugEnabled) {
+    //         g2.setColor(Color.RED);
+    //         g2.drawRect((int) screenX + solidArea.x, (int) screenY + solidArea.y, solidArea.width, solidArea.height);
+    //         g2.setColor(Color.RED);
+    //     }
 
-    }
+    // }
 
 }

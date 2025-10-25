@@ -60,7 +60,11 @@ public class Monster extends Entity {
     
 
 
-    public Monster(GamePanel gp, Player player) {
+    public Monster(GamePanel gp, int originX, int originY, String name) {
+
+        super(gp, originX, originY, name);
+
+        //interactable = true;
 
         speedX = 0;
         speedY = 0;
@@ -72,7 +76,7 @@ public class Monster extends Entity {
 
         
         doesDamage = true;
-        player1 = player;
+        player1 = gp.player;
 
         HPMax = ConfigManager.getInt("monster.HPMax", 50);
         HP = HPMax;
@@ -81,7 +85,7 @@ public class Monster extends Entity {
 
         stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
 
-        displacementAngleOffset = Random.randomInt(0, 360);
+        
         
 
 
@@ -121,7 +125,7 @@ public class Monster extends Entity {
         
     }
 
-    public void update(GamePanel gp) {
+    public void updateSub() {
 
         int index = 999;
         double distance = 0;
@@ -264,7 +268,7 @@ public class Monster extends Entity {
 
         
 
-        displacementAngle = displacementAngle + 2;
+        
 
         if (Math.abs(dX) > Math.abs(dY)) {
             if (dX > 0) {

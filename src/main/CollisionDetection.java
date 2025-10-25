@@ -280,6 +280,7 @@ public class CollisionDetection {
                 if (player.solidArea.intersects(drop.solidArea)) {
                     //System.out.println("drop collision");
                     index = gp.drops.indexOf(drop);
+                    drop.pickedUp = true;
                     
                 }
 
@@ -332,24 +333,16 @@ public class CollisionDetection {
                         //System.out.println("Hit!");
 
                         attackeeEntity.getHit = true;
-                        index = gp.entities.indexOf(entity);
+                        index = gp.entities.indexOf(attackeeEntity);
 
                         int dX = entity.worldX - (int) attackeeEntity.worldXDouble;
                         int dY = entity.worldY - (int) attackeeEntity.worldYDouble;
 
-                        if (Math.abs(dX) > Math.abs(dY)) {
-                            if (dX > 0) {
-                                directionDamage = 4;
-                            } else {
-                                directionDamage = 6;
-                            }
-                        } else {
-                            if (dY > 0) {
-                                directionDamage = 8;
-                            } else {
-                                directionDamage = 2;
-                            }
-                        }
+                        directionDamage = (int) Math.toDegrees(Math.atan2(dY, dX));
+
+                        System.out.println("dX: " + dX + " dY: " + dY + " directionDamage: " + directionDamage);
+
+                        attackeeEntity.directionDamage = directionDamage;
 
                         attackInfo.add(new int[] {index, directionDamage});
                     }

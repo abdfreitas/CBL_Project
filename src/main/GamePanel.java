@@ -114,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
         dropSetter.setDrop(this, 20 * tileSize, 30 * tileSize, "coin");
 
         for (DropSupercClass drop : drops) {
-            System.out.println(drop.name);
+            //System.out.println(drop.name);
         }
 
         playMusic(0);
@@ -193,10 +193,13 @@ public class GamePanel extends JPanel implements Runnable {
                 if (entity != null) {
                     for (int[] i : attackInfo) {
                         if (i[0] == entities.indexOf(entity)) {
-                            entity.getHit = true;
                             entity.directionDamage = i[1];
+                            entity.getHit = true;
+                            
+                            System.out.println("direction damage: " + i[1]);
                         }
                     }
+                    //System.out.println("direction damage: ");
                     entity.update(this);
                     if (entity.HP <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
@@ -228,20 +231,27 @@ public class GamePanel extends JPanel implements Runnable {
             int index = collisionDetection.checkDrop(player, this);
 
             if (index != 999) {
-                System.out.println(index);
+                //System.out.println(index);
             }
 
 
 
-            Iterator<DropSupercClass> it = drops.iterator();
-            while (it.hasNext()) {
-                DropSupercClass drop = it.next();
+            Iterator<DropSupercClass> itDrop = drops.iterator();
+            while (itDrop.hasNext()) {
+                DropSupercClass drop = itDrop.next();
                 if (drop != null) {
                     drop.update(this, player);
 
-                    if (drops.indexOf(drop) == index && drop.pickupable == true) {
+                    // if (drops.indexOf(drop) == index && drop.pickupable == true) {
+                    //     //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
+                    //     itDrop.remove();
+                    //     player.waterAmount++;
+                    //     playSE(1);
+                    // }
+
+                    if (drop.pickedUp) {
                         //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
-                        it.remove();
+                        itDrop.remove();
                         player.waterAmount++;
                         playSE(1);
                     }

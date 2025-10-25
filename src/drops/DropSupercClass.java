@@ -43,6 +43,8 @@ public class DropSupercClass {
     double speedAngle;
     double targetAngle;
 
+    public boolean pickedUp = false;
+
     
 
     public DropSupercClass(GamePanel gp, int originX, int originY, String name) {
@@ -121,7 +123,7 @@ public class DropSupercClass {
         
         
 
-        System.out.println(pullForce *  Math.cos(speedAngle) / distance);
+        //System.out.println(pullForce *  Math.cos(speedAngle) / distance);
 
         worldX = (int) ((double) worldX + speedX);
         worldY = (int) ((double) worldY + speedY);

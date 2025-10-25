@@ -37,6 +37,9 @@ public class Entity {
 
     public int invincibleCounter = 0;
 
+    public double accelerationFactor;
+
+
     public boolean stunned = false;
     public int stunCounter = 0;
     public int stunCounterMax = 12;

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+
 import javax.imageio.ImageIO;
 
 import src.lib.CharStack;
@@ -13,6 +14,7 @@ import src.main.GamePanel;
 import src.main.KeyHandler;
 import src.user.ConfigManager;
 import src.entity.Player;
+import src.lib.Random;
 
 public class Monster extends Entity {
 
@@ -39,6 +41,18 @@ public class Monster extends Entity {
     int displacementAngle = 0;
     int displacementAngleOffset;
 
+    double acceleration;
+    double accelerationFactorRandomOffset;
+    double decelerationFactor = 0.01;
+    double deceleration;
+
+    double distanceAngle;
+    public double speedDouble;
+    public double speedAngle;
+    double speedX;
+    double speedY;
+    double speedMax = 5;
+
     
 
     
@@ -47,6 +61,14 @@ public class Monster extends Entity {
 
 
     public Monster(GamePanel gp, Player player) {
+
+        speedX = 0;
+        speedY = 0;
+        speedDouble = 0;
+
+        accelerationFactorRandomOffset = Random.randomDouble(-0.5, 0.5);
+        //System.out.println(accelerationFactorRandomOffset);
+        
 
         
         doesDamage = true;
@@ -59,7 +81,7 @@ public class Monster extends Entity {
 
         stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
 
-        displacementAngleOffset = (int) (Math.random() * 360);
+        displacementAngleOffset = Random.randomInt(0, 360);
         
 
 
@@ -83,7 +105,7 @@ public class Monster extends Entity {
         //worldX = gp.tileSize * 25;
         //worldY = gp.tileSize * 21;
 
-        speedDouble = 2;
+        speedDouble = 0;
 
         try {
             frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
@@ -111,6 +133,8 @@ public class Monster extends Entity {
         double distancePrioritized = 999999999;
         double distancePrioritizedTemp = 0;
 
+        
+
         for (Entity entity : gp.friendlies) {
             if (entity != null) {
 
@@ -120,6 +144,7 @@ public class Monster extends Entity {
                 dYTemp = entity.worldYDouble - worldYDouble;
 
                 distanceTemp = Math.sqrt((dXTemp * dXTemp) + (dYTemp * dYTemp));
+                
                 distancePrioritizedTemp = distanceTemp / entity.priority;
                 if (distancePrioritizedTemp < distancePrioritized) {
                     distancePrioritized = distancePrioritizedTemp;
@@ -127,6 +152,7 @@ public class Monster extends Entity {
                     dX = dXTemp;
                     dY = dYTemp;
                     index = gp.entities.indexOf(entity);;
+                    distanceAngle = Math.atan2(dYTemp, dXTemp);
                 }
 
             }
@@ -146,6 +172,11 @@ public class Monster extends Entity {
             //System.out.println("Monster HP: " + HP);
 
             gp.playSE(6);
+
+            speedX = speedX - 30 * Math.cos(Math.toRadians(directionDamage));
+            speedY = speedY - 30 * Math.sin(Math.toRadians(directionDamage));
+
+            System.out.println("dspeedX: " + 20 * Math.cos(Math.toRadians(directionDamage)) + " dspeedY: " + 20 * Math.sin(Math.toRadians(directionDamage)) + " directionDamage: " + directionDamage);
 
 
         }
@@ -172,19 +203,47 @@ public class Monster extends Entity {
 
         // double distance = Math.sqrt((dX * dX) + (dY * dY));
 
-        double speedX;
-        double speedY;
+        
+        speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
+        speedAngle = Math.atan2(speedY, speedX);
+
+        acceleration = accelerationFactor + accelerationFactorRandomOffset * accelerationFactor;
+
+        //System.out.println(acceleration);
 
         if (distance > 25) {
-            speedX = (speedDouble * dX / distance) + (speedDouble * dX / 100);
-            speedY = (speedDouble * dY / distance) + (speedDouble * dY / 100);
+            speedX = speedX + (acceleration * Math.cos(distanceAngle));
+            speedY = speedY + (acceleration * Math.sin(distanceAngle));
+
+            
 
         } else {
-            speedX = 0;
-            speedY = 0;
+            // speedX = 0;
+            // speedY = 0;
 
         }
 
+        speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
+        speedAngle = Math.atan2(speedY, speedX);
+
+        deceleration = decelerationFactor * speedDouble * speedDouble;
+
+        if (speedDouble > 0.01) {
+            speedX = speedX - (deceleration * Math.cos(speedAngle));
+            speedY = speedY - (deceleration * Math.sin(speedAngle));
+
+        } else if (speedDouble < 0.01) {
+            speedX = speedX + (deceleration * Math.cos(speedAngle));
+            speedY = speedY + (deceleration * Math.sin(speedAngle));
+        } else {
+            speedX = 0;
+            speedY = 0;
+        }
+
+        speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
+        speedAngle = Math.atan2(speedY, speedX);
+
+        //System.out.println("Speed: " + speedDouble + " Acceleration: " + acceleration + " Deceleration: " + deceleration); 
         
 
         
@@ -194,14 +253,16 @@ public class Monster extends Entity {
         }
 
         if (stunned) {
-            speedX = speedX / 4;
-            speedY = speedY / 4;
+            worldXDouble += speedX / 2;
+            worldYDouble += speedY / 2;
+        } else {
+            worldXDouble += speedX;
+            worldYDouble += speedY;
         }
 
 
 
-        worldXDouble += speedX;
-        worldYDouble += speedY;
+        
 
         displacementAngle = displacementAngle + 2;
 

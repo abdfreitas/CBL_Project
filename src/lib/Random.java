@@ -16,8 +16,8 @@ public class Random {
     }
 
     static public double randomDouble(double min, double  max) {
-        double n = Math.random() * ((max 
-                - min) + min);
+        double n = Math.random() * (max 
+                - min) + min;
 
         return n;
     }

@@ -46,13 +46,13 @@ public class EntitySetter {
         gp.entities.add(new Monster(gp, player));
         gp.entities.get(0).worldXDouble = gp.tileSize * 25;
         gp.entities.get(0).worldYDouble = gp.tileSize * 20;
-        gp.entities.get(0).speedDouble = ConfigManager.getDouble("monster.speed", 0);
+        gp.entities.get(0).accelerationFactor = ConfigManager.getDouble("monster.speed", 0);
 
 
         gp.entities.add(new Monster(gp, player));
         gp.entities.get(1).worldXDouble = gp.tileSize * 25;
         gp.entities.get(1).worldYDouble = (gp.tileSize * 22);
-        gp.entities.get(1).speedDouble = ConfigManager.getDouble("monster.speed", 0) * 0.6;
+        gp.entities.get(1).accelerationFactor = ConfigManager.getDouble("monster.speed", 0);
 
         gp.friendlies.add(new Flower1(gp, player));
         gp.friendlies.get(1).worldX = gp.tileSize * 20;
@@ -89,7 +89,7 @@ public class EntitySetter {
                 Monster m = new Monster(gp, player);
                 m.worldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
                 m.worldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
-                m.speedDouble = ConfigManager.getDouble("monster.speed", 0) * randomDouble(0.4, 1.2);
+                m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
 
                 gp.entities.add(m);
 

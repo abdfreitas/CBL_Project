@@ -17,6 +17,7 @@ public class KeyHandler implements KeyListener{
     public boolean shiftPressed = false;
     public boolean attack_Pressed = false;
     public boolean boost = false;
+    public boolean interactPressed = false;
 
     @Override
     public void keyTyped(KeyEvent e) {

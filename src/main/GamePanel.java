@@ -51,8 +51,8 @@ public class GamePanel extends JPanel implements Runnable {
     // System
 
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
-    MouseInput mIn = new MouseInput();
+    public KeyHandler keyH = new KeyHandler();
+    public MouseInput mIn = new MouseInput();
     MouseClickInput mClick = new MouseClickInput(keyH);
     Sound sound = new Sound();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
@@ -298,7 +298,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        if (!entities.isEmpty()) {
+        if (!drops.isEmpty()) {
             for (DropSupercClass drop : drops) {
                 if (drop != null) {
                     //System.out.println("Drawing entity");

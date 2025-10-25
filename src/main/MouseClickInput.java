@@ -21,6 +21,14 @@ public class MouseClickInput implements MouseListener {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = true;
             keyH.attack_Pressed = true;
+
+            //System.out.println("MB1 clicked");
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            
+            keyH.interactPressed = true;
+            //System.out.println("MB2 clicked");
+
         }
     }
 
@@ -29,6 +37,10 @@ public class MouseClickInput implements MouseListener {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = false;
             keyH.attack_Pressed = false;
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            
+            keyH.interactPressed = false;
         }
     }
 

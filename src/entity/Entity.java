@@ -54,6 +54,8 @@ public class Entity {
 
     public boolean getDamage = false;
 
+    public boolean interactable = false;
+
     
     public void draw(Graphics2D g2) {
         // drawing logic for this entity

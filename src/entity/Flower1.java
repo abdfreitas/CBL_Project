@@ -26,6 +26,13 @@ public class Flower1 extends Entity{
     int frameNumMax = 2;
 
     BufferedImage[] frame = new BufferedImage[2];
+    BufferedImage waterCan;
+
+    int waterTimer;
+    int waterTimerMax = 200;
+
+    int displacementAngle;
+    int displacementAngleOffset;
 
     
 
@@ -58,10 +65,46 @@ public class Flower1 extends Entity{
         try {
             frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower1/Flower 1-1.png.png"));
             frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower1/Flower 1-2.png.png"));
+
+            waterCan = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-1.png.png"));;
         } catch (IOException e) {
             // TODO: handle exception
             e.printStackTrace();
         }
+
+    }
+
+    public void update(GamePanel gp) {
+
+
+        double screenX = worldX - gp.player.worldX + gp.player.screenX;
+        double screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        if (gp.keyH.interactPressed) {
+            //System.out.println("MB2 clicked");
+
+            if (gp.mIn.mouseX > screenX + solidArea.x 
+                && gp.mIn.mouseX < screenX + solidArea.x + solidArea.width
+                && gp.mIn.mouseY > screenY + solidArea.y 
+                && gp.mIn.mouseY < screenY + solidArea.y + solidArea.height) {
+
+                System.out.println("Flower clicked");
+
+                if (gp.player.waterAmount >= 13) {
+                    gp.player.waterAmount = 0;
+
+                    waterTimer = waterTimerMax;
+
+                }
+
+            }
+        }
+
+        if (waterTimer > 0) {
+            waterTimer--;
+        }
+
+
 
     }
 
@@ -82,9 +125,25 @@ public class Flower1 extends Entity{
             }
         }
 
+        
+
         image = frame[frameNum - 1];
 
         g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+
+
+        if (waterTimer > 0) {
+
+            int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle 
+                + displacementAngleOffset)) * 6);
+
+            image = waterCan;
+
+            g2.drawImage(image, (int) screenX + 30, (int) screenY - 60 + displacementY, 
+                gp.tileSize * 2, gp.tileSize * 2, null);
+
+        }
+        
 
         if (keyH.debugEnabled) {
             g2.setColor(Color.RED);

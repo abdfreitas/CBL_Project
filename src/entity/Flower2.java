@@ -12,7 +12,7 @@ import src.lib.CharStack;
 import src.main.GamePanel;
 import src.main.KeyHandler;
 
-public class Flower1 extends Entity{
+public class Flower2 extends Entity{
 
     GamePanel gp;
     KeyHandler keyH;
@@ -37,7 +37,7 @@ public class Flower1 extends Entity{
     
 
 
-    public Flower1(GamePanel gp, Player player) {
+    public Flower2(GamePanel gp, Player player) {
 
         collisionOn = true;
 
@@ -63,8 +63,8 @@ public class Flower1 extends Entity{
         
 
         try {
-            frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower1/Flower 1-1.png.png"));
-            frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower1/Flower 1-2.png.png"));
+            frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower2/Flower 2-1.png.png"));
+            frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/flower2/Flower 2-2.png.png"));
 
             waterCan = ImageIO.read(getClass().getResourceAsStream("/res/GUI/watercan/WaterCan2-1.png.png"));;
         } catch (IOException e) {
@@ -90,15 +90,15 @@ public class Flower1 extends Entity{
 
                 //System.out.println("Flower clicked");
 
-                // if (gp.player.waterAmount >= 13) {
-                //     gp.player.waterAmount = 0;
+                if (gp.player.waterAmount >= 13) {
+                    gp.player.waterAmount = 0;
 
-                //     waterTimer = waterTimerMax;
-                //     for (int i = 0; i < 8; i++) {
-                //         gp.dropSetter.dropHeart(gp, worldX, worldY, "heart");
-                //     }
+                    waterTimer = waterTimerMax;
+                    for (int i = 0; i < 8; i++) {
+                        gp.dropSetter.dropHeart(gp, worldX, worldY, "heart");
+                    }
 
-                // }
+                }
 
             }
         }

@@ -2,6 +2,7 @@ package src.main;
 
 import src.entity.Entity;
 import src.entity.Flower1;
+import src.entity.Flower2;
 import src.entity.Monster;
 import src.entity.Player;
 import src.user.ConfigManager;
@@ -59,6 +60,13 @@ public class EntitySetter {
         gp.friendlies.get(1).worldY = gp.tileSize * 20;
         gp.friendlies.get(1).worldXDouble = gp.tileSize * 20;
         gp.friendlies.get(1).worldYDouble = gp.tileSize * 20;
+
+        Flower2 f = (new Flower2(gp, player));
+        f.worldX = gp.tileSize * 25;
+        f.worldY = gp.tileSize * 25;
+        f.worldXDouble = gp.tileSize * 25;
+        f.worldYDouble = gp.tileSize * 25;
+        gp.friendlies.add(f);
 
         Chicken c = new Chicken(gp, player);
         c.worldX = 25 * gp.tileSize;

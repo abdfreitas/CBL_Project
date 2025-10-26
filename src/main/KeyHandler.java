@@ -18,6 +18,10 @@ public class KeyHandler implements KeyListener{
     public boolean attack_Pressed = false;
     public boolean boost = false;
     public boolean interactPressed = false;
+    public boolean dodgePressed = false;
+    
+
+    
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -69,7 +73,9 @@ public class KeyHandler implements KeyListener{
 
         if (code == KeyEvent.VK_SPACE) {
 
-            attack_Pressed = true;
+            //attack_Pressed = true;
+
+            dodgePressed = true;
         }
 
         if (code == KeyEvent.VK_B) {
@@ -112,7 +118,7 @@ public class KeyHandler implements KeyListener{
 
         if (code == KeyEvent.VK_SPACE) {
 
-            attack_Pressed = false;
+            dodgePressed = false;
         }
 
         if (code == KeyEvent.VK_B) {

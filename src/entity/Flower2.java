@@ -99,6 +99,10 @@ public class Flower2 extends Entity{
             if (gp.player.waterAmount >= 13) {
                 gp.player.waterAmount = 0;
                 hasBeenWatered = true;
+                if (gp.wave == 0) {
+                    gp.wave = 1;
+                }
+                
 
                 waterTimer = waterTimerMax;
                 for (int i = 0; i < 8; i++) {

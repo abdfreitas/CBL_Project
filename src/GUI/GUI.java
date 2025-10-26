@@ -67,6 +67,16 @@ public class GUI {
     }
     public void draw(Graphics2D g2, GamePanel gp) {
 
+
+        // Night settings:
+        if (gp.wave > 0) {
+            g2.setColor(new Color(30, 20, 70, 50));
+
+            g2.fillRect(0, 0, 800, 600);
+        }
+        
+        
+
         spriteCounter++;
         if (spriteCounter > spriteCounterMax) {
             spriteCounter = 0;
@@ -103,6 +113,7 @@ public class GUI {
         g2.drawImage(aim, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, gp.tileSize * 2, null);
 
         g2.drawString("Coins: " + coins, 500, 100);
+        g2.drawString("Wave: " + gp.wave, 500, 80);
 
         //g2.drawString("DEBUG MODE ON", debugOffsetX, debugOffsetY);
 

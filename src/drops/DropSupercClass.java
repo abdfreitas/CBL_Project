@@ -55,6 +55,8 @@ public class DropSupercClass {
     public DropSupercClass(GamePanel gp, int originX, int originY, String name) {
 
         this.displacementAngleOffset = Random.randomDouble(0, 2 * Math.PI);
+
+        //System.out.println(displacementAngleOffset);
         speed = Random.randomDouble(1, 5);
         speedX = speed * Math.cos(displacementAngle);
         speedY = speed * Math.sin(displacementAngle);
@@ -73,6 +75,8 @@ public class DropSupercClass {
 
         displacementAngle = displacementAngle + 2;
 
+
+        // This line shouldnt be here but somehow everything breaks if removed.
         speedX = Math.cos(displacementAngleOffset) * speed;
         speedY = Math.sin(displacementAngleOffset) * speed;
 
@@ -80,11 +84,12 @@ public class DropSupercClass {
         double screenX = worldX - gp.player.worldX + gp.player.screenX;
         double screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle 
-            + displacementAngleOffset)) * 6);
+        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle) 
+            + displacementAngleOffset) * 6);
 
         image = frame;
-        g2.drawImage(image, (int) screenX, (int) screenY + displacementY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, (int) screenX, (int) screenY + displacementY,
+             gp.tileSize, gp.tileSize, null);
         
     }
 

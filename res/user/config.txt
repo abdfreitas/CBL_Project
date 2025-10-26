@@ -5,5 +5,5 @@ configTest = "Hello"
 
 monster.speed = 0.1
 monster.HPMax = 40
-monster.invincibleCounterMax = 20
+monster.invincibleCounterMax = 10
 monster.stunCounterMax = 40

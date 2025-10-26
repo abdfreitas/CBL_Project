@@ -5,6 +5,8 @@ import src.entity.Flower1;
 import src.entity.Flower2;
 import src.entity.Monster;
 import src.entity.Player;
+import src.entity.Snail1;
+import src.entity.ThroneBearer;
 import src.entity.Wizard;
 import src.user.ConfigManager;
 import src.entity.Chicken;
@@ -67,7 +69,7 @@ public class EntitySetter {
         Flower2 f = (new Flower2(gp, 25 * gp.tileSize, 25 * gp.tileSize, "flower2"));
         gp.friendlies.add(f);
 
-        Chicken c = (new Chicken(gp, 25 * gp.tileSize, 19 * gp.tileSize, "chicken"));
+        Chicken c = (new Chicken(gp, 25 * gp.tileSize, 15 * gp.tileSize, "chicken"));
         gp.friendlies.add(c);
         c = (new Chicken(gp, 20 * gp.tileSize, 20 * gp.tileSize, "chicken"));
         gp.friendlies.add(c);
@@ -76,6 +78,12 @@ public class EntitySetter {
 
         Wizard w = (new Wizard(gp, 27 * gp.tileSize, 22 * gp.tileSize, "wizard"));
         gp.friendlies.add(w);
+
+        Snail1 s = (new Snail1(gp, 27 * gp.tileSize, 17 * gp.tileSize, "wizard"));
+        gp.entities.add(s);
+
+        ThroneBearer t = (new ThroneBearer(gp, 21 * gp.tileSize, 16 * gp.tileSize, "wizard"));
+        gp.entities.add(t);
         
         
 

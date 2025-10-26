@@ -38,8 +38,7 @@ public class Monster extends Entity {
     int frameNum = 1;
     int frameNumMax = 2;
 
-    int displacementAngle = 0;
-    int displacementAngleOffset;
+    
 
     double acceleration;
     double accelerationFactorRandomOffset;
@@ -317,8 +316,8 @@ public class Monster extends Entity {
         image = frame[frameNumDirection - 1];
 
         int displacementX = (int) Math.cos(Math.toRadians(displacementAngle));
-        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle 
-            + displacementAngleOffset)) * 10);
+        int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle) 
+            + displacementAngleOffset) * 10);
 
         if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
             BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);

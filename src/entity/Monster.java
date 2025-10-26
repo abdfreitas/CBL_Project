@@ -175,7 +175,7 @@ public class Monster extends Entity {
 
             //System.out.println("Monster HP: " + HP);
 
-            gp.playSE(6);
+            gp.sound.playSfx(6);
 
             speedX = speedX - 30 * Math.cos(Math.toRadians(directionDamage));
             speedY = speedY - 30 * Math.sin(Math.toRadians(directionDamage));

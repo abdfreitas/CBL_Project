@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public KeyHandler keyH = new KeyHandler();
     public MouseInput mIn = new MouseInput();
     MouseClickInput mClick = new MouseClickInput(keyH);
-    Sound sound = new Sound();
+    public SoundManager sound = new SoundManager();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     
@@ -89,6 +89,10 @@ public class GamePanel extends JPanel implements Runnable {
     int playerY = 100;
     int playerSpeed = 4;
 
+    // Waves
+    public int wave = 0;
+    public int waveStarted = 0;
+
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -118,7 +122,13 @@ public class GamePanel extends JPanel implements Runnable {
             //System.out.println(drop.name);
         }
 
-        playMusic(0);
+        sound.playMusic(0, true);;
+
+        for (int j = 0; j < 50; j++) {
+            dropSetter.setDrop(this, Random.randomInt(0, 50) * tileSize, Random.randomInt(0, 50) * tileSize, "waterbottle");
+        }
+
+        
 
 
         
@@ -170,7 +180,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         
 
-        
+        if (wave == 1 && waveStarted == 0) {
+            waveStarted = 1;
+            sound.playMusic(8, true);
+            sound.setMusicGainDb(-15);
+            //playMusic(10);
+        }
 
 
 
@@ -210,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                         
                         it.remove();
-                        playSE(7);
+                        sound.playSfx(7);
                     }
                 }
             }
@@ -259,7 +274,7 @@ public class GamePanel extends JPanel implements Runnable {
                         //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         itDrop.remove();
                         
-                        playSE(1);
+                        sound.playSfx(1);
                     }
                 }
             }
@@ -385,25 +400,27 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    public void playMusic(int i) {
+    // public void playMusic(int i) {
 
-        sound.setFile(i);
-        sound.play();
+    //     sound.setFile(i);
+    //     sound.play();
         
-        sound.loop();
-    }
+    //     sound.loop();
+    // }
 
-    public void stopMusic() {
+    // public void stopMusic(int i) {
 
-        sound.stop();
+    //     sound.setFile(i);
 
-    }
+    //     sound.stop();
 
-    public void playSE(int i) {
+    // }
 
-        sound.setFile(i);
-        sound.play();
-    }
+    // public void playSE(int i) {
+
+    //     //sound.setFile(i);
+    //     sound.playSfx(i);
+    // }
 
     
         private int debugOffsetX;

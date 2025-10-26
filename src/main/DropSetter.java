@@ -14,6 +14,10 @@ public class DropSetter {
     public DropSetter(GamePanel gp) {
         this.gp = gp;
 
+        
+
+
+
     }
 
     public void setDrop(GamePanel gp, int originX, int originY, String name) {

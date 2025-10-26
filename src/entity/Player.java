@@ -36,6 +36,13 @@ public class Player extends Entity {
     private boolean shiftWasPressed;
     private boolean shiftWasReleased;
 
+    boolean dodgePressed;
+    boolean dodgeWasPressed;
+    boolean dodging;
+
+    int dodgeCounter;
+    int dodgeCounterMax = 30;
+
     
     // Mouse input 
     int playerCenterX;
@@ -54,7 +61,7 @@ public class Player extends Entity {
     String lookDirection = "down";
 
 
-    public int waterAmount = 12;
+    public int waterAmount = 10;
 
     
 
@@ -206,7 +213,20 @@ public class Player extends Entity {
                     lookDirection = direction;
                 }
 
+                if (keyH.dodgePressed && !dodgeWasPressed && dodgeCounter < 1) {
+                    dodging = true;
+                    dodgeWasPressed = true;
+                    dodge();
+                    dodgeCounter = dodgeCounterMax;
+                    
+                }
 
+
+            }
+
+            if (!keyH.dodgePressed) {
+                    
+                    dodgeWasPressed = false;
             }
 
             
@@ -261,7 +281,7 @@ public class Player extends Entity {
             }
         }
         if (getHit && !invincible) {
-            gp.playSE(5);
+            gp.sound.playSfx(5);
             getDamage = true;
             invincible = true;
             HP -= 10;
@@ -356,6 +376,8 @@ public class Player extends Entity {
         worldXDouble = worldX;
         worldYDouble = worldY;
 
+        dodgeCounter--;
+
         //System.out.println("WorldX: " + worldX);
 
 
@@ -372,13 +394,13 @@ public class Player extends Entity {
                     hasKey++;
                     gp.obj[i] = null; 
                     //System.out.println("Key: " + hasKey);
-                    gp.playSE(1);
+                    gp.sound.playSfx(1);
                     break;
                 case "Door":
                     if (hasKey > 0) {
                         gp.obj[i] = null;
                         hasKey--;
-                        gp.playSE(3);
+                        gp.sound.playSfx(3);
                     }
                     
                     break;
@@ -386,13 +408,13 @@ public class Player extends Entity {
                 case "Boots":
                     speedMax += 2;
                     gp.obj[i] = null;
-                    gp.playSE(2);
+                    gp.sound.playSfx(2);
                     break;
 
                 case "Chest":
                     
                     gp.obj[i] = null;
-                    gp.playSE(4);
+                    gp.sound.playSfx(4);
                     break;
                 
                 
@@ -471,6 +493,12 @@ public class Player extends Entity {
         
 
 
+    }
+
+    public void dodge() {
+        speedDouble += 10;
+        invincible = true;
+        invincibleCounter = invincibleCounterMax / 2;
     }
 
     // static BufferedImage makeSilhouette(BufferedImage sprite, Color color) {

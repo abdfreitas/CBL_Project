@@ -24,7 +24,7 @@ public class EntitySetter {
     int spawnWidth = 200;
     int spawnHeight = 200;
     int spawnN;
-    int spawnNMax = 12;
+    int spawnNMax = 6;
     int spawnNMin = 1;
 
     int spawnX;
@@ -49,13 +49,13 @@ public class EntitySetter {
 
         
 
-        Monster m = new Monster(gp, 25 * gp.tileSize, 20 * gp.tileSize, "monster");
-        m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
-        gp.entities.add(m);
+        // Monster m = new Monster(gp, 25 * gp.tileSize, 20 * gp.tileSize, "monster");
+        // m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
+        // gp.entities.add(m);
 
-        m = new Monster(gp, 25 * gp.tileSize, 22 * gp.tileSize, "monster");
-        m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
-        gp.entities.add(m);
+        // m = new Monster(gp, 25 * gp.tileSize, 22 * gp.tileSize, "monster");
+        // m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
+        // gp.entities.add(m);
 
 
         
@@ -91,41 +91,53 @@ public class EntitySetter {
     }
 
     public void update(GamePanel gp) {
-        if (spawnCounter <= 0) {
 
-            spawnN = (int) randomDoubleWeighedDown(spawnNMin, spawnNMax, 3, 0.3);;
-            spawnCounter = (int) randomDoubleWeighedDown(spawnCounterMin, spawnCounterMax, 3, 0.3);
+        if (gp.entities.size() < 3) {
+            if (spawnCounter <= 0 && gp.wave > 0) {
 
-            
-
-            spawnX = randomInt(spawnXMin, spawnXMax);
-
-            spawnY = randomInt(spawnYMin, spawnYMax);
-
-            while (spawnN > 0) {
-
-                double spawnWorldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
-                double spawnWorldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
-
-                Monster m = new Monster(gp, (int) spawnWorldXDouble, (int) spawnWorldYDouble, "monster");
-                m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
-                gp.entities.add(m);
-
+                
+                gp.wave++;
                 
                 
 
+                spawnNMin = (int) Math.pow(gp.wave * 0.4 + 1, 1.5);
+                spawnNMax = (int) Math.pow(gp.wave * 0.5 + 3, 1.5);;
+
+                spawnN = (int) randomDoubleWeighedDown(spawnNMin, spawnNMax, 3, 0.3);;
+                spawnCounter = (int) randomDoubleWeighedDown(spawnCounterMin, spawnCounterMax, 3, 0.3);
+
                 
 
-                spawnN--;
+                spawnX = randomInt(spawnXMin, spawnXMax);
+
+                spawnY = randomInt(spawnYMin, spawnYMax);
+
+                while (spawnN > 0) {
+
+                    double spawnWorldXDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
+                    double spawnWorldYDouble = (double) randomInt(spawnX, spawnX + spawnWidth);
+
+                    Monster m = new Monster(gp, (int) spawnWorldXDouble, (int) spawnWorldYDouble, "monster");
+                    m.accelerationFactor = ConfigManager.getDouble("monster.speed", 0.1);
+                    gp.entities.add(m);
+
+                    
+                    
+
+                    
+
+                    spawnN--;
+                    
+                }
+
+                
+
+
+
+            } else {
+                spawnCounter--;
                 
             }
-
-            
-
-
-
-        } else {
-            spawnCounter--;
         }
         // System.out.println(spawnCounter);
 

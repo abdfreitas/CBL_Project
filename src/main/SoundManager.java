@@ -8,18 +8,34 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 
+/*
+ * Important to note: 
+ * For this class, we make it known that this is not our original work. 
+ * This class was very heavily referenced and coded using ChatGPT.
+ * However, we attempted our best to look over the code and understand what is 
+ * happening in order to learn something from it for future projects.
+ */
 
-/** ADD COMMENT. */
+/**
+ * Handles all sound in the game, background music and sound effects.
+ * 
+ * Only one music track plays at a time, but multiple SFX can overlap.
+ */
 public class SoundManager {
 
-    private final URL[] urls = new URL[32];
-    private Clip musicClip;                    // single music line
+    private final URL[] urls = new URL[32];              // list of sound file paths
+    private Clip musicClip;                              // single music line
     private final Set<Clip> activeSfx = new HashSet<>(); // currently playing SFX
-    private int maxSfx = 16;                   // limit concurrent SFX
-    private float musicGainDb = 0.0f;          // overall music volume trim
-    private float sfxGainDb = 0.0f;            // overall SFX volume trim
+    private int maxSfx = 16;                             // limit concurrent SFX
+    private float musicGainDb = 0.0f;                    // overall music volume trim
+    private float sfxGainDb = 0.0f;                      // overall SFX volume trim
 
-    /** ADD COMMENT. */
+    /**
+     * Loads all sound file locations into memory.
+     * 
+     * We only load the file URLs here, the actual audio data
+     * is read later when we play a clip.
+     */
     public SoundManager() {
         urls[0]  = getClass().getResource("/sound/Retro 8 bit slow wav.wav");
         urls[1]  = getClass().getResource("/sound/coin.wav");
@@ -35,7 +51,14 @@ public class SoundManager {
         urls[11] = getClass().getResource("/sound/music/wire_-_otxo_ost.wav");
     }
 
-    /** Music. */
+    /**
+     * Plays a music track from the loaded list.
+     * 
+     * Stops any currently playing music, opens the new one, and loops (if requested)
+     *
+     * @param index index of the track in the urls[] list
+     * @param loop  true if the track should repeat forever
+     */
     public void playMusic(int index, boolean loop) {
         stopMusic(); // stop & release current track
         try (AudioInputStream ais = AudioSystem.getAudioInputStream(urls[index])) {
@@ -53,7 +76,9 @@ public class SoundManager {
         }
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Stops and closes the currently playing music track.
+     */
     public void stopMusic() {
         if (musicClip != null) {
             try {
@@ -68,7 +93,11 @@ public class SoundManager {
         }
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Adjusts the current music volume.
+     * 
+     * @param db decibel value 
+     */
     public void setMusicGainDb(float db) { // e.g., -10f to lower
         musicGainDb = db;
         if (musicClip != null) {
@@ -76,7 +105,14 @@ public class SoundManager {
         }
     }
 
-    /** SFX. */
+    /**
+     * Plays a short sound effect.
+     * 
+     * Uses a separate Clip for each sound so multiple effects
+     * can overlap without cutting each other off.
+     * 
+     * @param index index of the sound effect in the urls[] list
+     */
     public void playSfx(int index) {
         // Enforce simple limit so you don't exhaust lines
         if (activeSfx.size() >= maxSfx) {
@@ -86,7 +122,7 @@ public class SoundManager {
         try {
             final AudioInputStream ais = AudioSystem.getAudioInputStream(urls[index]);
             final Clip sfx = AudioSystem.getClip();
-            sfx.open(ais);  // Clip keeps its own data; we can close stream now
+            sfx.open(ais);  // Clip keeps its own data, so we can close stream now
             ais.close();
 
             setGainSafe(sfx, sfxGainDb);
@@ -110,11 +146,18 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Changes the SFX volume for future sounds.
+     * @param db new volume in decibels
+     */
     public void setSfxGainDb(float db) {
         sfxGainDb = db;
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Stops all active sound effects currently playing.
+     * (useful when switching scenes or pausing the game)
+     */
     public void stopAllSfx() {
         for (Clip c : new ArrayList<>(activeSfx)) {
             try { 
@@ -128,7 +171,10 @@ public class SoundManager {
         activeSfx.clear();
     }
 
-    /** Utilities. */
+    /**
+     * Tries to safely set the audio gain (volume) of a clip.
+     * If the system doesn’t support it, the method just ignores it.
+     */
     private static void setGainSafe(Clip clip, float db) {
         try {
             FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -138,6 +184,10 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Sets the maximum number of sound effects that can play at once.
+     * @param max number of allowed concurrent SFX 
+     */
     public void setMaxConcurrentSfx(int max) {
         this.maxSfx = Math.max(1, max);
     }

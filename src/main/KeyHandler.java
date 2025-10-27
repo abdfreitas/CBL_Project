@@ -29,6 +29,7 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used, handled via pressed/released only
+        // Must be included for KeyHandler
     }
 
     // Player movement

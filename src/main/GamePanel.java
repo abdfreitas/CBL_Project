@@ -78,7 +78,10 @@ public class GamePanel extends JPanel implements Runnable {
     public int wave = 0;
     public int waveStarted = 0;
 
-    /** ADD COMMENT. */
+    /**
+     * Basic panel setup: size, background, etc.
+     * This is called once when we create the game window.
+     */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
@@ -89,7 +92,10 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseListener(mClick);
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Load config and content, place objects/entities/drops,
+     * and start background music. Call before starting the game loop.
+     */
     public void setupGame() {
         ConfigManager.loadConfig();
         assetSetter.setObject();
@@ -98,31 +104,33 @@ public class GamePanel extends JPanel implements Runnable {
         dropSetter.setDrop(this, 20 * tileSize, 30 * tileSize, "coin");
         sound.playMusic(0, true);;
 
+        // Spawn some drops so the player can water flower
         for (int j = 0; j < 50; j++) {
             dropSetter.setDrop(this, Random.randomInt(0, 50) * tileSize, 
                 Random.randomInt(0, 50) * tileSize, "waterbottle");
         }
     }
 
-    /** ADD COMMENT. */
+
+    /**
+     * Start game thread so run() can update/render.
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Fixed-rate game loop (fps).
+     */
     public void run() {
         double drawInterval = 1000000000 / fps;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while (gameThread != null) {
-            long currentTime = System.nanoTime();
-
-            // 1: Update.
+            // long currentTime = System.nanoTime();
             update();
-
-            // 2: Draw.
-            repaint();
+            repaint(); // Draw
 
             try {
                 double remainingTime = nextDrawTime - System.nanoTime();
@@ -139,14 +147,16 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Advance the game with player + entities + attacks + drops + wave logic.
+     * Also triggers music changes tied to waves.
+     */
     public void update() {
         
         if (wave == 1 && waveStarted == 0) {
             waveStarted = 1;
             sound.playMusic(8, true);
             sound.setMusicGainDb(-15);
-            //playMusic(10);
         }
 
         player.update(this, mIn);
@@ -159,6 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
             while (it.hasNext()) {
                 Entity entity = it.next();
                 if (entity != null) {
+                    // Apply attack hits
                     for (int[] i : attackInfo) {
                         if (i[0] == entities.indexOf(entity)) {
                             entity.directionDamage = i[1];
@@ -167,6 +178,7 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                     entity.update();
 
+                    // When killed, enemies drop coins (1–8) and play SFX
                     if (entity.HP <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         int rInt = Random.randomInt(1, 8);
@@ -180,6 +192,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // Update friendlies but skip player because we already updated it
         for (Entity entity : friendlies) {
             if (entity != null) {
                 if (entity != player) {
@@ -189,11 +202,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (!drops.isEmpty()) {
-            int index = collisionDetection.checkDrop(player, this);
-
-            if (index != 999) {
-                //System.out.println(index);
-            }
+            collisionDetection.checkDrop(player, this);
+            // if (index != 999) {
+            //     //System.out.println(index);
+            // }
 
             Iterator<DropSupercClass> itDrop = drops.iterator();
             while (itDrop.hasNext()) {
@@ -210,12 +222,14 @@ public class GamePanel extends JPanel implements Runnable {
         }      
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Draw everything in the correct order.
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
-        // Tile
+        // Tiles
         tileM.draw(g2);
 
         // Object
@@ -226,13 +240,14 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
 
-        // Monster
+        // Friendlies
         for (Entity entity : friendlies) {
             if (entity != null) {
                 entity.draw(g2);
             }
         }
 
+        // Drops
         if (!drops.isEmpty()) {
             for (DropSupercClass drop : drops) {
                 if (drop != null) {
@@ -245,7 +260,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Player
         player.draw(g2);
 
-        // monster
+        // Monster
         if (!entities.isEmpty()) {
             for (Entity entity : entities) {
                 if (entity != null) {
@@ -262,6 +277,7 @@ public class GamePanel extends JPanel implements Runnable {
             attack.draw(g2, player);
         }
 
+        // Entities
         for (Entity entity : entities) {
             if (entity != null) {
                 if (entity != player) {
@@ -271,6 +287,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
 
+        // Healthbar
         for (Entity entity : friendlies) {
             if (entity != null) {
                 healthbar.draw(g2, this, entity);
@@ -278,7 +295,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
 
-        //GUI
+        // GUI
         gui.draw(g2, this);
         
         // Collision debugger
@@ -296,8 +313,10 @@ public class GamePanel extends JPanel implements Runnable {
     private int debugOffsetX;
     private int debugOffsetY;
     private int debugLineSpace = 10;
-
-    /** ADD COMMENT. */
+    
+    /**
+     * Debug overlay.
+     */
     public void drawDebug(Graphics2D g2) {
         debugOffsetX = 20;
         debugOffsetY = 20;

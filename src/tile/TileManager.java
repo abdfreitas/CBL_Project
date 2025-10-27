@@ -4,31 +4,27 @@ import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.imageio.ImageIO;
-
 import src.main.GamePanel;
 
+/** ADD COMMENT. */ 
 public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][]; 
+    public int mapTileNum[][];
 
+    /** ADD COMMENT. */ 
     public TileManager(GamePanel gp) {
-
         this.gp = gp;
-
         tile = new Tile[20];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-
         getTileImage();
         loadMap("/res/maps/world01.txt");
-
     }
 
+    /** ADD COMMENT. */ 
     public void getTileImage() {
-
         try {
             // Grass
             tile[0] = new Tile();
@@ -92,33 +88,32 @@ public class TileManager {
 
             // Grass Top Right
             tile[14] = new Tile();
-            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tr.png"));
+            tile[14].image = 
+                ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tr.png"));
 
             // Grass Top Left
             tile[15] = new Tile();
-            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tl.png"));
+            tile[15].image = 
+                ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_tl.png"));
 
             // Grass Bottom Right
             tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_br.png"));
+            tile[16].image = 
+                ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_br.png"));
 
             // Grass Bottom Left
             tile[17] = new Tile();
-            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_bl.png"));
+            tile[17].image = 
+                ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_bl.png"));
 
         } catch (Exception e) {
             // TODO: handle exception
             e.getStackTrace();
         }
-
     }
 
+    /** ADD COMMENT. */ 
     public void draw(Graphics2D g2) {
-
-
-
-        
-
         for (int r = 0; r < gp.maxWorldRow; r++) {
             for (int c = 0; c < gp.maxWorldCol; c++) {
 
@@ -137,35 +132,26 @@ public class TileManager {
                 }
             }
         }
-
     }
 
+    /** ADD COMMENT. */ 
     public void loadMap(String filePath) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             for (int r = 0; r < gp.maxWorldRow; r++) {
-
                 String line = br.readLine();
-
                 for (int c = 0; c < gp.maxWorldCol; c++) {
-
                     String numbers[] = line.split(" ");
-
                     int num = Integer.parseInt(numbers[c]);
-
                     mapTileNum[c][r] = num;
-
                 }
             }
-
             br.close();
 
         } catch (Exception e) {
             // TODO: handle exception
         }
-    }
-
-    
+    } 
 }

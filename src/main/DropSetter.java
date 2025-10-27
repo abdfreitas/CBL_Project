@@ -20,7 +20,7 @@ public class DropSetter {
     }
 
     /**
-     * Spawns a drop at a world position.
+     * Spawns a water bottle at a world position.
      * @param name what to drop
      * @param originX tile/world X
      * @param originY tile/world Y
@@ -33,7 +33,10 @@ public class DropSetter {
         gp.drops.add(d);
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Spawns a heart at a world position.
+     * Same params as setDrop.
+     */
     public void dropHeart(GamePanel gp, int originX, int originY, String name) {
         DropSupercClass d = new Heart(gp, originX, originY, name);
         d.name = name;
@@ -42,9 +45,11 @@ public class DropSetter {
         gp.drops.add(d);
     }
 
-    /** ADD COMMENT. */
+    /**
+     * Spawns a coin at a world position.
+     * Same params as setDrop.
+     */
     public void dropCoin(GamePanel gp, int originX, int originY, String name) {
-
         DropSupercClass d = new Coin(gp, originX, originY, name);
         d.name = name;
         d.worldX = originX;

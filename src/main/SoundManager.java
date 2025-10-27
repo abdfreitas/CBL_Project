@@ -2,7 +2,11 @@ package src.main;
 
 import java.net.URL;
 import java.util.*;
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
 
 
 /** ADD COMMENT. */
@@ -106,7 +110,9 @@ public class SoundManager {
         }
     }
 
-    public void setSfxGainDb(float db){sfxGainDb = db;}
+    public void setSfxGainDb(float db) {
+        sfxGainDb = db;
+    }
 
     /** ADD COMMENT. */
     public void stopAllSfx() {
@@ -132,5 +138,7 @@ public class SoundManager {
         }
     }
 
-    public void setMaxConcurrentSfx(int max) {this.maxSfx = Math.max(1, max);}
+    public void setMaxConcurrentSfx(int max) {
+        this.maxSfx = Math.max(1, max);
+    }
 }

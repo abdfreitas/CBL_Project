@@ -1,9 +1,11 @@
 package src.main;
 
-import javax.sound.sampled.*;
 import java.net.URL;
 import java.util.*;
+import javax.sound.sampled.*;
 
+
+/** ADD COMMENT. */
 public class SoundManager {
 
     private final URL[] urls = new URL[32];
@@ -13,6 +15,7 @@ public class SoundManager {
     private float musicGainDb = 0.0f;          // overall music volume trim
     private float sfxGainDb = 0.0f;            // overall SFX volume trim
 
+    /** ADD COMMENT. */
     public SoundManager() {
         urls[0]  = getClass().getResource("/sound/Retro 8 bit slow wav.wav");
         urls[1]  = getClass().getResource("/sound/coin.wav");
@@ -28,7 +31,7 @@ public class SoundManager {
         urls[11] = getClass().getResource("/sound/music/wire_-_otxo_ost.wav");
     }
 
-    /* ==================== MUSIC ==================== */
+    /** Music. */
     public void playMusic(int index, boolean loop) {
         stopMusic(); // stop & release current track
         try (AudioInputStream ais = AudioSystem.getAudioInputStream(urls[index])) {
@@ -36,17 +39,23 @@ public class SoundManager {
             musicClip.open(ais);
             setGainSafe(musicClip, musicGainDb);
             musicClip.setFramePosition(0);
-            if (loop) musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+            
+            if (loop) {
+                musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
             musicClip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /** ADD COMMENT. */
     public void stopMusic() {
         if (musicClip != null) {
             try {
-                if (musicClip.isRunning()) musicClip.stop();
+                if (musicClip.isRunning()) {
+                    musicClip.stop();
+                } 
                 musicClip.flush();
             } finally {
                 musicClip.close();
@@ -55,15 +64,20 @@ public class SoundManager {
         }
     }
 
+    /** ADD COMMENT. */
     public void setMusicGainDb(float db) { // e.g., -10f to lower
         musicGainDb = db;
-        if (musicClip != null) setGainSafe(musicClip, db);
+        if (musicClip != null) {
+            setGainSafe(musicClip, db);
+        }
     }
 
-    /* ===================== SFX ====================== */
+    /** SFX. */
     public void playSfx(int index) {
-        // enforce simple limit so you don't exhaust lines
-        if (activeSfx.size() >= maxSfx) return;
+        // Enforce simple limit so you don't exhaust lines
+        if (activeSfx.size() >= maxSfx) {
+            return;
+        }
 
         try {
             final AudioInputStream ais = AudioSystem.getAudioInputStream(urls[index]);
@@ -74,7 +88,7 @@ public class SoundManager {
             setGainSafe(sfx, sfxGainDb);
             activeSfx.add(sfx);
 
-            // auto-cleanup when done
+            // Auto-cleanup when done
             sfx.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     sfx.stop();
@@ -92,24 +106,31 @@ public class SoundManager {
         }
     }
 
-    public void setSfxGainDb(float db) { sfxGainDb = db; }
+    public void setSfxGainDb(float db){sfxGainDb = db;}
 
+    /** ADD COMMENT. */
     public void stopAllSfx() {
         for (Clip c : new ArrayList<>(activeSfx)) {
-            try { if (c.isRunning()) c.stop(); } finally { c.close(); }
+            try { 
+                if (c.isRunning()) {
+                    c.stop(); 
+                }
+            } finally { 
+                c.close(); 
+            }
         }
         activeSfx.clear();
     }
 
-    /* =================== UTILITIES ================== */
+    /** Utilities. */
     private static void setGainSafe(Clip clip, float db) {
         try {
             FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gain.setValue(db);
         } catch (IllegalArgumentException ignored) {
-            // device/format may not support MASTER_GAIN
+            // Device/format may not support MASTER_GAIN
         }
     }
 
-    public void setMaxConcurrentSfx(int max) { this.maxSfx = Math.max(1, max); }
+    public void setMaxConcurrentSfx(int max) {this.maxSfx = Math.max(1, max);}
 }

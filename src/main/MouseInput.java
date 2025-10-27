@@ -3,16 +3,15 @@ package src.main;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+/** ADD COMMENT. */
 public class MouseInput implements MouseMotionListener {
-
-    public int mouseX, mouseY;
+    public int mouseX; 
+    public int mouseY;
     
-
     @Override
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-        //System.out.println(mouseX);
     }
 
     @Override
@@ -20,6 +19,4 @@ public class MouseInput implements MouseMotionListener {
         mouseX = e.getX();
         mouseY = e.getY();
     }
-
-    
 }

@@ -7,27 +7,24 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.JPanel;
-
+import src.GUI.GUI;
+import src.drops.DropSupercClass;
+import src.entity.Attack;
 import src.entity.Entity;
-import src.entity.Monster;
 import src.entity.Player;
 import src.fx.HealthBar;
 import src.lib.Random;
 import src.object.SuperObject;
 import src.tile.TileManager;
-import src.entity.Attack;
 import src.user.ConfigManager;
-import src.GUI.GUI;
-import src.drops.DropSupercClass;
 
+/** ADD COMMENT. */
 public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS:
     final int originalTileSize = 16; // 16x16 tile
     public final int scale = 3;
-
     public final int tileSize = originalTileSize * scale;
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
@@ -44,13 +41,9 @@ public class GamePanel extends JPanel implements Runnable {
     int fps = 60;
 
     // Load Config and Save files
-    ConfigManager configManager;// = new ConfigManager(this);
-    
-
-
+    ConfigManager configManager;
 
     // System
-
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler();
     public MouseInput mIn = new MouseInput();
@@ -58,12 +51,10 @@ public class GamePanel extends JPanel implements Runnable {
     public SoundManager sound = new SoundManager();
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
-    
     Thread gameThread;
 
     // Entity and object
     public Player player = new Player(this, 30, 30, "player");
-    //public Monster monster = new Monster(this, player);
     public SuperObject[] obj = new SuperObject[20];
     public Attack attack = new Attack(keyH, this, player);
 
@@ -72,17 +63,11 @@ public class GamePanel extends JPanel implements Runnable {
     public List<Entity> friendlies = new ArrayList<>(); // Friendlies is list of player + plants
     public DropSetter dropSetter = new DropSetter(this);
     public List<DropSupercClass> drops = new ArrayList<>(); // List of drops
-
     public List<int[]> attackInfo = new ArrayList<>(); // What enemies are hit during an attack
-
     public HealthBar healthbar = new HealthBar();
 
-    
-
     //GUI
-
     public GUI gui = new GUI();
-
 
     // Set players initial position
     int playerX = 100;
@@ -93,8 +78,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int wave = 0;
     public int waveStarted = 0;
 
+    /** ADD COMMENT. */
     public GamePanel() {
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -104,50 +89,33 @@ public class GamePanel extends JPanel implements Runnable {
         addMouseListener(mClick);
     }
 
+    /** ADD COMMENT. */
     public void setupGame() {
-
         ConfigManager.loadConfig();
-
-        
-
         assetSetter.setObject();
-
         friendlies.add(player);
-
         entitySetter.setEntity(this);
-
         dropSetter.setDrop(this, 20 * tileSize, 30 * tileSize, "coin");
-
-        for (DropSupercClass drop : drops) {
-            //System.out.println(drop.name);
-        }
-
         sound.playMusic(0, true);;
 
         for (int j = 0; j < 50; j++) {
-            dropSetter.setDrop(this, Random.randomInt(0, 50) * tileSize, Random.randomInt(0, 50) * tileSize, "waterbottle");
+            dropSetter.setDrop(this, Random.randomInt(0, 50) * tileSize, 
+                Random.randomInt(0, 50) * tileSize, "waterbottle");
         }
-
-        
-
-
-        
-
     }
 
+    /** ADD COMMENT. */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /** ADD COMMENT. */
     public void run() {
-
         double drawInterval = 1000000000 / fps;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
-
         while (gameThread != null) {
-
             long currentTime = System.nanoTime();
 
             // 1: Update.
@@ -160,26 +128,20 @@ public class GamePanel extends JPanel implements Runnable {
                 double remainingTime = nextDrawTime - System.nanoTime();
                 remainingTime = remainingTime / 1000000;
 
-        
-                //System.out.println("Remaining time: " + remainingTime);
-
                 if (remainingTime < 0) {
                     remainingTime = 0;
                 }
-
                 Thread.sleep((long) remainingTime);
-
                 nextDrawTime = System.nanoTime() + drawInterval;
             } catch (InterruptedException e) {
-
                 e.printStackTrace();
             }
         }
     }
 
+    /** ADD COMMENT. */
     public void update() {
         
-
         if (wave == 1 && waveStarted == 0) {
             waveStarted = 1;
             sound.playMusic(8, true);
@@ -187,22 +149,12 @@ public class GamePanel extends JPanel implements Runnable {
             //playMusic(10);
         }
 
-
-
         player.update(this, mIn);
-
         attack.update(player, mIn);
-
         attackInfo = collisionDetection.checkAttack(this, player, attack, entities);
-
         entitySetter.update(this);
 
-        
-
-        //monster.update();
-
         if (!entities.isEmpty()) {
-            
             Iterator<Entity> it = entities.iterator();
             while (it.hasNext()) {
                 Entity entity = it.next();
@@ -211,31 +163,23 @@ public class GamePanel extends JPanel implements Runnable {
                         if (i[0] == entities.indexOf(entity)) {
                             entity.directionDamage = i[1];
                             entity.getHit = true;
-                            
-                            // System.out.println("direction damage: " + i[1]);
                         }
                     }
-                    //System.out.println("direction damage: ");
                     entity.update();
+
                     if (entity.HP <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         int rInt = Random.randomInt(1, 8);
                         for (int j = 0; j < rInt; j++) {
                             dropSetter.dropCoin(this, entity.worldX, entity.worldY, "coin");
                         }
-                        
                         it.remove();
                         sound.playSfx(7);
                     }
                 }
             }
-
-
         }
 
-        
-        
-        
         for (Entity entity : friendlies) {
             if (entity != null) {
                 if (entity != player) {
@@ -244,56 +188,31 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-      
-
         if (!drops.isEmpty()) {
-            
-
             int index = collisionDetection.checkDrop(player, this);
 
             if (index != 999) {
                 //System.out.println(index);
             }
 
-
-
             Iterator<DropSupercClass> itDrop = drops.iterator();
             while (itDrop.hasNext()) {
                 DropSupercClass drop = itDrop.next();
                 if (drop != null) {
                     drop.update(this, player);
-
-                    // if (drops.indexOf(drop) == index && drop.pickupable == true) {
-                    //     //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
-                    //     itDrop.remove();
-                    //     player.waterAmount++;
-                    //     playSE(1);
-                    // }
-
+                    
                     if (drop.pickedUp) {
-                        //dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         itDrop.remove();
-                        
                         sound.playSfx(1);
                     }
                 }
             }
         }      
-            
-            
-
-        
-
-
-
-        
-
     }
 
+    /** ADD COMMENT. */
     public void paintComponent(Graphics g) {
-        
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D)g;
 
         // Tile
@@ -307,14 +226,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
 
-        
-
         // Monster
-        //monster.draw(g2);
-
         for (Entity entity : friendlies) {
             if (entity != null) {
-                //System.out.println("Drawing entity");
                 entity.draw(g2);
             }
         }
@@ -322,7 +236,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (!drops.isEmpty()) {
             for (DropSupercClass drop : drops) {
                 if (drop != null) {
-                    //System.out.println("Drawing entity");
                     drop.draw(g2, this);
                 }
 
@@ -337,7 +250,6 @@ public class GamePanel extends JPanel implements Runnable {
             for (Entity entity : entities) {
                 if (entity != null) {
                     if (entity != player) {
-                        //System.out.println("Drawing entity");
                         entity.draw(g2);
                     }
                 }
@@ -345,18 +257,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }   
         
-        
-            
-
         // Draw weapon swing
-        if (attack.attacking == true) {
+        if (attack.attacking) {
             attack.draw(g2, player);
         }
 
         for (Entity entity : entities) {
             if (entity != null) {
                 if (entity != player) {
-                    //System.out.println("Drawing entity");
                     healthbar.draw(g2, this, entity);
                 }
             }
@@ -365,70 +273,32 @@ public class GamePanel extends JPanel implements Runnable {
 
         for (Entity entity : friendlies) {
             if (entity != null) {
-                //System.out.println("Drawing entity");
                 healthbar.draw(g2, this, entity);
             }
 
         }
 
-        // healthbar.draw(g2, this, player);
-
-        // healthbar.draw(g2, this, entities.get(1)); 
-        // healthbar.draw(g2, this, entities.get(0));
-
         //GUI
         gui.draw(g2, this);
         
-
         // Collision debugger
-
         if (KeyHandler.debugEnabled) {
-
             this.drawDebug(g2);
-
             try {
                 collisionDetection.drawCollision(g2);
             } catch (Exception e) {
                 // TODO: handle exception
             }
         }
-
-        
-        
-        
         g2.dispose();
-
     }
 
-    // public void playMusic(int i) {
+    private int debugOffsetX;
+    private int debugOffsetY;
+    private int debugLineSpace = 10;
 
-    //     sound.setFile(i);
-    //     sound.play();
-        
-    //     sound.loop();
-    // }
-
-    // public void stopMusic(int i) {
-
-    //     sound.setFile(i);
-
-    //     sound.stop();
-
-    // }
-
-    // public void playSE(int i) {
-
-    //     //sound.setFile(i);
-    //     sound.playSfx(i);
-    // }
-
-    
-        private int debugOffsetX;
-        private int debugOffsetY;
-        private int debugLineSpace = 10;
-
+    /** ADD COMMENT. */
     public void drawDebug(Graphics2D g2) {
-
         debugOffsetX = 20;
         debugOffsetY = 20;
 
@@ -438,7 +308,8 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawString("Player speed: " + player.speed, debugOffsetX, debugOffsetY);
 
         debugOffsetY += debugLineSpace;
-        g2.drawString("Spawn counter MAX: " + entitySetter.spawnCounterMax, debugOffsetX, debugOffsetY);
+        g2.drawString("Spawn counter MAX: " + entitySetter.spawnCounterMax, 
+            debugOffsetX, debugOffsetY);
 
         debugOffsetY += debugLineSpace;
         g2.drawString("random x: " + entitySetter.x, debugOffsetX, debugOffsetY);
@@ -448,8 +319,5 @@ public class GamePanel extends JPanel implements Runnable {
 
         debugOffsetY += debugLineSpace;
         g2.drawString("Monster count: " + this.entities.size(), debugOffsetX, debugOffsetY);
-
-
-
     }
 }

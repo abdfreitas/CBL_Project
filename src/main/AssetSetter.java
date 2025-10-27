@@ -1,23 +1,34 @@
 package src.main;
 
+import src.object.OBJ_BlockTile;
+import src.object.OBJ_Boots;
 import src.object.OBJ_Chest;
 import src.object.OBJ_Door;
 import src.object.OBJ_House;
 import src.object.OBJ_Key;
-import src.object.OBJ_BlockTile;
-import src.object.OBJ_Boots;
 
+/**
+ * Handles placing all the game objects (like keys, doors, chests) into the world   
+ * and connecting with gamepanel.
+ * 
+ * This is basically where we decide what goes where before the game starts.
+ */
 public class AssetSetter {
-
     GamePanel gp;
 
+    /**
+    * Connects AssetSetter to the main GamePanel so it can access the object array.
+    * @param gp the main game panel
+    */
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
-
     }
     
+    /**
+    * Creates and positions all objects in the game world.
+    * Each object's location is set using tile coordinates.
+    */
     public void setObject() {
-
         gp.obj[0] = new OBJ_Key();
         gp.obj[0].worldX = 38 * gp.tileSize;
         gp.obj[0].worldY = 28 * gp.tileSize;
@@ -30,7 +41,7 @@ public class AssetSetter {
         // gp.obj[2].worldX = 37 * gp.tileSize;
         // gp.obj[2].worldY = 7 * gp.tileSize;
 
-        gp.obj[3] = new OBJ_Door(); //winning door
+        gp.obj[3] = new OBJ_Door(); // Winning door leading to chest
         gp.obj[3].worldX = 12 * gp.tileSize;
         gp.obj[3].worldY = 34 * gp.tileSize;
 
@@ -50,30 +61,20 @@ public class AssetSetter {
         gp.obj[7].worldX = 12 * gp.tileSize;
         gp.obj[7].worldY = 37 * gp.tileSize;
 
-        
-      
-
-
+        // Create a small wall made out of block tiles
         int k = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 2; j++) {
-                
-                gp.obj[9+k] = new OBJ_BlockTile();
-                gp.obj[9+k].worldX = (35 + i) * gp.tileSize;
-                gp.obj[9+k].worldY = (20 + j) * gp.tileSize;
+                gp.obj[9 + k] = new OBJ_BlockTile();
+                // Use tileSize to convert tile positions to world coordinates
+                gp.obj[9 + k].worldX = (35 + i) * gp.tileSize;
+                gp.obj[9 + k].worldY = (20 + j) * gp.tileSize;
                 k++;
-
             }
         }
 
         gp.obj[8] = new OBJ_House();
         gp.obj[8].worldX = (35) * gp.tileSize;
         gp.obj[8].worldY = (20) * gp.tileSize;
-
-        
-        
-
-
-
     }
 }

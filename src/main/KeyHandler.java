@@ -1,101 +1,70 @@
 package src.main;
 
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import src.lib.CharStack;
 
-// Javadoc
-
+/** ADD COMMENT. */
 public class KeyHandler implements KeyListener{
-
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed;
+    public boolean downPressed;
+    public boolean leftPressed;
+    public boolean rightPressed;
     public static boolean debugEnabled = false;
-    private char history[] = new char[4];
-    private char lastKey;
+
+    // private char history[] = new char[4];
+    // private char lastKey;
     public CharStack cStack = new CharStack(4);
     public boolean shiftPressed = false;
-    public boolean attack_Pressed = false;
+    public boolean attack_Pressed = false; //for some reason changing this to attackPressed bugs out
     public boolean boost = false;
     public boolean interactPressed = false;
     public boolean dodgePressed = false;
     
-
-    
-
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
-        
-
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
-
         if (code == KeyEvent.VK_W) {
-
             cStack.push('w');
             upPressed = true;
-            
-            }
-        
+        }
         if (code == KeyEvent.VK_A) {
-
             cStack.push('a');
             leftPressed = true;
-         
         }
         if (code == KeyEvent.VK_S) {
-
             cStack.push('s');
             downPressed = true; 
         }
         if (code == KeyEvent.VK_D) {
-
             cStack.push('d');
             rightPressed = true;
         }
-
         if (code == KeyEvent.VK_F12) {
-
             debugEnabled = !debugEnabled;
-
         }
-
         if (code == KeyEvent.VK_SHIFT) {
-
             shiftPressed = true;
-
         }
-
         if (code == KeyEvent.VK_SPACE) {
-
-            //attack_Pressed = true;
-
             dodgePressed = true;
         }
-
         if (code == KeyEvent.VK_B) {
             boost = true;
         }
-
-        //cStack.printStack();
-
-        
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
         int code = e.getKeyCode();
-
         if (code == KeyEvent.VK_W) {
             cStack.pop('w');
-            upPressed = false;
-            
+            upPressed = false; 
         }
         if (code == KeyEvent.VK_A) {
             cStack.pop('a');
@@ -109,33 +78,14 @@ public class KeyHandler implements KeyListener{
             cStack.pop('d');
             rightPressed = false;
         }
-
         if (code == KeyEvent.VK_SHIFT) {
-
             shiftPressed = false;
-
         }
-
         if (code == KeyEvent.VK_SPACE) {
-
             dodgePressed = false;
         }
-
         if (code == KeyEvent.VK_B) {
             boost = false;
         }
-
-
-        //cStack.printStack();
     }
-
-
-  
-    
-
-
-
-    
-    
-    
 }

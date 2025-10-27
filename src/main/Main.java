@@ -1,10 +1,9 @@
 package src.main;
 
-import src.main.GamePanel;
 import javax.swing.JFrame;
 
+/** ADD COMMENT. */
 public class Main {
-
     public static void main(String[] args) {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -13,15 +12,11 @@ public class Main {
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
-
         window.pack();
-
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
         gamePanel.setupGame();
-
         gamePanel.startGameThread();
     }
-
 }

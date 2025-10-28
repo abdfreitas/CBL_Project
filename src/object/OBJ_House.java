@@ -3,10 +3,14 @@ package src.object;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/** ADD COMMENT. */ 
+/**
+ * House object that can be placed in the world.
+ */
 public class OBJ_House extends SuperObject {
 
-    /** ADD COMMENT. */ 
+    /**
+     * Loads house image (prints an error if the image fails to load).
+     */ 
     public OBJ_House() {
         name = "House";
         try {

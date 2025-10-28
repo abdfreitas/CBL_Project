@@ -3,10 +3,14 @@ package src.object;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/** ADD COMMENT. */ 
+/**
+ * Collectible boots item placed in the world. (speed boost)
+ */
 public class OBJ_Boots extends SuperObject {
 
-    /** ADD COMMENT. */ 
+    /**
+     * Loads boot image (prints an error if the image fails to load).
+     */
     public OBJ_Boots() {
         name = "Boots";
         try {

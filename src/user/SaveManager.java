@@ -1,6 +1,9 @@
 package src.user;
 
-/** ADD COMMENT. */
+/**
+ * Handles saving and loading game data (like progress, stats, settings).
+ * 
+ */
 public class SaveManager {
     
 }

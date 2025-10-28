@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Map;
 import src.main.GamePanel;
 
-/** ADD COMMENT. */ 
+/**
+ * Loads and manages the user config file.
+ * 
+ * The config file is basically a list of key=value pairs that
+ * let you change game settings (like volume, speed, etc.) without editing code.
+ */
 public class ConfigManager {
-    // private static Path path;
     public static Map<String, String> config;
 
     /** ADD COMMENT. */ 

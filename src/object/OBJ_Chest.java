@@ -3,10 +3,14 @@ package src.object;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/** ADD COMMENT. */ 
+/**
+ * Treasure chest object that can be placed in the world.
+ */
 public class OBJ_Chest extends SuperObject {
     
-    /** ADD COMMENT. */ 
+    /**
+     * Loads chest image (prints an error if the image fails to load).
+     */
     public OBJ_Chest() {
         name = "Chest";
         try {

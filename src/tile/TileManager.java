@@ -7,23 +7,36 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import src.main.GamePanel;
 
-/** ADD COMMENT. */ 
+/**
+ * Handles all the tiles in the game world (images, properties).
+ * 
+ * Loads the map file, sets up which tile is which,
+ * and draws the visible part of the map around the player
+ */
 public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int mapTileNum[][]; // 2D array representing the world layout using tile numbers
 
-    /** ADD COMMENT. */ 
+    /**
+     * Loads all tiles and reads the map from a text file.
+     * 
+     * @param gp reference to the GamePanel so we know world size and tile info
+     */
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[20];
+        tile = new Tile[20]; // create space for 20 different tile types
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/res/maps/world01.txt");
     }
 
-    /** ADD COMMENT. */ 
+    /**
+     * Loads the tile images and sets up which ones have collision.
+     * 
+     * The index here matches the numbers used in the map text file.
+     */
     public void getTileImage() {
         try {
             // Grass
@@ -49,40 +62,31 @@ public class TileManager {
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/016.png"));
             tile[4].collision = true;
 
-            // Paths---------------------------------------
-            // Path
+            // Path tiles (visual variations for connecting paths)
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path.png"));
-            
-            // Path Bottom Left
+
             tile[9] = new Tile();
             tile[9].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_bl.png"));
 
-            // Path Bottom Right
             tile[8] = new Tile();
             tile[8].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_br.png"));
 
-            // Path Top Left
             tile[7] = new Tile();
             tile[7].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tl.png"));
 
-            // Path Top Right
             tile[6] = new Tile();
             tile[6].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_tr.png"));
 
-            // Path Top
             tile[10] = new Tile();
             tile[10].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_t.png"));
 
-            // Path Bottom 
             tile[11] = new Tile();
             tile[11].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_b.png"));
 
-            // Path Left
             tile[12] = new Tile();
             tile[12].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_l.png"));
 
-            // Path Right
             tile[13] = new Tile();
             tile[13].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_r.png"));
 
@@ -107,12 +111,15 @@ public class TileManager {
                 ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass_bl.png"));
 
         } catch (Exception e) {
-            // TODO: handle exception
             e.getStackTrace();
         }
     }
 
-    /** ADD COMMENT. */ 
+    /**
+     * Draws only the visible tiles around the player.
+     * 
+     * Camera stays centered on player
+     */
     public void draw(Graphics2D g2) {
         for (int r = 0; r < gp.maxWorldRow; r++) {
             for (int c = 0; c < gp.maxWorldCol; c++) {
@@ -120,13 +127,15 @@ public class TileManager {
                 int worldX = c * gp.tileSize;
                 int worldY = r * gp.tileSize;
 
+                // Translate world position to screen position
                 int screenX = worldX - gp.player.worldX + gp.player.screenX;
                 int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-                if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                // Only draw tiles that are inside the visible area (camera view)
+                if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX 
+                    && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX 
+                    && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY 
+                    && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                     g2.drawImage(tile[mapTileNum[c][r]].image, screenX, screenY,
                         gp.tileSize, gp.tileSize, null);
                 }
@@ -134,12 +143,18 @@ public class TileManager {
         }
     }
 
-    /** ADD COMMENT. */ 
+    /**
+     * Reads a map text file and fills in mapTileNum[][]
+     * so the game knows which tile type goes in each position.
+     * 
+     * @param filePath the path to the map text file
+     */
     public void loadMap(String filePath) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+            // Read map line by line
             for (int r = 0; r < gp.maxWorldRow; r++) {
                 String line = br.readLine();
                 for (int c = 0; c < gp.maxWorldCol; c++) {
@@ -151,7 +166,7 @@ public class TileManager {
             br.close();
 
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     } 
 }

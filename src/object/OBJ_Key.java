@@ -3,10 +3,14 @@ package src.object;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/** ADD COMMENT. */ 
+/**
+ * Key object that can be placed in the world (player can pick up to open doors).
+ */ 
 public class OBJ_Key extends SuperObject {
     
-    /** ADD COMMENT. */ 
+    /**
+     * Loads key image (prints an error if the image fails to load).
+     */
     public OBJ_Key() {
         name = "Key";
         try {

@@ -28,7 +28,7 @@ public class MouseClickInput implements MouseListener {
         // Left click for attack
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = true;
-            keyH.attack_Pressed = true;
+            keyH.attackPressed = true;
         }
         // Right click for interacting
         if (e.getButton() == MouseEvent.BUTTON3) {
@@ -41,7 +41,7 @@ public class MouseClickInput implements MouseListener {
         // Stop attacking/interacting when button is released
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = false;
-            keyH.attack_Pressed = false;
+            keyH.attackPressed = false;
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             keyH.interactPressed = false;

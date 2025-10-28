@@ -21,7 +21,7 @@ public class KeyHandler implements KeyListener {
     public CharStack cStack = new CharStack(4);
     // Action flags
     public boolean shiftPressed = false;
-    public boolean attack_Pressed = false;
+    public boolean attackPressed = false;
     public boolean boost = false;
     public boolean interactPressed = false;
     public boolean dodgePressed = false;
@@ -35,71 +35,79 @@ public class KeyHandler implements KeyListener {
     // Player movement
     @Override
     public void keyPressed(KeyEvent e) {
+        handlePressedMovementKeys(e);
+        handlePressedActionKeys(e);
+    }
+    
+    // Track movement when key is pressed
+    private void handlePressedMovementKeys(KeyEvent e) {
         int code = e.getKeyCode();
-        // Movement
-        if (code == KeyEvent.VK_W) {
-            cStack.push('w');
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            cStack.push('a');
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_S) {
-            cStack.push('s');
+        if (code == KeyEvent.VK_W) { 
+            cStack.push('w'); 
+            upPressed = true; 
+        } else if (code == KeyEvent.VK_A) { 
+            cStack.push('a'); 
+            leftPressed = true; 
+        } else if (code == KeyEvent.VK_S) { 
+            cStack.push('s'); 
             downPressed = true; 
-        }
-        if (code == KeyEvent.VK_D) {
-            cStack.push('d');
-            rightPressed = true;
-        }
-        // Debug
-        if (code == KeyEvent.VK_F12) {
-            debugEnabled = !debugEnabled;
-        }
-        // Actions
-        if (code == KeyEvent.VK_SHIFT) {
-            shiftPressed = true;
-        }
-        if (code == KeyEvent.VK_SPACE) {
-            dodgePressed = true;
-        }
-        if (code == KeyEvent.VK_B) {
-            boost = true;
+        } else if (code == KeyEvent.VK_D) { 
+            cStack.push('d'); 
+            rightPressed = true; 
         }
     }
+
+    // Track movement when key is pressed
+    private void handlePressedActionKeys(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_F12) {
+            debugEnabled = !debugEnabled;
+        } else if (code == KeyEvent.VK_SHIFT) {
+            shiftPressed = true;
+        } else if (code == KeyEvent.VK_SPACE) {
+            dodgePressed = true;
+        } else if (code == KeyEvent.VK_B) {
+            boost = true;
+        }
+    }    
 
     @Override
     public void keyReleased(KeyEvent e) {
+        handleReleasedMovementKeys(e);
+        handleReleasedActionKeys(e);
+    }
+    
+    // Stop tracking movement when key is released
+    private void handleReleasedMovementKeys(KeyEvent e) {
         int code = e.getKeyCode();
-
-        // Stop tracking movement when key is released
         if (code == KeyEvent.VK_W) {
             cStack.pop('w');
             upPressed = false; 
-        }
-        if (code == KeyEvent.VK_A) {
+        } else if (code == KeyEvent.VK_A) { 
             cStack.pop('a');
-            leftPressed = false;            
-        }
-        if (code == KeyEvent.VK_S) {
+            leftPressed = false;
+        } else if (code == KeyEvent.VK_S) { 
             cStack.pop('s');
-            downPressed = false;  
-        }
-        if (code == KeyEvent.VK_D) {
+            downPressed = false; 
+        } else if (code == KeyEvent.VK_D) { 
             cStack.pop('d');
             rightPressed = false;
         }
+    }
 
-        // Stop action keys when released
-        if (code == KeyEvent.VK_SHIFT) {
+    // Stop action keys when released
+    private void handleReleasedActionKeys(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_F12) {
+            debugEnabled = !debugEnabled;
+        } else if (code == KeyEvent.VK_SHIFT) {
             shiftPressed = false;
-        }
-        if (code == KeyEvent.VK_SPACE) {
+        } else if (code == KeyEvent.VK_SPACE) {
             dodgePressed = false;
-        }
-        if (code == KeyEvent.VK_B) {
+        } else if (code == KeyEvent.VK_B) {
             boost = false;
         }
-    }
+
+    } 
+
 }

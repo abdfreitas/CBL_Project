@@ -90,11 +90,11 @@ public class Attack {
      */
     public void update(Player player, MouseInput mIn) {
 
-        if (!keyH.attack_Pressed && !attackWasReleased) {
+        if (!keyH.attackPressed && !attackWasReleased) {
             attackWasReleased = true;
         }
 
-        if (keyH.attack_Pressed && !attacking && attackWasReleased) {
+        if (keyH.attackPressed && !attacking && attackWasReleased) {
             attacking = true;
             attackWasReleased = false;
             attackFrame = 1;

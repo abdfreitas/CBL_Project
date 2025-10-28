@@ -7,8 +7,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import src.main.GamePanel;
 
+/**
+ * Display for the game.
+ *
+ * Loads tutorial sprites (WASD, SPACE, MOUSE),
+ * shows coins/wave info, and draws a simple “night” overlay.
+ */
 public class GUI {
 
+    // Sprite frames used for UI animations
     BufferedImage[] wasd = new BufferedImage[2];
     BufferedImage[] space = new BufferedImage[2];
     BufferedImage[] mouse = new BufferedImage[2];
@@ -17,6 +24,7 @@ public class GUI {
     BufferedImage attack;
     BufferedImage aim; 
 
+    // Static labels/icons
     int spriteCounter = 0;
     int spriteCounterMax = 23;
     int frameNum = 1;
@@ -26,6 +34,7 @@ public class GUI {
 
     public int coins;
 
+    /** Load all UI images from res. */
     public GUI() {
         try {
             // WASD + MOVE sprite
@@ -43,6 +52,7 @@ public class GUI {
             mouse[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-2.png"));
             aim = ImageIO.read(getClass().getResourceAsStream("/res/GUI/AIM.png"));
 
+            // Water fill levels (14 frames)
             wateringCan[0]  = ImageIO.read(getClass().getResourceAsStream(
                     "/res/GUI/watercan/WaterCan2-1.png.png"));
 
@@ -90,6 +100,12 @@ public class GUI {
         }
     }
 
+    /**
+     * Draw the elements on top of the game.
+     *
+     * @param g2 the graphics context we draw with
+     * @param gp the game panel for tileSize and wave/player info
+    */
     public void draw(Graphics2D g2, GamePanel gp) {
         // Night settings:
         if (gp.wave > 0) {
@@ -97,6 +113,7 @@ public class GUI {
             g2.fillRect(0, 0, 800, 600);
         }
         
+        // 2 frame animation loop for the sprites
         spriteCounter++;
         if (spriteCounter > spriteCounterMax) {
             spriteCounter = 0;
@@ -106,8 +123,8 @@ public class GUI {
             }
         }
 
-        int debugOffsetX = 20;
-        int debugOffsetY = 20;
+        // int debugOffsetX = 20;
+        // int debugOffsetY = 20;
 
         displacementAngle = displacementAngle + 2;
         int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle)) * 10);
@@ -119,7 +136,7 @@ public class GUI {
         displacementY2 = 0;
 
         // MOVE
-        g2.drawImage(wasd[frameNum - 1], (int) 20 , (int) 450 + displacementY, 
+        g2.drawImage(wasd[frameNum - 1], (int) 20, (int) 450 + displacementY, 
             gp.tileSize * 2, gp.tileSize * 2, null);
         g2.drawImage(move, (int) 120, (int) 490 + displacementY, gp.tileSize * 2, 
             gp.tileSize * 2, null);
@@ -136,12 +153,14 @@ public class GUI {
         g2.drawImage(aim, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, 
             gp.tileSize * 2, null);
 
+        // Simple counters
         g2.drawString("Coins: " + coins, 500, 100);
         g2.drawString("Wave: " + gp.wave, 500, 80);
 
+        // Map waterAmount (0..13) to frame index (13..0)
         int waterFrameNum = 13 - gp.player.waterAmount;
         if (waterFrameNum < 0) {
-            waterFrameNum = 0;
+            waterFrameNum = 0; // Clamp so we don’t index negative
         }
 
         g2.drawImage(wateringCan[waterFrameNum], 600, 50, gp.tileSize * 2, gp.tileSize * 2, null);

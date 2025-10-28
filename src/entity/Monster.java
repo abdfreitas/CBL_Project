@@ -26,6 +26,7 @@ public class Monster extends Entity {
     public final int screenY;
 
     int hasKey = 0;
+    int index;
     BufferedImage[] frame = new BufferedImage[4];
 
     int spriteCounter = 0;
@@ -102,7 +103,7 @@ public class Monster extends Entity {
      * - Flickers while invincible
      */
     public void updateSub() {
-        int index = 999; // Closest entity index
+        // int index = 999; // Closest entity index
         double distance = 0;
         double distanceTemp = 0;
         double dX = 0;

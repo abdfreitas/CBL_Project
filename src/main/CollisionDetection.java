@@ -217,57 +217,8 @@ public class CollisionDetection {
     * @return [index of entity, direction of damage]
     */
     public int[] checkEntity(Entity player, GamePanel gp) {
-    //     int[] out = {999, 0};
         int index = 999;
         int directionDamage = 0;
-
-    //     // Build target hitbox (no mutation of target.solidArea)
-    //     java.awt.Rectangle targetBox = new java.awt.Rectangle(
-    //         target.worldX + target.solidArea.x,
-    //         target.worldY + target.solidArea.y,
-    //         target.solidArea.width,
-    //         target.solidArea.height
-    //     );
-
-    //     for (int i = 0; i < gp.entities.size(); i++) {
-    //         Entity enemy = gp.entities.get(i);
-    //         if (enemy == null) { 
-    //             continue;
-    //         }
-
-    //         java.awt.Rectangle enemyBox = new java.awt.Rectangle(
-    //             enemy.worldX + enemy.solidArea.x,
-    //             enemy.worldY + enemy.solidArea.y,
-    //             enemy.solidArea.width,
-    //             enemy.solidArea.height
-    //         );
-
-    //         if (targetBox.intersects(enemyBox)) {
-    //             // Mark hit on the target and compute direction (from enemy -> target)
-    //             target.getHit = true;
-
-    //             int targetCx = target.worldX + target.solidArea.x + target.solidArea.width  / 2;
-    //             int targetCy = target.worldY + target.solidArea.y + target.solidArea.height / 2;
-    //             int enemyCx  = enemy.worldX  + enemy.solidArea.x  + enemy.solidArea.width  / 2;
-    //             int enemyCy  = enemy.worldY  + enemy.solidArea.y  + enemy.solidArea.height / 2;
-
-    //             int dx = targetCx - enemyCx;
-    //             int dy = targetCy - enemyCy;
-
-    //             // Map to 4-way like your player damage switch: 6=right, 8=up, 4=left, 2=down
-    //             int dir;
-    //             if (Math.abs(dx) > Math.abs(dy)) {
-    //                 dir = (dx > 0) ? 6 : 4;     // enemy is left/right of target
-    //             } else {
-    //                 dir = (dy > 0) ? 2 : 8;     // enemy is above/below target
-    //             }
-
-    //             out[0] = i;
-    //             out[1] = dir;
-    //             return out; // first hit wins
-    //         }
-    //     }
-    //      return out;
 
         for (Entity entity : gp.entities) {
             if (entity != null) {

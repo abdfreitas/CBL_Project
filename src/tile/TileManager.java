@@ -59,7 +59,7 @@ public class TileManager {
 
             // Tree
             tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/016.png"));
+            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/ytree.png"));
             tile[4].collision = true;
 
             // Path tiles (visual variations for connecting paths)
@@ -79,16 +79,16 @@ public class TileManager {
             tile[6].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/apath_tr.png"));
 
             tile[10] = new Tile();
-            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_t.png"));
+            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/apath_t.png"));
 
             tile[11] = new Tile();
-            tile[11].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_b.png"));
+            tile[11].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/apath_b.png"));
 
             tile[12] = new Tile();
-            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_l.png"));
+            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/apath_l.png"));
 
             tile[13] = new Tile();
-            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/path_r.png"));
+            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/apath_r.png"));
 
             // Grass Top Right
             tile[14] = new Tile();

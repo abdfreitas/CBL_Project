@@ -204,20 +204,49 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        // // Update friendlies but skip player because we already updated it
+        // Update friendlies but skip player because we already updated it
         // for (Entity entity : friendlies) {
         //     if (entity == null || entity == player) {
         //         continue;
         //     }
+        //     entity.update();
         //     // Reset per-frame hit flag before checking
         //     entity.getHit = false;
 
         //     // Collision
         //     int[] res = collisionDetection.checkEntity(entity, this);
-        //     int directionFrom = res[1];
+        //     // int directionFrom = res[1];
 
+        //     if (entity.getHit && !entity.invincible) {
+        //         // Simple damage model for plants
+        //         entity.hp -= 10;                   
+        //         entity.invincible = true;          
+        //         entity.invincibleCounter = entity.invincibleCounterMax;
+
+        //         // Knockback for feedback 
+        //         entity.directionDamage = res[1];
+        //         // double knock = 6;
+        //         // entity.worldXDouble -= knock * Math.cos(Math.toRadians(directionFrom));
+        //         // entity.worldYDouble -= knock * Math.sin(Math.toRadians(directionFrom));
+
+        //         // sfx 
+        //         sound.playSfx(5);
+        //     } else if (entity.invincible) {
+        //         // // count down i-frames
+        //         // entity.invincibleCounter--;
+        //         // if (entity.invincibleCounter <= 0) {
+        //         //     entity.invincible = false;
+        //         // }
+        //         if (--entity.invincibleCounter <= 0) {
+        //             entity.invincible = false;
+        //         }
+        //     }
+
+        //     if (entity instanceof src.entity.Flower2 && entity.hp <= 0) {
+        //         loseGame();
+        //         return;
+        //     }
         // }
-
 
         // Update drops
         if (!drops.isEmpty()) {
@@ -261,7 +290,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameEnded = true;
         javax.swing.SwingUtilities.invokeLater(() -> {
             try {
-                javax.swing.JOptionPane.showMessageDialog(this, "Game Over!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Game Over! :(");
             } finally {
                 java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
                 if (w != null) {

@@ -225,7 +225,15 @@ public class GamePanel extends JPanel implements Runnable {
                     sound.playSfx(1);
                 }
             }
-        }      
+        }   
+        
+        // Check for player death
+        if (player.hp <= 0) {
+            // Close game window when health drops to zero or below
+            javax.swing.JOptionPane.showMessageDialog(this, "Game Over!");
+            javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+            System.exit(0);
+        }
     }
 
     /**

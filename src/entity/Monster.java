@@ -103,7 +103,6 @@ public class Monster extends Entity {
      * - Flickers while invincible
      */
     public void updateSub() {
-        // int index = 999; // Closest entity index
         double distance = 0;
         double distanceTemp = 0;
         double dX = 0;
@@ -188,7 +187,6 @@ public class Monster extends Entity {
         if (speedDouble > 0.01) {
             speedX = speedX - (deceleration * Math.cos(speedAngle));
             speedY = speedY - (deceleration * Math.sin(speedAngle));
-
         } else if (speedDouble < 0.01) {
             speedX = speedX + (deceleration * Math.cos(speedAngle));
             speedY = speedY + (deceleration * Math.sin(speedAngle));

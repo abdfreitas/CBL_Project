@@ -22,7 +22,7 @@ public class GUI {
     BufferedImage[] wateringCan = new BufferedImage[14];
     BufferedImage move;
     BufferedImage attack;
-    BufferedImage aim; 
+    BufferedImage dodge; 
 
     // Static labels/icons
     int spriteCounter = 0;
@@ -42,15 +42,15 @@ public class GUI {
             wasd[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/WASD-2.png.png"));
             move = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOVE-1.png.png"));
             
-            // SPACE + ATTACK sprite
+            // SPACE + DODGE sprite
             space[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-1.png"));
             space[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/SPACE-2.png"));
-            attack = ImageIO.read(getClass().getResourceAsStream("/res/GUI/ATTACK.png"));
+            dodge = ImageIO.read(getClass().getResourceAsStream("/res/GUI/DODGE.png"));
             
-            // MOUSE + AIM sprite
+            // MOUSE + ATTACK sprite
             mouse[0] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-1.png"));
             mouse[1] = ImageIO.read(getClass().getResourceAsStream("/res/GUI/MOUSE-2.png"));
-            aim = ImageIO.read(getClass().getResourceAsStream("/res/GUI/AIM.png"));
+            attack = ImageIO.read(getClass().getResourceAsStream("/res/GUI/ATTACK.png"));
 
             // Water fill levels (14 frames)
             wateringCan[0]  = ImageIO.read(getClass().getResourceAsStream(
@@ -141,16 +141,16 @@ public class GUI {
         g2.drawImage(move, (int) 120, (int) 490 + displacementY, gp.tileSize * 2, 
             gp.tileSize * 2, null);
 
-        // ATTACK
-        g2.drawImage(space[frameNum - 1], (int) 250, (int) 445 + displacementY2, 
+        // DODGE
+        g2.drawImage(space[frameNum - 1], (int) 270, (int) 445 + displacementY2, 
             gp.tileSize * 2, gp.tileSize * 2, null);
-        g2.drawImage(attack, (int) 350, (int) 490 + displacementY2, gp.tileSize * 4, 
+        g2.drawImage(dodge, (int) 370, (int) 490 + displacementY2, gp.tileSize * 4, 
             gp.tileSize * 2, null);
 
         // AIM
         g2.drawImage(mouse[frameNum - 1], (int) 520, (int) 445 + displacementY2, 
             gp.tileSize * 2, gp.tileSize * 2, null);
-        g2.drawImage(aim, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, 
+        g2.drawImage(attack, (int) 600, (int) 490 + displacementY2, gp.tileSize * 4, 
             gp.tileSize * 2, null);
 
         // Simple counters

@@ -1,8 +1,8 @@
 package src.main;
 
 import src.object.OBJ_BlockTile;
-import src.object.OBJ_Boots;
 import src.object.OBJ_Chest;
+import src.object.OBJ_Coffee;
 import src.object.OBJ_Door;
 import src.object.OBJ_House;
 import src.object.OBJ_Key;
@@ -57,7 +57,7 @@ public class AssetSetter {
         gp.obj[6].worldX = 18 * gp.tileSize;
         gp.obj[6].worldY = 37 * gp.tileSize;
 
-        gp.obj[7] = new OBJ_Boots();
+        gp.obj[7] = new OBJ_Coffee();
         gp.obj[7].worldX = 12 * gp.tileSize;
         gp.obj[7].worldY = 37 * gp.tileSize;
 

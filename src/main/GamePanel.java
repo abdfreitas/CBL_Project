@@ -5,11 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import javax.swing.JPanel;
 import src.GUI.GUI;
 import src.drops.DropSupercClass;
@@ -68,6 +65,9 @@ public class GamePanel extends JPanel implements Runnable {
     public List<DropSupercClass> drops = new ArrayList<>(); // List of drops
     public List<int[]> attackInfo = new ArrayList<>(); // What enemies are hit during an attack
     public HealthBar healthbar = new HealthBar();
+
+    // Game End
+    private volatile boolean gameEnded = false;
 
     //GUI
     public GUI gui = new GUI();
@@ -155,7 +155,6 @@ public class GamePanel extends JPanel implements Runnable {
      * Also triggers music changes tied to waves.
      */
     public void update() {
-        
         // Wave music trigger once
         if (wave == 1 && waveStarted == 0) {
             waveStarted = 1;
@@ -205,6 +204,21 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // // Update friendlies but skip player because we already updated it
+        // for (Entity entity : friendlies) {
+        //     if (entity == null || entity == player) {
+        //         continue;
+        //     }
+        //     // Reset per-frame hit flag before checking
+        //     entity.getHit = false;
+
+        //     // Collision
+        //     int[] res = collisionDetection.checkEntity(entity, this);
+        //     int directionFrom = res[1];
+
+        // }
+
+
         // Update drops
         if (!drops.isEmpty()) {
             collisionDetection.checkDrop(player, this);
@@ -227,18 +241,76 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }   
         
-        // Check for player death
+        // Lose condition : player died
         if (player.hp <= 0) {
             // Close game window when health drops to zero or below
-            javax.swing.JOptionPane.showMessageDialog(this, "Game Over!");
-            javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
-            System.exit(0);
+            loseGame();
+        }
+         
+        // Secret win: reached wave 11 (i.e., made it past wave 10)
+        if (wave >= 11) {
+            winGameSecret();
         }
     }
 
-    /**
-     * Draw everything in the correct order.
-     */
+    /** Ending when player loses game. */
+    public void loseGame() {
+        if (gameEnded) {
+            return;
+        }
+        gameEnded = true;
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            try {
+                javax.swing.JOptionPane.showMessageDialog(this, "Game Over!");
+            } finally {
+                java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
+                if (w != null) {
+                    w.dispose();
+                }
+                System.exit(0);
+            }
+        });
+    }
+
+    /** Ending when player wins either by reaching wave 11 or opening the chest. */
+    public void winGame() {
+        if (gameEnded) {
+            return;
+        }
+        gameEnded = true;
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            try {
+                javax.swing.JOptionPane.showMessageDialog(this, "You win! 🎉");
+            } finally {
+                java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
+                if (w != null) { 
+                    w.dispose();
+                }
+                System.exit(0);
+            }
+        });
+    }
+
+    /** Secret ending for reaching wave 11 (“past wave 10”). */
+    public void winGameSecret() {
+        if (gameEnded) {
+            return;
+        }
+        gameEnded = true;
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            try {
+                javax.swing.JOptionPane.showMessageDialog(this, "Secret Ending: Ghost Hunter 👻");
+            } finally {
+                java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
+                if (w != null) {
+                    w.dispose();
+                }
+                System.exit(0);
+            }
+        });
+    }
+
+    /** Draw everything in the correct order. */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -328,9 +400,7 @@ public class GamePanel extends JPanel implements Runnable {
     private int debugOffsetY;
     private int debugLineSpace = 10;
     
-    /**
-     * Debug overlay.
-     */
+    /** Debug overlay. */
     public void drawDebug(Graphics2D g2) {
         debugOffsetX = 20;
         debugOffsetY = 20;

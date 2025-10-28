@@ -42,6 +42,12 @@ public class Flower2 extends Entity {
         interactable = true;
         doesDamage = true;
 
+        // Make ghosts want to attack flower
+        priority = 40; // Monsters prefer higher priority (player was 30)
+        hpMax = 60;
+        hp = hpMax;
+        doesDamage = false; // The plant itself doesn’t hurt things
+
         this.gp = gp;
         this.keyH = gp.keyH;
 

@@ -343,7 +343,7 @@ public class Player extends Entity {
         dodgeCounter--;
     }
 
-    /** Handle interactions with world objects (key, door, boots, chest). */
+    /** Handle interactions with world objects (key, door, coffee, chest). */
     public void pickUpObject(int i) {
         if (i != 999) {
             String objectName = gp.obj[i].name;
@@ -364,7 +364,7 @@ public class Player extends Entity {
                     }
                     break;
 
-                case "Boots":
+                case "Coffee":
                     speedMax += 2; // Faster top speed
                     gp.obj[i] = null;
                     gp.sound.playSfx(2);
@@ -373,6 +373,8 @@ public class Player extends Entity {
                 case "Chest":
                     gp.obj[i] = null;
                     gp.sound.playSfx(4);
+                    // Normal win: opened chest
+                    gp.winGame();
                     break;
 
                 default:

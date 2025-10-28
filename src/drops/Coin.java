@@ -5,18 +5,17 @@ import javax.imageio.ImageIO;
 import src.main.GamePanel;
 
 /**
- * Coin drop that the player can pick up.
- * 
- * When collected, it increases the players coin count in the GUI.
+ * Represents a coin drop in the game.
+ * When the player picks it up, it increases their coin amount in watercan by 1.
  */
 public class Coin extends DropSupercClass {
 
     /**
      * Creates a new coin at a given map position.
      * 
-     * @param gp reference to the main GamePanel
-     * @param originX X position where the coin spawns
-     * @param originY Y position where the coin spawns
+     * @param gp reference to the gamepanel
+     * @param originX x position where the coin spawns
+     * @param originY y position where the coin spawns
      * @param name name of drop 
      */
     public Coin(GamePanel gp, int originX, int originY, String name) {
@@ -25,8 +24,8 @@ public class Coin extends DropSupercClass {
     }
 
     /**
-     * Loads the coin image and is called automatically when coin is created.
-     */
+     * Loads the coins image and makes it collectible.
+    */
     public void setup() {
         pickupable = true;
 
@@ -39,10 +38,10 @@ public class Coin extends DropSupercClass {
     }
 
     /**
-     * Adds +1 to the player's coin counter on the GUI when player picks up coin.
-    */
+     * Called when the coin is picked up by the player.
+     * Increases player coin count by 1.
+     */
     public void pickedUp(GamePanel gp) {
-        // Add one coin to the player's total
         gp.gui.coins = gp.gui.coins + 1; 
     }
 }

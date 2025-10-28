@@ -100,12 +100,13 @@ public class DropSupercClass {
      * Updates the drops movement and attraction toward the player.
      */
     public void update(GamePanel gp, Player player) {
+        // If already picked up, trigger pickup behavior once and exit
         if (pickedUp) {
             pickedUp(gp);
             return;
         }
 
-        // Apply friction (slow down gradually)
+        // Apply friction (slow down bit by bit)
         speed = Math.sqrt(speedX * speedX + speedY * speedY);
         speedAngle = Math.atan2(speedY, speedX);
 
@@ -148,8 +149,7 @@ public class DropSupercClass {
     }
 
     /**
-     * Returns true if the player interacted with the drop.
-     * (used for things that need clicking)
+     * Checks if player has interacted with this drop.
      */
     public boolean interactedWith(GamePanel gp) {
         return gp.keyH.interactPressed && underCursor(gp);

@@ -52,9 +52,9 @@ public class HealthBar {
     */
     public void draw(Graphics2D g2, GamePanel gp, Entity entity) {
         BufferedImage image = null;
-        int i = (entity.HP) * 110 / entity.HPMax / 16;
+        int i = (entity.hp) * 110 / entity.hpMax / 16;
 
-        if (i > 0 && i < 7 && entity.HP != entity.HPMax) {
+        if (i > 0 && i < 7 && entity.hp != entity.hpMax) {
             image = frame[6 - i];
 
             worldXDouble = entity.worldXDouble;

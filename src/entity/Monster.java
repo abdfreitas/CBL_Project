@@ -5,40 +5,33 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-
 import javax.imageio.ImageIO;
-
-import src.lib.CharStack;
+import src.lib.Random;
 import src.main.GamePanel;
 import src.main.KeyHandler;
 import src.user.ConfigManager;
-import src.entity.Player;
-import src.lib.Random;
 
+/**
+*  Monster entity  for the basic enemy type in the game.
+*
+* It automatically moves toward the closest "friendly" (player or plants),
+* slightly randomized with acceleration and deceleration. It can be stunned,
+* take damage, and briefly turn white (invincible flicker) when hit.
+*/
 public class Monster extends Entity {
-
     GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
 
-    private CharStack cStack;
-
-    private Player player1;
-
     int hasKey = 0;
-
     BufferedImage[] frame = new BufferedImage[4];
 
-    
     int spriteCounter = 0;
     int spriteCounterMax = 23;
     int frameNum = 1;
     int frameNumMax = 2;
-
-    
 
     double acceleration;
     double accelerationFactorRandomOffset;
@@ -52,51 +45,31 @@ public class Monster extends Entity {
     double speedY;
     double speedMax = 5;
 
-    
-
-    
-
-    
-
-
+    /**
+     * Creates a monster at the given world position.
+    */
     public Monster(GamePanel gp, int originX, int originY, String name) {
-
         super(gp, originX, originY, name);
-
-        //interactable = true;
 
         speedX = 0;
         speedY = 0;
         speedDouble = 0;
-
+        // Initialize random speed offset so monsters don’t move identically
         accelerationFactorRandomOffset = Random.randomDouble(-0.5, 0.5);
-        //System.out.println(accelerationFactorRandomOffset);
-        
-
-        
         doesDamage = true;
-        player1 = gp.player;
 
-        HPMax = ConfigManager.getInt("monster.HPMax", 50);
-        HP = HPMax;
-        //System.out.println("Monster MAX HP set to: " + ConfigManager.getInt("monster.HPMax", 50));
+        // Stats are loaded from config.txt
+        hpMax = ConfigManager.getInt("monster.hpMax", 50);
+        hp = hpMax;
         invincibleCounterMax = ConfigManager.getInt("monster.invincibleCounterMax", 20);
-
         stunCounterMax = ConfigManager.getInt("monster.stunCounterMax", 20);
 
-        
-        
-
-
-
         this.gp = gp;
-        this.keyH = keyH;
-
-        //this.cStack = keyH.cStack;
-
+        
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
+        // Define monster’s collision box
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -104,51 +77,51 @@ public class Monster extends Entity {
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 30;
         solidArea.height = 30;
-
-        //worldX = gp.tileSize * 25;
-        //worldY = gp.tileSize * 21;
-
         speedDouble = 0;
 
+        // Load sprites
         try {
-            frame[0] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost.png"));
-            frame[1] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-2.png"));
-            frame[2] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-3.png"));
-            frame[3] = ImageIO.read(getClass().getResourceAsStream("/res/entities/monster/ghost-4.png"));
+            frame[0] = ImageIO.read(getClass().getResourceAsStream(
+                "/res/entities/monster/ghost.png"));
+            frame[1] = ImageIO.read(getClass().getResourceAsStream(
+                "/res/entities/monster/ghost-2.png"));
+            frame[2] = ImageIO.read(getClass().getResourceAsStream(
+                "/res/entities/monster/ghost-3.png"));
+            frame[3] = ImageIO.read(getClass().getResourceAsStream(
+                "/res/entities/monster/ghost-4.png"));
         } catch (IOException e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
-
-        
-        
     }
 
+    /**
+     * Handles all movement and interaction.
+     * The monster:
+     * - Moves toward the nearest friendly entity
+     * - Gets stunned and repelled when hit
+     * - Flickers while invincible
+     */
     public void updateSub() {
-
-        int index = 999;
+        int index = 999; // Closest entity index
         double distance = 0;
         double distanceTemp = 0;
         double dX = 0;
         double dY = 0;
         double dXTemp;
         double dYTemp;
-        double distancePrioritized = 999999999;
+        double distancePrioritized = 999999999; // Distance weighted by entity priority
         double distancePrioritizedTemp = 0;
 
-        
-
+        // Find the closest friendly (player or plant)
         for (Entity entity : gp.friendlies) {
             if (entity != null) {
-
-                
-
                 dXTemp = entity.worldXDouble - worldXDouble;
                 dYTemp = entity.worldYDouble - worldYDouble;
 
                 distanceTemp = Math.sqrt((dXTemp * dXTemp) + (dYTemp * dYTemp));
-                
                 distancePrioritizedTemp = distanceTemp / entity.priority;
+
+                // Pick the closest high priority target
                 if (distancePrioritizedTemp < distancePrioritized) {
                     distancePrioritized = distancePrioritizedTemp;
                     distance = distanceTemp;
@@ -161,7 +134,6 @@ public class Monster extends Entity {
             }
         }
 
-
         // Getting hit:
         if (getHit && !invincible) {
             invincible = true;
@@ -170,20 +142,15 @@ public class Monster extends Entity {
             stunned = true;
 
             getDamage = true;
-            HP -= 10;
-
-            //System.out.println("Monster HP: " + HP);
-
+            hp -= 10;
             gp.sound.playSfx(6);
 
+            // Knockback in the direction opposite to the attack
             speedX = speedX - 30 * Math.cos(Math.toRadians(directionDamage));
             speedY = speedY - 30 * Math.sin(Math.toRadians(directionDamage));
-
-            // System.out.println("dspeedX: " + 20 * Math.cos(Math.toRadians(directionDamage)) + " dspeedY: " + 20 * Math.sin(Math.toRadians(directionDamage)) + " directionDamage: " + directionDamage);
-
-
         }
 
+        // Handle invincibility flicker
         if (invincibleCounter <= 0) {
             invincible = false;
             getHit = false;
@@ -191,6 +158,7 @@ public class Monster extends Entity {
             invincibleCounter--;
         }
 
+        // Handle stun duration
         if (stunCounter <= 0) {
             stunned = false;
            
@@ -198,39 +166,24 @@ public class Monster extends Entity {
             stunCounter--;
         }
 
-        // int playerX = player1.worldX;
-        // int playerY = player1.worldY;
-
-        // double dX = playerX - worldXDouble;
-        // double dY = playerY - worldYDouble;
-
-        // double distance = Math.sqrt((dX * dX) + (dY * dY));
-
-        
         speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
         speedAngle = Math.atan2(speedY, speedX);
 
+        // Speed variation per monster
         acceleration = accelerationFactor + accelerationFactorRandomOffset * accelerationFactor;
 
-        //System.out.println(acceleration);
-
+        // Move toward target unless very close
         if (distance > 25) {
             speedX = speedX + (acceleration * Math.cos(distanceAngle));
             speedY = speedY + (acceleration * Math.sin(distanceAngle));
+        } 
 
-            
-
-        } else {
-            // speedX = 0;
-            // speedY = 0;
-
-        }
-
+        // Apply drag (to make motion smoother)
         speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
         speedAngle = Math.atan2(speedY, speedX);
-
         deceleration = decelerationFactor * speedDouble * speedDouble;
 
+        // Apply movement 
         if (speedDouble > 0.01) {
             speedX = speedX - (deceleration * Math.cos(speedAngle));
             speedY = speedY - (deceleration * Math.sin(speedAngle));
@@ -246,11 +199,6 @@ public class Monster extends Entity {
         speedDouble = Math.sqrt(speedX * speedX + speedY * speedY);
         speedAngle = Math.atan2(speedY, speedX);
 
-        //System.out.println("Speed: " + speedDouble + " Acceleration: " + acceleration + " Deceleration: " + deceleration); 
-        
-
-        
-
         while (true) {
             break;
         }
@@ -263,39 +211,31 @@ public class Monster extends Entity {
             worldYDouble += speedY;
         }
 
-
-
-        
-
-        
-
+        // Update direction for correct sprite
         if (Math.abs(dX) > Math.abs(dY)) {
             if (dX > 0) {
                 lookDirection = "right";
             } else {
                 lookDirection = "left";
             }
-        } else {
-            // if (dY > 0) {
-            //     lookDirection = "down";
-            // } else {
-            //     lookDirection = "up";
-            // }
         }
 
         worldX = (int) worldXDouble;
         worldY = (int) worldYDouble;
-
-        
-
     }
 
+    /**
+     * Draw the monster sprite and apply visual effects. 
+     * - Flicker white while invincible
+     * - Bounce slightly (for animation)
+    */
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
         double screenX = worldXDouble - gp.player.worldX + gp.player.screenX;
         double screenY = worldYDouble - gp.player.worldY + gp.player.screenY;
 
+        // Animation timing
         spriteCounter++;
         if (spriteCounter > spriteCounterMax) {
             spriteCounter = 0;
@@ -305,8 +245,8 @@ public class Monster extends Entity {
             }
         }
 
+        // Use right or left frame depending on direction
         int frameNumDirection;
-
         if (lookDirection == "right") {
             frameNumDirection = frameNum + 2;
         } else {
@@ -315,26 +255,28 @@ public class Monster extends Entity {
 
         image = frame[frameNumDirection - 1];
 
-        int displacementX = (int) Math.cos(Math.toRadians(displacementAngle));
+        // Floating animation
         int displacementY = (int) (Math.sin(Math.toRadians(displacementAngle) 
             + displacementAngleOffset) * 10);
 
+        // Flicker to white if invincible
         if (invincible && invincibleCounter / 2 / 2 % 2 != 0) {
             BufferedImage whitePlayer = makeSilhouette(image, Color.WHITE);
-            g2.drawImage(whitePlayer, (int) screenX, (int) screenY + displacementY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(whitePlayer, (int) screenX, (int) screenY + displacementY, gp.tileSize, 
+                gp.tileSize, null);
         } else {
-            g2.drawImage(image, (int) screenX, (int) screenY + displacementY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, (int) screenX, (int) screenY + displacementY, gp.tileSize, 
+                gp.tileSize, null);
         }
 
-        //g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
-
+        // Draw collision box when debug is on
         if (keyH.debugEnabled) {
             g2.setColor(Color.RED);
-            g2.drawRect((int) screenX + solidArea.x, (int) screenY + solidArea.y, solidArea.width, solidArea.height);
+            g2.drawRect((int) screenX + solidArea.x, (int) screenY + solidArea.y, 
+                solidArea.width, solidArea.height);
             g2.setColor(Color.RED);
         }
 
     }
 
-    
 }

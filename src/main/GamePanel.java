@@ -183,7 +183,7 @@ public class GamePanel extends JPanel implements Runnable {
                     entity.update();
 
                     // When killed, enemies drop coins (1–8) and play SFX
-                    if (entity.HP <= 0) {
+                    if (entity.hp <= 0) {
                         dropSetter.setDrop(this, entity.worldX, entity.worldY, "coin");
                         int rInt = Random.randomInt(1, 8);
                         for (int j = 0; j < rInt; j++) {

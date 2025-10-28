@@ -19,7 +19,7 @@ public class Heart extends DropSupercClass {
      */     
     public Heart(GamePanel gp, int originX, int originY, String name) {
         super(gp, originX, originY, name);
-        setup(); // load image and mark as pickupable
+        setup(); // Load image and mark as pickupable
 
     }
 
@@ -41,9 +41,11 @@ public class Heart extends DropSupercClass {
      * Increases player HP by 10, but not above maximum HP.
      */
     public void pickedUp(GamePanel gp) {
-        gp.player.HP = gp.player.HP + 10;
-        if (gp.player.HP > gp.player.HPMax) {
-            gp.player.HP = gp.player.HPMax;
+        gp.player.hp = gp.player.hp + 10;
+        if (gp.player.hp > gp.player.hpMax) {
+            gp.player.hp = gp.player.hpMax;
         }
+
     }
+
 }

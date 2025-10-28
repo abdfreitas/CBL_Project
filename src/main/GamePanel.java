@@ -5,8 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.JPanel;
 import src.GUI.GUI;
 import src.drops.DropSupercClass;
@@ -153,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void update() {
         
+        // Wave music trigger once
         if (wave == 1 && waveStarted == 0) {
             waveStarted = 1;
             sound.playMusic(8, true);
@@ -201,22 +205,24 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // Update drops
         if (!drops.isEmpty()) {
             collisionDetection.checkDrop(player, this);
             // if (index != 999) {
             //     //System.out.println(index);
             // }
 
-            Iterator<DropSupercClass> itDrop = drops.iterator();
-            while (itDrop.hasNext()) {
-                DropSupercClass drop = itDrop.next();
-                if (drop != null) {
-                    drop.update(this, player);
-                    
-                    if (drop.pickedUp) {
-                        itDrop.remove();
-                        sound.playSfx(1);
-                    }
+            for (Iterator<DropSupercClass> itDrop = drops.iterator(); itDrop.hasNext();) {
+                DropSupercClass d = itDrop.next();
+                if (d == null) {
+                    continue;
+                }
+
+                d.update(this, player);
+
+                if (d.pickedUp) {
+                    itDrop.remove();
+                    sound.playSfx(1);
                 }
             }
         }      

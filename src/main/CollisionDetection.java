@@ -212,10 +212,11 @@ public class CollisionDetection {
     /**
     * Checks if the player bumps into another entity (like an enemy).
     * If yes, determines which direction the hit came from.
-    * @param player the player
+    * @param target the player
     * @param gp the game panel
     * @return [index of entity, direction of damage]
     */
+<<<<<<< HEAD
     public int[] checkEntity(Entity player, GamePanel gp) {
         int index = 999;
         int directionDamage = 0;
@@ -256,14 +257,105 @@ public class CollisionDetection {
                             }
                         }
                     }
+=======
+    public int[] checkEntity(Entity target, GamePanel gp) {
+        int[] out = {999, 0};
+        // int index = 999;
+        // int directionDamage = 0;
+
+        // Build target hitbox (no mutation of target.solidArea)
+        java.awt.Rectangle targetBox = new java.awt.Rectangle(
+            target.worldX + target.solidArea.x,
+            target.worldY + target.solidArea.y,
+            target.solidArea.width,
+            target.solidArea.height
+        );
+
+        for (int i = 0; i < gp.entities.size(); i++) {
+            Entity enemy = gp.entities.get(i);
+            if (enemy == null) { 
+                continue;
+            }
+
+            java.awt.Rectangle enemyBox = new java.awt.Rectangle(
+                enemy.worldX + enemy.solidArea.x,
+                enemy.worldY + enemy.solidArea.y,
+                enemy.solidArea.width,
+                enemy.solidArea.height
+            );
+
+            if (targetBox.intersects(enemyBox)) {
+                // Mark hit on the target and compute direction (from enemy -> target)
+                target.getHit = true;
+
+                int targetCx = target.worldX + target.solidArea.x + target.solidArea.width  / 2;
+                int targetCy = target.worldY + target.solidArea.y + target.solidArea.height / 2;
+                int enemyCx  = enemy.worldX  + enemy.solidArea.x  + enemy.solidArea.width  / 2;
+                int enemyCy  = enemy.worldY  + enemy.solidArea.y  + enemy.solidArea.height / 2;
+
+                int dx = targetCx - enemyCx;
+                int dy = targetCy - enemyCy;
+
+                // Map to 4-way like your player damage switch: 6=right, 8=up, 4=left, 2=down
+                int dir;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    dir = (dx > 0) ? 6 : 4;     // enemy is left/right of target
+                } else {
+                    dir = (dy > 0) ? 2 : 8;     // enemy is above/below target
+>>>>>>> recovery/flower-hp
                 }
-                player.solidArea.x = player.solidAreaDefaultX;
-                player.solidArea.y = player.solidAreaDefaultY;
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
+
+                out[0] = i;
+                out[1] = dir;
+                return out; // first hit wins
             }
         }
-        return new int[] {index, directionDamage};
+        return out;
+
+        // for (Entity entity : gp.entities) {
+        //     if (entity != null) {
+        //         // Get Players solid area position
+        //         player.solidArea.x = player.worldX + player.solidArea.x;
+        //         player.solidArea.y = player.worldY + player.solidArea.y;
+
+        //         // Get the object's solid area position
+        //         entity.solidArea.x = (int) entity.worldXDouble 
+        //             + entity.solidArea.x;
+        //         entity.solidArea.y = (int) entity.worldYDouble 
+        //             + entity.solidArea.y;
+
+        //         // Compare hitboxes and see if they overlap
+        //         if (player.solidArea.intersects(entity.solidArea)) {
+        //             if (entity.doesDamage) {
+        //                 player.getHit = true;
+        //                 index = gp.entities.indexOf(entity);
+
+        //                 int dX = player.worldX - (int) entity.worldXDouble;
+        //                 int dY = player.worldY - (int) entity.worldYDouble;
+
+        //                 // Use dx, dy to figure out if hit came from top, bottom, left, or right
+        //                 if (Math.abs(dX) > Math.abs(dY)) {
+        //                     if (dX > 0) {
+        //                         directionDamage = 4;
+        //                     } else {
+        //                         directionDamage = 6;
+        //                     }
+        //                 } else {
+        //                     if (dY > 0) {
+        //                         directionDamage = 8;
+        //                     } else {
+        //                         directionDamage = 2;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         player.solidArea.x = player.solidAreaDefaultX;
+        //         player.solidArea.y = player.solidAreaDefaultY;
+        //         entity.solidArea.x = entity.solidAreaDefaultX;
+        //         entity.solidArea.y = entity.solidAreaDefaultY;
+        //     }
+        // }
+        // return new int[] {index, directionDamage};
     }
 
     /**
@@ -307,53 +399,49 @@ public class CollisionDetection {
     * Checks if an attack hits any entities.
     * Adds info about who got hit and from which direction.
     * @param gp main game panel
-    * @param entity the attacker
+    * @param attacker the attacking entity
     * @param attack the attack area
     * @param entities list of possible targets
     * @return list of [entity index, hit direction]
     */
-    public List<int[]> checkAttack(GamePanel gp, Entity entity,
+    public List<int[]> checkAttack(GamePanel gp, Entity attacker,
         Attack attack, List<Entity> entities) {
 
         List<int[]> attackInfo = new ArrayList<int[]>();
 
-        int index = 999;
-        int directionDamage = 0;
+        if (!attack.attacking) {
+            return attackInfo;
+        }
 
-        if (attack.attacking) {
-            for (Entity attackeeEntity : entities) {
-                // Skip invincible entities
-                if (attackeeEntity != null) {
-                    if (attackeeEntity.invincible) {
-                        continue;
-                    }
-                    index = entities.indexOf(attackeeEntity);
-                    
-                    // Get the object's solid area position
-                    attackeeEntity.solidArea.x = (int) attackeeEntity.worldXDouble 
-                        + attackeeEntity.solidArea.x;
-                    attackeeEntity.solidArea.y = (int) attackeeEntity.worldYDouble 
-                        + attackeeEntity.solidArea.y;
-                        
-                    // Check overlap between attack area and target hitbox
-                    if (attack.solidArea.intersects(attackeeEntity.solidArea) 
-                        || attack.solidArea2.intersects(attackeeEntity.solidArea)) {
+        for (int i = 0; i < entities.size(); i++) {
+            Entity target = entities.get(i);
+            if (target == null) {
+                continue;
+            }
+            if (target.invincible) {
+                continue;
+            }
 
-                        attackeeEntity.getHit = true;
-                        index = gp.entities.indexOf(attackeeEntity);
+            // Build temp hitbox for the target (no field mutation!)
+            java.awt.Rectangle targetBox = new java.awt.Rectangle(
+                target.worldX + target.solidArea.x,
+                target.worldY + target.solidArea.y,
+                target.solidArea.width,
+                target.solidArea.height
+            );
 
-                        int dX = entity.worldX - (int) attackeeEntity.worldXDouble;
-                        int dY = entity.worldY - (int) attackeeEntity.worldYDouble;
+            // Assume attack.solidArea / solidArea2 are already positioned correctly
+            boolean hit = attack.solidArea.intersects(targetBox)
+                    || attack.solidArea2.intersects(targetBox);
 
-                        directionDamage = (int) Math.toDegrees(Math.atan2(dY, dX));
-                        attackeeEntity.directionDamage = directionDamage;
-                        attackInfo.add(new int[] {index, directionDamage});
-                    }
-
-                    // Find direction of damage
-                    entity.solidArea.x = entity.solidAreaDefaultX;
-                    entity.solidArea.y = entity.solidAreaDefaultY;
-                }
+            if (hit) {
+                target.getHit = true;
+                int dX = attacker.worldX - target.worldX;
+                int dY = attacker.worldY - target.worldY;
+                int directionDamage = (int) Math.toDegrees(Math.atan2(dY, dX));
+                target.directionDamage = directionDamage;
+                // record [index, direction]
+                attackInfo.add(new int[] { i, directionDamage });
             }
         }
         return attackInfo;

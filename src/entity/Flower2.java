@@ -44,7 +44,7 @@ public class Flower2 extends Entity {
 
         // Make ghosts want to attack flower
         priority = 40; // Monsters prefer higher priority (player was 30)
-        hpMax = 900; // High HP to make it easier on the player
+        hpMax = 50; // High HP to make it easier on the player
         hp = hpMax;
         doesDamage = false; // The plant itself doesn’t hurt things
         invincibleCounterMax = 20;
